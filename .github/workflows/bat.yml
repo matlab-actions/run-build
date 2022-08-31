@@ -1,0 +1,80 @@
+name: Build and Test
+on: [push]
+
+jobs:
+  bat:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16"
+      - name: Perform npm tasks
+        run: npm run ci
+
+      - name: Perform 'setup-matlab'
+        uses: matlab-actions/setup-matlab@v1
+
+      - name: Create buildfile.m in project root for tests
+        run: |
+          cat \<<'_EOF' >> "buildfile.m"
+            function plan = buildfile
+            plan = buildplan(localfunctions);
+            plan("test").Dependencies = "build";
+            plan("deploy").Dependencies = "test";
+
+            plan.DefaultTasks = "test";
+
+            function buildTask(~)
+            f = fopen('buildlog.txt', 'w'); fwrite(f, 'building'); fclose(f);
+
+            function testTask(~)
+            f = fopen('buildlog.txt', 'w'); fwrite(f, 'testing'); fclose(f);
+
+            function deployTask(~)
+            f = fopen('buildlog.txt', 'w'); fwrite(f, 'deploying'); fclose(f);
+
+            function checkTask(~)
+            f = fopen('buildlog.txt', 'w'); fwrite(f, 'checking'); fclose(f);
+          _EOF
+
+      - name: Run build with default tasks
+        uses: ./
+
+      - name: Verify correct tasks appear in buildlog.txt
+        run: |
+          set -e
+          grep "building" buildlog.txt
+          grep "testing" buildlog.txt
+          ! grep "deploying" buildlog.txt
+          ! grep "checking" buildlog.txt
+          rm buildlog.txt
+
+      - name: Run build with specified task
+        uses: ./
+        with:
+          tasks: deploy
+
+      - name: Verify correct tasks appear in buildlog.txt
+        run: |
+          set -e
+          grep "building" buildlog.txt
+          grep "testing" buildlog.txt
+          grep "deploying" buildlog.txt
+          ! grep "checking" buildlog.txt
+          rm buildlog.txt
+
+      - name: Run build with multiple specified tasks
+        uses: ./
+        with:
+          tasks: deploy check
+
+      - name: Verify correct tasks appear in buildlog.txt
+        run: |
+          set -e
+          grep "building" buildlog.txt
+          grep "testing" buildlog.txt
+          grep "deploying" buildlog.txt
+          grep "checking" buildlog.txt
+          rm buildlog.txt
