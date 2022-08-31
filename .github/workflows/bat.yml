@@ -27,16 +27,16 @@ jobs:
             plan.DefaultTasks = "test";
 
             function buildTask(~)
-            f = fopen('buildlog.txt', 'w'); fwrite(f, 'building'); fclose(f);
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'building\n'); fclose(f);
 
             function testTask(~)
-            f = fopen('buildlog.txt', 'w'); fwrite(f, 'testing'); fclose(f);
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'testing\n'); fclose(f);
 
             function deployTask(~)
-            f = fopen('buildlog.txt', 'w'); fwrite(f, 'deploying'); fclose(f);
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'deploying\n'); fclose(f);
 
             function checkTask(~)
-            f = fopen('buildlog.txt', 'w'); fwrite(f, 'checking'); fclose(f);
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
           _EOF
 
       - name: Run build with default tasks
