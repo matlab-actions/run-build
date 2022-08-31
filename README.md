@@ -17,12 +17,12 @@ name: Run MATLAB Build on Self-Hosted Runner
 on: [push]
 jobs:
   my-job:
-    name: Run MATLAB Script
+    name: Run MATLAB Build
     runs-on: self-hosted
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Run script
+      - name: Run build
         uses: matlab-actions/run-build@v1
 ```
 
