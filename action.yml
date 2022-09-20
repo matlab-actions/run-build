@@ -2,11 +2,11 @@
 
 name: Run MATLAB Build
 description: >-
-  Run MATLAB build with the MATLAB Build Tool
+  Run a build with the MATLAB build tool
 inputs:
   tasks:
     description: >-
-      Space separated list of tasks to execute
+      Space-separated list of tasks to run
     required: false
     default: ""
 runs:
