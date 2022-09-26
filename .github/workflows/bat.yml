@@ -22,7 +22,7 @@ jobs:
 
       - name: Create buildfile.m in project root for tests
         run: |
-          cat \<<'_EOF' >> "buildfile.m"
+          cat <<'_EOF' >> "buildfile.m"
             function plan = buildfile
             plan = buildplan(localfunctions);
             plan("test").Dependencies = "build";
