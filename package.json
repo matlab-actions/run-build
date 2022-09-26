@@ -1,0 +1,37 @@
+{
+    "name": "run-matlab-build-action",
+    "author": "The MathWorks, Inc.",
+    "version": "1.0.0",
+    "description": "",
+    "main": "lib/index.js",
+    "scripts": {
+        "clean": "rm -rf dist lib",
+        "format": "prettier --write .",
+        "format-check": "prettier --check .",
+        "build": "tsc",
+        "deps": "bash ./scripts/setupdeps.sh",
+        "package": "ncc build --minify",
+        "test": "jest",
+        "all": "npm test && npm run build && npm run package",
+        "ci": "npm run clean && npm run deps && npm ci && npm run all"
+    },
+    "files": [
+        "lib/"
+    ],
+    "dependencies": {
+        "@actions/core": "^1.4.0",
+        "@actions/exec": "^1.1.0",
+        "run-matlab-command-action": "github:matlab-actions/run-command#v1.1.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^27.0.3",
+        "@types/node": "^15.12.4",
+        "@types/uuid": "^8.3.0",
+        "@vercel/ncc": "^0.28.6",
+        "jest": "^27.0.5",
+        "jest-circus": "^27.0.5",
+        "prettier": "2.3.1",
+        "ts-jest": "^27.0.3",
+        "typescript": "^4.3.4"
+    }
+}

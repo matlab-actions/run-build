@@ -1,0 +1,14 @@
+# Copyright 2022 The MathWorks, Inc.
+
+name: Run MATLAB Build
+description: >-
+  Run a build with the MATLAB build tool
+inputs:
+  tasks:
+    description: >-
+      Space-separated list of tasks to run
+    required: false
+    default: ""
+runs:
+  using: node16
+  main: dist/index.js
