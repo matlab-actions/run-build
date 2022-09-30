@@ -9,7 +9,7 @@ The [Run MATLAB Build](#run-matlab-build) action enables you to invoke the MATLA
 - To use a GitHub-hosted runner, you must include the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow to set up MATLAB on the runner. Currently, this action is available only for public projects. It does not set up transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;.
 
 ## Examples
-Use the **Run MATLAB Build** action to run builds using the MATLAB build tool. You can use this action to run the tasks specified in a file named  `buildfile.m` in the root of your repository.
+Use the **Run MATLAB Build** action to run a build using the MATLAB build tool. You can use this action to run the tasks specified in a file named  `buildfile.m` in the root of your repository.
 
 ### Run MATLAB Build on Self-Hosted Runner
 Use a self-hosted runner to run the default tasks in your build plan as well as all the tasks on which they depend.
@@ -23,7 +23,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run build
         uses: matlab-actions/run-build@v1
 ```
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
       - name: Run build
@@ -56,7 +56,7 @@ When you define your workflow in the `.github/workflows` directory of your repos
 
 Input                     | Description
 ------------------------- | ---------------
-`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks specified in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `test`</br>**Example:** `compile test`
+`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `test`</br>**Example:** `compile test`
 
 MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the workflow to fail.
 
