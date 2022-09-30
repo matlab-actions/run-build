@@ -9,7 +9,7 @@ The [Run MATLAB Build](#run-matlab-build) action enables you to invoke the MATLA
 - To use a GitHub-hosted runner, you must include the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow to set up MATLAB on the runner. Currently, this action is available only for public projects. It does not set up transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;.
 
 ## Examples
-Use the **Run MATLAB Build** action to run builds using the MATLAB build tool. You can use this action to run the tasks in the plan returned by a file named  `buildfile.m` in the root of your repository.
+Use the **Run MATLAB Build** action to run builds using the MATLAB build tool. You can use this action to run the tasks specified in a file named  `buildfile.m` in the root of your repository.
 
 ### Run MATLAB Build on Self-Hosted Runner
 Use a self-hosted runner to run the default tasks in your build plan as well as all the tasks on which they depend.
@@ -31,7 +31,7 @@ jobs:
 ### Run MATLAB Build on GitHub-Hosted Runner
 Before you run MATLAB code or Simulink models on a GitHub-hosted runner, first use the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action. The action sets up your specified MATLAB release (R2020a or later) on a Linux&reg; virtual machine. If you do not specify a release, the action sets up the latest release of MATLAB. To use the **Run MATLAB Build** action, you need MATLAB R2022b or a later release.
 
-For example, set up the latest release of MATLAB on a GitHub-hosted runner, and then use the **Run MATLAB Build** action to run a specific task and its depended-on tasks.
+For example, set up the latest release of MATLAB on a GitHub-hosted runner, and then use the **Run MATLAB Build** action to run a specific task and the tasks on which it depends.
 
 ```yaml
 name: Run MATLAB Build on GitHub-Hosted Runner
@@ -56,7 +56,7 @@ When you define your workflow in the `.github/workflows` directory of your repos
 
 Input                     | Description
 ------------------------- | ---------------
-`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks in the plan returned by `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `test`</br>**Example:** `compile test`
+`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks specified in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `test`</br>**Example:** `compile test`
 
 MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the workflow to fail.
 
@@ -68,7 +68,7 @@ When you use this action, a file named `buildfile.m` must be in the project root
 * When you use the **Run MATLAB Build** action, you execute third-party code that is licensed under separate terms.
 
 ## See Also
-- [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/create-and-run-tasks-using-build-tool.html)
+- [Create and Run Tasks Using Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/create-and-run-tasks-using-build-tool.html)
 - [Action for Running MATLAB Tests](https://github.com/matlab-actions/run-tests/)
 - [Action for Running MATLAB Commands](https://github.com/matlab-actions/run-command)
 - [Action for Setting Up MATLAB on GitHub-Hosted Runner](https://github.com/matlab-actions/setup-matlab/)
