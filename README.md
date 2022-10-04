@@ -48,7 +48,7 @@ jobs:
       - name: Run build
         uses: matlab-actions/run-build@v1
         with:
-          tasks: test
+          tasks: mytask
 ```
 
 ## Run MATLAB Build
