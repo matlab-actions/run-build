@@ -1,0 +1,1 @@
+{"version":3,"file":"buildtool.js","sourceRoot":"","sources":["../src/buildtool.ts"],"names":[],"mappings":";AAAA,qCAAqC;;;AAMrC,SAAgB,eAAe,CAAC,OAAwB;IACpD,IAAI,OAAO,GAAW,WAAW,CAAC;IAClC,IAAI,OAAO,CAAC,KAAK,EAAE;QACf,OAAO,GAAG,OAAO,GAAG,GAAG,GAAG,OAAO,CAAC,KAAK,CAAC;KAC3C;IACD,OAAO,OAAO,CAAA;AAClB,CAAC;AAND,0CAMC"}
