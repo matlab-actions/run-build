@@ -56,7 +56,7 @@ When you define your workflow in the `.github/workflows` directory of your repos
 
 Input                     | Description
 ------------------------- | ---------------
-`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `test`</br>**Example:** `compile test`
+`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `tasks: test`</br>**Example:** `tasks: compile test`
 
 MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the workflow to fail.
 
