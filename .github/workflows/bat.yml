@@ -78,3 +78,18 @@ jobs:
           grep "deploying" buildlog.txt
           grep "checking" buildlog.txt
           rm buildlog.txt
+
+      - name: Run build with startup options
+        uses: ./
+        with:
+          startup-options: -logfile buildlog2.txt
+
+      - name: Verify tasks appear in buildlog2.txt
+        run: |
+          set -e
+          grep "build" buildlog2.txt
+          grep "test" buildlog2.txt
+          ! grep "deploy" buildlog2.txt
+          ! grep "check" buildlog2.txt
+          rm buildlog.txt
+          rm buildlog2.txt
