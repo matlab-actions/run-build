@@ -9,6 +9,11 @@ inputs:
       Space-separated list of tasks to run
     required: false
     default: ""
+  statup-options:
+    description: >-
+      Startup options for MATLAB
+    required: false
+    default: ""
 runs:
   using: node16
   main: dist/index.js
