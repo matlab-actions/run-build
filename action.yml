@@ -9,7 +9,7 @@ inputs:
       Space-separated list of tasks to run
     required: false
     default: ""
-  statup-options:
+  startup-options:
     description: >-
       Startup options for MATLAB
     required: false
