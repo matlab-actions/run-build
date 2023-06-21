@@ -52,13 +52,12 @@ jobs:
 ```
 
 ## Run MATLAB Build
-When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MATLAB Build** action as `matlab-actions/run-build@v1`. The action accepts an optional input.
+When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MATLAB Build** action as `matlab-actions/run-build@v1`. The action accepts optional inputs.
 
 Input                     | Description
 ------------------------- | ---------------
-`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>**Example:** `tasks: test`</br>**Example:** `tasks: compile test`
-
-MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the workflow to fail.
+`tasks`                   | (Optional) Space-separated list of tasks to run. If not specified, the action runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</br>MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the workflow to fail.<br/>**Example:** `tasks: test`</br>**Example:** `tasks: compile test`
+`startup-options`         | (Optional) MATLAB startup options. If you specify more than one option, use a space to separate them. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).<br/>Using this input to specify the `-batch` or `-r` option is not supported.<br/>**Example:** `startup-options: -nojvm`<br/>**Example:** `startup-options: -nojvm -logfile "output.log"`
 
 When you use this action, a file named `buildfile.m` must be in the project root directory. 
 
