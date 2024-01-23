@@ -15,7 +15,7 @@ async function run() {
 
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
-        AdditionalBuildOptions: core.getInput("build-options"),
+        AdditionalBuildOptions: core.getInput("additional-build-options"),
     };
 
     const command = buildtool.generateCommand(options);
