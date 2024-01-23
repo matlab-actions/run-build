@@ -37,6 +37,10 @@ jobs:
 
             function checkTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+            
+            function errorTask(~)
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'erroring\n'); fclose(f);
+            error('Error occured in errorTask');
           _EOF
 
       - name: Run build with default tasks
@@ -93,3 +97,34 @@ jobs:
           ! grep "check" buildlog2.txt
           rm buildlog.txt
           rm buildlog2.txt
+
+      - name: Run build with task skipping
+        uses: ./
+        with:
+          tasks: deploy
+          additional-build-options: -skip test
+  
+      - name: Verify correct tasks appear in buildlog.txt
+        run: |
+          set -e
+          grep "building" buildlog.txt
+          ! grep "testing" buildlog.txt
+          grep "deploying" buildlog.txt
+          ! grep "checking" buildlog.txt
+          rm buildlog.txt
+    
+      - name: Run build with continue on failure
+        uses: ./
+        with:
+          tasks: error deploy
+          additional-build-options: -continueOnFailure
+    
+      - name: Verify correct tasks appear in buildlog.txt
+        run: |
+          set -e
+          grep "erroring" buildlog.txt
+          grep "building" buildlog.txt
+          grep "testing" buildlog.txt
+          grep "deploying" buildlog.txt
+          ! grep "checking" buildlog.txt
+          rm buildlog.txt

@@ -1,4 +1,4 @@
-# Copyright 2022-2023 The MathWorks, Inc.
+# Copyright 2022-2024 The MathWorks, Inc.
 
 name: Run MATLAB Build
 description: >-
@@ -7,6 +7,11 @@ inputs:
   tasks:
     description: >-
       Space-separated list of tasks to run
+    required: false
+    default: ""
+  additional-build-options:
+    description: >-
+      Additional build options for MATLAB build tool
     required: false
     default: ""
   startup-options:
