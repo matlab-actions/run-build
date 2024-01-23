@@ -120,6 +120,7 @@ jobs:
           additional-build-options: -continueOnFailure
     
       - name: Verify correct tasks appear in buildlog.txt
+        if: ${{ always() }}
         run: |
           set -e
           grep "erroring" buildlog.txt
