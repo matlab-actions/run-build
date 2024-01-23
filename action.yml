@@ -9,6 +9,11 @@ inputs:
       Space-separated list of tasks to run
     required: false
     default: ""
+  additional-build-options:
+    description: >-
+      Additional build options for MATLAB build tool
+    required: false
+    default: ""
   startup-options:
     description: >-
       Startup options for MATLAB
