@@ -114,13 +114,14 @@ jobs:
           rm buildlog.txt
     
       - name: Run build with continue on failure
+        continue-on-error: true
         uses: ./
         with:
           tasks: error deploy
           additional-build-options: -continueOnFailure
     
       - name: Verify correct tasks appear in buildlog.txt
-        if: ${{ always() }}
+        # if: ${{ always() }}
         run: |
           set -e
           grep "erroring" buildlog.txt
