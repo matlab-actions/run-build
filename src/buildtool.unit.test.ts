@@ -16,7 +16,6 @@ describe("command generation", () => {
     it("buildtool invocation with tasks specified", () => {
         const options: buildtool.RunBuildOptions = {
             Tasks: "compile test",
-            AdditionalBuildOptions: "",
         };
 
         const actual = buildtool.generateCommand(options);
