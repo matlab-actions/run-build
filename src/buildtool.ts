@@ -2,7 +2,7 @@
 
 export interface RunBuildOptions {
     Tasks?: string;
-    AdditionalBuildOptions?: string;
+    BuildOptions?: string;
 }
 
 export function generateCommand(options: RunBuildOptions): string {
@@ -10,8 +10,8 @@ export function generateCommand(options: RunBuildOptions): string {
     if (options.Tasks) {
         command = command + " " + options.Tasks;
     }
-    if (options.AdditionalBuildOptions) {
-        command = command + " " + options.AdditionalBuildOptions + " -ignoreUnknownOptions";
+    if (options.BuildOptions) {
+        command = command + " " + options.BuildOptions + " -ignoreUnknownOptions";
     }
     
     return command;

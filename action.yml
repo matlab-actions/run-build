@@ -9,9 +9,9 @@ inputs:
       Space-separated list of tasks to run
     required: false
     default: ""
-  additional-build-options:
+  build-options:
     description: >-
-      Additional build options for MATLAB build tool
+      Build options for MATLAB build tool
     required: false
     default: ""
   startup-options:
