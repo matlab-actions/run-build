@@ -102,7 +102,7 @@ jobs:
         uses: ./
         with:
           tasks: deploy
-          additional-build-options: -skip test
+          build-options: -skip test
   
       - name: Verify correct tasks appear in buildlog.txt
         run: |
@@ -118,7 +118,7 @@ jobs:
         uses: ./
         with:
           tasks: error deploy
-          additional-build-options: -continueOnFailure
+          build-options: -continueOnFailure
     
       - name: Verify correct tasks appear in buildlog.txt
         run: |

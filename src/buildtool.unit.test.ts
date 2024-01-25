@@ -6,7 +6,7 @@ describe("command generation", () => {
     it("buildtool invocation with unspecified tasks and build options", () => {
         const options: buildtool.RunBuildOptions = {
             Tasks: "",
-            AdditionalBuildOptions: "",
+            BuildOptions: "",
         };
 
         const actual = buildtool.generateCommand(options);
@@ -25,7 +25,7 @@ describe("command generation", () => {
     it("buildtool invocation with only build options", () => {
         const options: buildtool.RunBuildOptions = {
             Tasks: "",
-            AdditionalBuildOptions: "-continueOnFailure -skip check",
+            BuildOptions: "-continueOnFailure -skip check",
         };
 
         const actual = buildtool.generateCommand(options);
@@ -35,7 +35,7 @@ describe("command generation", () => {
     it("buildtool invocation with specified tasks and build options", () => {
         const options: buildtool.RunBuildOptions = {
             Tasks: "compile test",
-            AdditionalBuildOptions: "-continueOnFailure -skip check",
+            BuildOptions: "-continueOnFailure -skip check",
         };
 
         const actual = buildtool.generateCommand(options);
