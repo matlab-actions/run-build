@@ -25,7 +25,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Run build
-        uses: matlab-actions/run-build@v1
+        uses: matlab-actions/run-build@v2
 ```
 
 ### Run MATLAB Build on GitHub-Hosted Runner
@@ -44,15 +44,15 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Set up MATLAB
-        uses: matlab-actions/setup-matlab@v1
+        uses: matlab-actions/setup-matlab@v2
       - name: Run build
-        uses: matlab-actions/run-build@v1
+        uses: matlab-actions/run-build@v2
         with:
           tasks: mytask
 ```
 
 ## Run MATLAB Build
-When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MATLAB Build** action as `matlab-actions/run-build@v1`. The action accepts optional inputs.
+When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MATLAB Build** action as `matlab-actions/run-build@v2`. The action accepts optional inputs.
 
 Input                     | Description
 ------------------------- | ---------------
