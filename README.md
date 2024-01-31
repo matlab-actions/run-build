@@ -25,7 +25,7 @@ jobs:
 ```
 
 ### Run MATLAB Build on GitHub-Hosted Runner
-Before you run MATLAB code or Simulink models on a [GitHub-hosted runner](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners), first use the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action. The action sets up your specified MATLAB release (R2020b or later) on on a Linux&reg;, Windows&reg;, or macOS&reg; virtual machine. If you do not specify a release, the action sets up the latest release of MATLAB. To use the **Run MATLAB Build** action, you need MATLAB R2022b or a later release.
+Before you run MATLAB code or Simulink models on a [GitHub-hosted runner](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners), first use the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action. The action sets up your specified MATLAB release (R2021a or later) on on a Linux&reg;, Windows&reg;, or macOS&reg; virtual machine. If you do not specify a release, the action sets up the latest release of MATLAB. To use the **Run MATLAB Build** action, you need MATLAB R2022b or a later release.
 
 For example, set up the latest release of MATLAB on a GitHub-hosted runner, and then use the **Run MATLAB Build** action to run a specific task and the tasks on which it depends.
 
