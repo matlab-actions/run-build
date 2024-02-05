@@ -1,4 +1,4 @@
-# Copyright 2022-2023 The MathWorks, Inc.
+# Copyright 2022-2024 The MathWorks, Inc.
 
 name: Run MATLAB Build
 description: >-
@@ -15,5 +15,5 @@ inputs:
     required: false
     default: ""
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
