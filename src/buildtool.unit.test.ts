@@ -29,7 +29,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("buildtool -continueOnFailure -skip check -ignoreUnknownOptions")
+        expect(actual).toBe("buildtool -continueOnFailure -skip check")
     });
 
     it("buildtool invocation with specified tasks and build options", () => {
@@ -39,6 +39,6 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("buildtool compile test -continueOnFailure -skip check -ignoreUnknownOptions")
+        expect(actual).toBe("buildtool compile test -continueOnFailure -skip check")
     });
 });
