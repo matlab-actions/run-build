@@ -11,7 +11,7 @@ export function generateCommand(options: RunBuildOptions): string {
         command = command + " " + options.Tasks;
     }
     if (options.BuildOptions) {
-        command = command + " " + options.BuildOptions + " -ignoreUnknownOptions";
+        command = command + " " + options.BuildOptions;
     }
     
     return command;
