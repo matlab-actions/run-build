@@ -1,4 +1,4 @@
-// Copyright 2022-2023 The MathWorks, Inc.
+// Copyright 2022-2024 The MathWorks, Inc.
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
@@ -15,6 +15,7 @@ async function run() {
 
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
+        BuildOptions: core.getInput("build-options"),
     };
 
     const command = buildtool.generateCommand(options);

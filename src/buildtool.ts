@@ -1,7 +1,8 @@
-// Copyright 2022 The MathWorks, Inc.
+// Copyright 2022-2024 The MathWorks, Inc.
 
 export interface RunBuildOptions {
     Tasks?: string;
+    BuildOptions?: string;
 }
 
 export function generateCommand(options: RunBuildOptions): string {
@@ -9,5 +10,9 @@ export function generateCommand(options: RunBuildOptions): string {
     if (options.Tasks) {
         command = command + " " + options.Tasks;
     }
-    return command
+    if (options.BuildOptions) {
+        command = command + " " + options.BuildOptions;
+    }
+    
+    return command;
 }
