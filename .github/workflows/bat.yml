@@ -101,7 +101,7 @@ jobs:
       - name: Run build with task args
         uses: ./
         with:
-          tasks: test("myTests",OutputDetail="concise")
+          tasks: test("myTests", OutputDetail="concise")
   
       - name: Verify correct tasks appear in buildlog.txt
         run: |
