@@ -29,8 +29,17 @@ jobs:
             function buildTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'building\n'); fclose(f);
 
-            function testTask(~)
-            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'testing\n'); fclose(f);
+            function testTask(~,tests,options)
+            arguments
+              ~
+              tests string = "tests"
+              options.OutputDetail (1,1) string = "terse"
+            end
+            f = fopen('buildlog.txt', 'a+');
+            fprintf(f, 'testing\n');
+            fprintf(f, '%s\n', tests);
+            fprintf(f, '%s\n', options.OutputDetail);
+            fclose(f);
 
             function deployTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'deploying\n'); fclose(f);
@@ -51,6 +60,8 @@ jobs:
           set -e
           grep "building" buildlog.txt
           grep "testing" buildlog.txt
+          grep "tests" buildlog.txt
+          grep "terse" buildlog.txt
           ! grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
@@ -65,6 +76,8 @@ jobs:
           set -e
           grep "building" buildlog.txt
           grep "testing" buildlog.txt
+          grep "tests" buildlog.txt
+          grep "terse" buildlog.txt
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
@@ -79,24 +92,48 @@ jobs:
           set -e
           grep "building" buildlog.txt
           grep "testing" buildlog.txt
+          grep "tests" buildlog.txt
+          grep "terse" buildlog.txt
           grep "deploying" buildlog.txt
           grep "checking" buildlog.txt
+          rm buildlog.txt
+
+      - name: Run build with task args
+        uses: ./
+        with:
+          tasks: test("myTests", OutputDetail="concise")
+  
+      - name: Verify correct tasks appear in buildlog.txt
+        run: |
+          set -e
+          grep "building" buildlog.txt
+          grep "testing" buildlog.txt
+          grep "myTests" buildlog.txt
+          grep "concise" buildlog.txt
+          ! grep "deploying" buildlog.txt
+          ! grep "checking" buildlog.txt
           rm buildlog.txt
 
       - name: Run build with startup options
         uses: ./
         with:
-          startup-options: -logfile buildlog2.txt
+          startup-options: -logfile console.log
 
-      - name: Verify tasks appear in buildlog2.txt
+      - name: Verify tasks appear in buildlog.txt and console.log
         run: |
           set -e
-          grep "build" buildlog2.txt
-          grep "test" buildlog2.txt
-          ! grep "deploy" buildlog2.txt
-          ! grep "check" buildlog2.txt
+          grep "building" buildlog.txt
+          grep "build" console.log
+          grep "testing" buildlog.txt
+          grep "tests" buildlog.txt
+          grep "terse" buildlog.txt
+          grep "test" console.log
+          ! grep "deploying" buildlog.txt
+          ! grep "deploy" console.log
+          ! grep "checking" buildlog.txt
+          ! grep "check" console.log
           rm buildlog.txt
-          rm buildlog2.txt
+          rm console.log
 
       - name: Run build with task skipping
         uses: ./
@@ -109,6 +146,8 @@ jobs:
           set -e
           grep "building" buildlog.txt
           ! grep "testing" buildlog.txt
+          ! grep "tests" buildlog.txt
+          ! grep "terse" buildlog.txt
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
@@ -126,6 +165,8 @@ jobs:
           grep "erroring" buildlog.txt
           grep "building" buildlog.txt
           grep "testing" buildlog.txt
+          grep "tests" buildlog.txt
+          grep "terse" buildlog.txt
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
