@@ -5,7 +5,7 @@ Starting in R2022b, the MATLAB&reg; build tool provides a standard programming i
 The [Run MATLAB Build](#run-matlab-build) action enables you to invoke the MATLAB build tool on a self-hosted or GitHub&reg;-hosted runner. The action uses the topmost MATLAB version on the system path.
 
 ## Examples
-Use the **Run MATLAB Build** action to run a build using the MATLAB build tool. You can use this action to run the tasks specified in a file named  `buildfile.m` in the MATLAB current folder or its parent folders. To use the **Run MATLAB Build** action, you need MATLAB R2022b or a later release.
+Use the **Run MATLAB Build** action to run a build using the MATLAB build tool. You can use this action to run the tasks specified in a file named  `buildfile.m` in the MATLAB current folder (returned by the [`pwd`](https://www.mathworks.com/help/matlab/ref/pwd.html) command) or its parent folders. To use the **Run MATLAB Build** action, you need MATLAB R2022b or a later release.
 
 ### Run MATLAB Build on Self-Hosted Runner
 Use a [self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners) to run the default tasks in your build plan as well as all the tasks on which they depend.
@@ -59,8 +59,8 @@ Input                     | Description
 When you use this action, a file named `buildfile.m` must be in the MATLAB current folder or its parent folders.
 
 ## Notes
+* By default, the MATLAB current folder is the same as the root of your repository. To specify a different current folder, use the `-sd` startup option or the `cd` command in your action.
 * The **Run MATLAB Build** action uses the `-batch` option to invoke the [`buildtool`](https://www.mathworks.com/help/matlab/ref/buildtool.html) command. Preferences do not persist across different MATLAB sessions launched with the `-batch` option. To run code that requires the same preferences, use a single action.
-
 * When you use the **Run MATLAB Build** action, you execute third-party code that is licensed under separate terms.
 
 ## See Also
