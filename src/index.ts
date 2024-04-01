@@ -12,6 +12,7 @@ async function run() {
     const platform = process.platform;
     const architecture = process.arch;
     const workspaceDir = process.cwd();
+    core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'matlab.ciplugins.github.getDefaultPlugins');
 
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
