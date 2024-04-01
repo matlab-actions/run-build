@@ -15,6 +15,7 @@ jobs:
 
       - name: Perform 'setup-matlab'
         uses: matlab-actions/setup-matlab@v2
+        release: latest
 
       - name: Create buildfile.m in project root for tests
         run: |
