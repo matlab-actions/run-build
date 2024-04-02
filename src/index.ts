@@ -13,14 +13,9 @@ async function run() {
     const platform = process.platform;
     const architecture = process.arch;
     const workspaceDir = process.cwd();
-    const pluginResources = '../plugins/+matlab/+ciplugins/+github';
-    const pluginDir = workspaceDir + '/.matlab/plugins/+matlab/+ciplugins/+github';
 
+    // Export env varible to inject the buildtool plugin
     core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'matlab.ciplugins.github.getDefaultPlugins');
-    await io.mkdirP(pluginDir);
-
-    const opt = { recursive: true, force: false }
-    await io.cp(pluginResources, pluginDir, opt);
 
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
@@ -40,7 +35,9 @@ async function run() {
         await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
     });
 
+    // Cleanup post run
     await io.rmRF(workspaceDir + '/.matlab');
+
 }
 
 run().catch((e) => {
