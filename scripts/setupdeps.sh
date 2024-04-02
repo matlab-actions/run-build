@@ -11,6 +11,8 @@ PLUGINDIR="$(pwd)/.matlab/plugins"
 mkdir -p $PLUGINDIR
 cp -R ./plugins $$PLUGINDIR
 echo "$(pwd)"
+cd $PLUGINDIR/plugins/+matlab/+ciplugins/+github
+ls -ltra
 
 # Download and extract in a temporary directory
 WORKINGDIR=$(mktemp -d -t rmc_build.XXXXXX)
