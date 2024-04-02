@@ -7,11 +7,11 @@ SUPPORTED_OS=('win64' 'maci64' 'maca64' 'glnxa64')
 DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
-PLUGINDIR="$(pwd)/.matlab/plugins"
+PLUGINDIR="$(pwd)/.matlab/plugins/+matlab/+ciplugins/+github"
 mkdir -p $PLUGINDIR
-cp -R plugins $$PLUGINDIR
+cp -R plugins/+matlab/+ciplugins/+github/*.m $PLUGINDIR/
 echo "$(pwd)"
-cd $PLUGINDIR/plugins/+matlab/+ciplugins/+github
+cd $PLUGINDIR
 ls -ltra
 
 # Download and extract in a temporary directory
