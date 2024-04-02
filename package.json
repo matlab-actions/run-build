@@ -11,7 +11,7 @@
         "build": "tsc",
         "deps": "bash ./scripts/setupdeps.sh",
         "make-dir": "mkdir -p $(pwd)/dist/plugins" ,
-        "copy": "cp -R plugins $(pwd)/dist/plugins",
+        "copy": "cp -R ./plugins $(pwd)/dist/plugins",
         "package": "ncc build --minify",
         "test": "jest",
         "all": "npm test && npm run build && npm run package",
