@@ -177,7 +177,7 @@ jobs:
           tasks: deploy check
           startup-options: -logfile console.log
 
-      - name: Verify grouping workflow is added tasks appear in console.log
+      - name: Verify grouping workflow is added for tasks appear in console.log
         run: |
           set -e
           grep "::group::deploy" console.log
