@@ -13,7 +13,11 @@ async function run() {
     const platform = process.platform;
     const architecture = process.arch;
     const workspaceDir = process.cwd();
+    const pluginResources = "./plugins/+matlab/+ciplugins/+github"
     core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'matlab.ciplugins.github.getDefaultPlugins');
+    const pluginDir = await io.mkdirP(workspceDir + '/.matlab/plugins/+matlab/+ciplugins/+github');
+    const options = { recursive: true, force: false }
+    await io.cp(pluginResources, pluginDir, options);
 
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
@@ -33,7 +37,7 @@ async function run() {
         await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
     });
 
-    await io.rmRF(workspaceDir'/.matlab');
+    await io.rmRF(workspaceDir + '/.matlab');
 }
 
 run().catch((e) => {

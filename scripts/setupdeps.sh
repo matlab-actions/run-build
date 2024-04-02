@@ -8,9 +8,9 @@ DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
 # Create plugins directory for copying buildtool plugins
-PLUGINDIR="$(pwd)/.matlab/plugins/+matlab/+ciplugins/+github"
-mkdir -p $PLUGINDIR
-cp -R plugins/+matlab/+ciplugins/+github/*.m $PLUGINDIR/
+# PLUGINDIR="$(pwd)/.matlab/plugins/+matlab/+ciplugins/+github"
+# mkdir -p $PLUGINDIR
+# cp -R plugins/+matlab/+ciplugins/+github/*.m $PLUGINDIR/
 
 # Download and extract in a temporary directory
 WORKINGDIR=$(mktemp -d -t rmc_build.XXXXXX)
