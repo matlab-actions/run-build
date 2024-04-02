@@ -19,7 +19,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath(genpath('./dist/plugins'));buildtool")
+        expect(actual).toBe("addpath(genpath('./dist/plugins'));buildtool compile test")
     });
 
     it("buildtool invocation with only build options", () => {
