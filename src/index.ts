@@ -14,7 +14,7 @@ async function run() {
     const architecture = process.arch;
     const workspaceDir = process.cwd();
 
-    // Export env varible to inject the buildtool plugin
+    // Export env variable to inject the buildtool plugin
     core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'matlab.ciplugins.github.getDefaultPlugins');
 
     const options: buildtool.RunBuildOptions = {
@@ -35,7 +35,7 @@ async function run() {
         await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
     });
 
-    // Cleanup post run
+    // Cleanup post run for self hosted runners
     await io.rmRF(workspaceDir + '/.matlab');
 
 }
