@@ -13,7 +13,7 @@ async function run() {
     const platform = process.platform;
     const architecture = process.arch;
     const workspaceDir = process.cwd();
-    const pluginResources = "./plugins/+matlab/+ciplugins/+github"
+    const pluginResources = "./plugins/+matlab/+ciplugins/+github";
     core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'matlab.ciplugins.github.getDefaultPlugins');
     const pluginDir = await io.mkdirP(workspaceDir + '/.matlab/plugins/+matlab/+ciplugins/+github');
     const opt = { recursive: true, force: false }
