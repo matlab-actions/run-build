@@ -10,7 +10,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));buildtool")
+        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));\n buildtool")
     });
 
     it("buildtool invocation with tasks specified", () => {
@@ -19,7 +19,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));buildtool compile test")
+        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));\n buildtool compile test")
     });
 
     it("buildtool invocation with only build options", () => {
@@ -29,7 +29,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));buildtool -continueOnFailure -skip check")
+        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));\n buildtool -continueOnFailure -skip check")
     });
 
     it("buildtool invocation with specified tasks and build options", () => {
@@ -39,6 +39,6 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));buildtool compile test -continueOnFailure -skip check")
+        expect(actual).toBe("addpath(genpath('"+ process.cwd() +"/.matlab/plugins'));\n buildtool compile test -continueOnFailure -skip check")
     });
 });
