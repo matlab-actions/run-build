@@ -7,6 +7,10 @@ SUPPORTED_OS=('win64' 'maci64' 'maca64' 'glnxa64')
 DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
+PLUGINDIR="$(GITHUB_WORKSPACE)/.matlab/plugins"
+mkdir -p $PLUGINDIR
+cp -R ./plugins $$PLUGINDIR
+
 # Download and extract in a temporary directory
 WORKINGDIR=$(mktemp -d -t rmc_build.XXXXXX)
 cd $WORKINGDIR
