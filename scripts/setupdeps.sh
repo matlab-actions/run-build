@@ -9,7 +9,7 @@ mkdir -p $DISTDIR
 
 PLUGINDIR="$(pwd)/.matlab/plugins"
 mkdir -p $PLUGINDIR
-cp -R ./plugins $$PLUGINDIR
+cp -R plugins $$PLUGINDIR
 echo "$(pwd)"
 cd $PLUGINDIR/plugins/+matlab/+ciplugins/+github
 ls -ltra
