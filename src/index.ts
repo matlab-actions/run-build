@@ -2,6 +2,7 @@
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
+import * as io from "@actions/io";
 import { matlab } from "run-matlab-command-action";
 import * as buildtool from "./buildtool";
 
@@ -31,6 +32,8 @@ async function run() {
     await core.group("Run command", async () => {
         await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
     });
+
+    await io.rmRF(workspaceDir'/.matlab');
 }
 
 run().catch((e) => {
