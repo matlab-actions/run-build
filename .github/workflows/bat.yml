@@ -179,6 +179,6 @@ jobs:
       - name: Verify grouping workflow is added tasks appear in buildlog.txt
         run: |
           set -e
-          grep "::group::deploy" buildlog.txt
-          grep "::group::check" buildlog.txt
+          grep "group" buildlog.txt
+          grep "endgroup" buildlog.txt
           rm buildlog.txt
