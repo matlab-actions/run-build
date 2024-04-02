@@ -180,6 +180,6 @@ jobs:
       - name: Verify grouping workflow is added tasks appear in console.log
         run: |
           set -e
-          grep "group" console.log
-          grep "endgroup" console.log
+          grep "::group::deploy" console.log
+          grep "::group::check" console.log
           rm console.log
