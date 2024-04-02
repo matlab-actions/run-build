@@ -7,7 +7,7 @@ SUPPORTED_OS=('win64' 'maci64' 'maca64' 'glnxa64')
 DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
-PLUGINDIR="$(GITHUB_WORKSPACE)/.matlab/plugins"
+PLUGINDIR="$(pwd)/.matlab/plugins"
 mkdir -p $PLUGINDIR
 cp -R ./plugins $$PLUGINDIR
 
