@@ -175,10 +175,11 @@ jobs:
         uses: ./
         with:
           tasks: deploy check
+          startup-options: -logfile console.log
 
-      - name: Verify grouping workflow is added tasks appear in buildlog.txt
+      - name: Verify grouping workflow is added tasks appear in console.log
         run: |
           set -e
-          grep "group" buildlog.txt
-          grep "endgroup" buildlog.txt
-          rm buildlog.txt
+          grep "group" console.log
+          grep "endgroup" console.log
+          rm console.log
