@@ -170,3 +170,15 @@ jobs:
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
+
+      - name: Run build with multiple specified tasks
+        uses: ./
+        with:
+          tasks: deploy check
+
+      - name: Verify grouping workflow is added tasks appear in buildlog.txt
+        run: |
+          set -e
+          grep "::group::deploy" buildlog.txt
+          grep "::group::check" buildlog.txt
+          rm buildlog.txt
