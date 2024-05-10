@@ -14,6 +14,11 @@ cd $WORKINGDIR
 wget -O  "$WORKINGDIR/license.txt" "$RMC_BASE_URL/license.txt"
 wget -O  "$WORKINGDIR/thirdpartylicenses.txt" "$RMC_BASE_URL/thirdpartylicenses.txt"
 
+# Copy build plugins under $PLUGINDIR under temp directory
+PLUGINDIR = "$WORKINGDIR/plugins/+matlab/+ciplugins/+github"
+mkdir -p $PLUGINDIR
+cp -R plugins/+matlab/+ciplugins/+github/*.m $PLUGINDIR/
+
 for os in ${SUPPORTED_OS[@]}
 do
     if [[ $os == 'win64' ]] ; then
@@ -26,4 +31,6 @@ do
 done
 
 mv -f ./* "$DISTDIR/"
+export PLUGINDIR="$DISTDIR/plugins"
+source .bashrc
 rm -rf $WORKINGDIR

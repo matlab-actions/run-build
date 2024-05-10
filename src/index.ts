@@ -13,23 +13,23 @@ async function run() {
     const architecture = process.arch;
     const workspaceDir = process.cwd();
 
+    // Export env variable to inject the buildtool plugin
+    core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'matlab.ciplugins.github.getDefaultPlugins');
+
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
         BuildOptions: core.getInput("build-options"),
     };
 
+    core.info("Running MATLAB Build");
     const command = buildtool.generateCommand(options);
     const startupOptions = core.getInput("startup-options").split(" ");
 
-    const helperScript = await core.group("Generate script", async () => {
-        const helperScript = await matlab.generateScript(workspaceDir, command);
-        core.info("Successfully generated script");
-        return helperScript;
-    });
+    const helperScript = await matlab.generateScript(workspaceDir, command);
 
-    await core.group("Run command", async () => {
-        await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
-    });
+    // Call run command to run helper script
+    await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
+
 }
 
 run().catch((e) => {
