@@ -171,8 +171,8 @@ jobs:
           ! grep "checking" buildlog.txt
           rm buildlog.txt
 
-      - name: Run build with multiple specified tasks
-        uses: ./
+      - name: Run build with multiple specified taskss
+        uses: ./ | grep "Running MATLAB Build"
         with:
           tasks: deploy
           build-options: -continueOnFailure
