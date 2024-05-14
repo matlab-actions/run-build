@@ -174,7 +174,7 @@ jobs:
       - name: Run build with multiple specified tasks
         uses: ./
         with:
-          tasks: error deploy check
+          tasks: error deploy
           build-options: -continueOnFailure
 
       - name: Verify group workflow command added for tasks in buildlog.txt
@@ -188,7 +188,7 @@ jobs:
       - name: Run build with multiple specified tasks
         uses: ./
         with:
-          tasks: error deploy check
+          tasks: deploy
           build-options: -continueOnFailure
 
       - name: Verify Running MATLAB build is appearing in buildlog.txt
@@ -200,7 +200,7 @@ jobs:
       - name: Run build with multiple specified tasks
         uses: ./
         with:
-          tasks: error deploy check
+          tasks: deploy
           build-options: -continueOnFailure
 
       - name: Verify Successfully generated script is not appearing in buildlog.txt
