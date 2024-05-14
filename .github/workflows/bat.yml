@@ -180,9 +180,7 @@ jobs:
       - name: Verify Running MATLAB build is appearing in buildlog.txt
         run: |
           set -e
-          gh run view context.payload.workflow_run.id --log | grep "Running MATLAB Build" buildlog.txt
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          grep "Running MATLAB Build"
 
       - name: Run build with multiple specified tasks
         uses: ./
@@ -193,5 +191,4 @@ jobs:
       - name: Verify Successfully generated script is not appearing in buildlog.txt
         run: |
           set -e
-          ! grep "Successfully generated script" buildlog.txt
-          rm buildlog.txt
+          ! grep "Successfully generated script"
