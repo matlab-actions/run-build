@@ -171,27 +171,3 @@ jobs:
           ! grep "checking" buildlog.txt
           rm buildlog.txt
 
-      - name: Run build with multiple specified taskss
-        uses: ./
-        with:
-          tasks: deploy
-          build-options: -continueOnFailure
-        run: |
-          set -e
-          grep "Running MATLAB Build"
-
-      - name: Verify Running MATLAB build is appearing in buildlog.txt
-        run: |
-          set -e
-          grep "Running MATLAB Build"
-
-      - name: Run build with multiple specified tasks
-        uses: ./
-        with:
-          tasks: deploy
-          build-options: -continueOnFailure
-
-      - name: Verify Successfully generated script is not appearing in buildlog.txt
-        run: |
-          set -e
-          ! grep "Successfully generated script"
