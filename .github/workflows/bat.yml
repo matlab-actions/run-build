@@ -181,7 +181,8 @@ jobs:
         run: |
           set -e
           gh run view context.payload.workflow_run.id --log | grep "Running MATLAB Build" buildlog.txt
-          rm buildlog.txt
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Run build with multiple specified tasks
         uses: ./
