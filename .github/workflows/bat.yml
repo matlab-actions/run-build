@@ -170,3 +170,23 @@ jobs:
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
+
+      - name: Verify group workflow command added for tasks in buildlog.txt
+        run: |
+          set -e
+          grep "erroring" buildlog.txt
+          grep "::error::" buildlog.txt
+          grep "::group::tests - task"
+          rm buildlog.txt
+
+      - name: Verify Running MATLAB build is appearing in buildlog.txt
+        run: |
+          set -e
+          grep "Running MATLAB Build" buildlog.txt
+          rm buildlog.txt
+
+      - name: Verify Successfully generated script is not appearing in buildlog.txt
+        run: |
+          set -e
+          ! grep "Successfully generated script" buildlog.txt
+          rm buildlog.txt
