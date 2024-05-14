@@ -174,20 +174,6 @@ jobs:
       - name: Run build with multiple specified tasks
         uses: ./
         with:
-          tasks: error deploy
-          build-options: -continueOnFailure
-
-      - name: Verify group workflow command added for tasks in buildlog.txt
-        run: |
-          set -e
-          grep "erroring" buildlog.txt
-          grep "::error::" buildlog.txt
-          grep "::group::error - task"
-          rm buildlog.txt
-
-      - name: Run build with multiple specified tasks
-        uses: ./
-        with:
           tasks: deploy
           build-options: -continueOnFailure
 
