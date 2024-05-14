@@ -171,6 +171,11 @@ jobs:
           ! grep "checking" buildlog.txt
           rm buildlog.txt
 
+      - name: Run build with multiple specified tasks
+        uses: ./
+        with:
+          tasks: error deploy check
+
       - name: Verify group workflow command added for tasks in buildlog.txt
         run: |
           set -e
@@ -179,11 +184,21 @@ jobs:
           grep "::group::tests - task"
           rm buildlog.txt
 
+      - name: Run build with multiple specified tasks
+        uses: ./
+        with:
+          tasks: error deploy check
+
       - name: Verify Running MATLAB build is appearing in buildlog.txt
         run: |
           set -e
           grep "Running MATLAB Build" buildlog.txt
           rm buildlog.txt
+
+      - name: Run build with multiple specified tasks
+        uses: ./
+        with:
+          tasks: error deploy check
 
       - name: Verify Successfully generated script is not appearing in buildlog.txt
         run: |
