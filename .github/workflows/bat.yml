@@ -184,10 +184,17 @@ jobs:
           tasks: deploy
           build-options: -continueOnFailure
 
+      - name: Get Current Job Log URL
+        uses: Tiryoh/gha-jobid-action@v0
+        id: jobs
+        with:
+            github_token: ${{ github.token }}
+            job_name: ${{ github.job }}
+
       - name: Verify if Running MATLAB Build is displayed
         run: |
           set -e
-          gh run view ${{ github.job }} --log | grep "Running MATLAB Build"
+          gh run view ${{ steps.jobs.outputs.html_url }} --log | grep "Running MATLAB Build"
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
