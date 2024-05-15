@@ -171,11 +171,8 @@ jobs:
           ! grep "checking" buildlog.txt
           rm buildlog.txt
 
-      - name: Verify workflow commands appear in buildlog.log
+      - name: Verify environment variable is setup for MATLAB plugin override
         run: |
-          set -e
-          matlab -batch "buildtool deploy" -logfile buildlog.log
-          grep "::group::" buildlog.log
-          grep "Running MATLAB Build" buildlog.log
-          rm buildlog.log
+          set -e | grep "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE"
+          set -e | grep "matlab.ciplugins.github.getDefaultPlugins"
 
