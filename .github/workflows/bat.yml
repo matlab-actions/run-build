@@ -177,11 +177,13 @@ jobs:
           set | grep "matlab.ciplugins.github.getDefaultPlugins"
           
 
-      - name: Verify if Running MATLAB Build is displayed
+      - name: Verify specific task is run
         uses: ./
         with:
         tasks: deploy
         build-options: -continueOnFailure
+
+      - name: Verify if Running MATLAB Build is displayed
         run: |
           set -e
           gh run view ${{ github.run_id }} --log | grep "Running MATLAB Build"
