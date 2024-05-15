@@ -171,3 +171,11 @@ jobs:
           ! grep "checking" buildlog.txt
           rm buildlog.txt
 
+      - name: Verify workflow commands appear in buildlog.log
+        run: |
+          set -e
+          matlab -batch "buildtool deploy" -logfile buildlog.log
+          grep "::group::" buildlog.log
+          grep "Running MATLAB Build" buildlog.log
+          rm buildlog.log
+
