@@ -55,7 +55,7 @@ To use a MATLAB batch licensing token:
 1. Set the token as a secret. For more information about secrets, see [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions).
 2. Map the secret to an environment variable named `MLM_LICENSE_TOKEN` in your workflow. 
 
-For example, use the latest release of MATLAB on a GitHub-hosted runner to run a MATLAB build in your private project. To install the latest release of MATLAB on the runner, specify the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow. To run the MATLAB build, specify the **Run MATLAB Build** action. In this example, `MyToken` is the name of the secret that holds the batch licensing token.
+For example, use the latest release of MATLAB on a GitHub-hosted runner to run a MATLAB build in your private project. To set up the latest release of MATLAB on the runner, specify the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow. To run the MATLAB build, specify the **Run MATLAB Build** action. In this example, `MyToken` is the name of the secret that holds the batch licensing token.
 
 ```YAML
 name: Use MATLAB Batch Licensing Token
@@ -80,12 +80,12 @@ When you define your workflow in the `.github/workflows` directory of your repos
 
 Input                     | Description
 ------------------------- | ---------------
-`tasks`                   | <p>(Optional) Tasks to run, specified as a list of task names separated by spaces. If a task accepts arguments, enclose them in parentheses. If you do not specify `tasks`, the action runs the default tasks in your build file as well as all the tasks on which they depend. By default, the action looks for a build file named `buildfile.m` in the root of your repository.</p><p>MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the action to fail.</p><p>**Example:** `tasks: test`<br/>**Example:** `tasks: compile test`<br/>**Example:** `tasks: check test("myFolder",OutputDetail="concise") archive("source.zip")`</p>
+`tasks`                   | <p>(Optional) MATLAB build tasks to run, specified as a list of task names separated by spaces. If a task accepts arguments, enclose them in parentheses. If you do not specify `tasks`, the action runs the default tasks in your build file as well as all the tasks on which they depend. By default, the action looks for a build file named `buildfile.m` in the root of your repository.</p><p>MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the action to fail.</p><p>**Example:** `tasks: test`<br/>**Example:** `tasks: compile test`<br/>**Example:** `tasks: check test("myFolder",OutputDetail="concise") archive("source.zip")`</p>
 `build-options`           | <p>(Optional) MATLAB build options, specified as a list of options separated by spaces. The action supports the same [options](https://www.mathworks.com/help/matlab/ref/buildtool.html#mw_50c0f35e-93df-4579-963d-f59f2fba1dba) that you can pass to the `buildtool` command.</p><p>**Example:** `build-options: -continueOnFailure`<br/>**Example:** `build-options: -continueOnFailure -skip test`</p>
 `startup-options`         | <p>(Optional) MATLAB startup options, specified as a list of options separated by spaces. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).</p><p>Using this input to specify the `-batch` or `-r` option is not supported.</p><p>**Example:** `startup-options: -nojvm`<br/>**Example:** `startup-options: -nojvm -logfile output.log`</p>
 
 ## Notes
-* By default, when you use the **Run MATLAB Build** action, the root of your repository serves as the MATLAB startup folder. To run your MATLAB build using a different folder, include the `-sd` startup option in the action.
+* By default, when you use the **Run MATLAB Build** action, the root of your repository serves as the MATLAB startup folder. To run your MATLAB build using a different folder, specify the `-sd` startup option in the action.
 * The **Run MATLAB Build** action uses the `-batch` option to invoke the [`buildtool`](https://www.mathworks.com/help/matlab/ref/buildtool.html) command. Preferences do not persist across different MATLAB sessions launched with the `-batch` option. To run code that requires the same preferences, use a single action.
 * When you use the **Run MATLAB Build** action, you execute third-party code that is licensed under separate terms.
 
@@ -96,4 +96,4 @@ Input                     | Description
 - [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
 
 ## Contact Us
-If you have any questions or suggestions, please contact MathWorks at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
+If you have any questions or suggestions, contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
