@@ -2,18 +2,6 @@ name: Build and Test
 on: [push]
 
 jobs:
-  get-job-id:
-    runs-on: ubuntu-latest
-    name: 'BAT-JOB' # change SET-A-NEW-NAME
-    steps:
-      - name: set id
-        id: set-job-id
-        uses: ayachensiyuan/get-action-job-id@v1.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          job-name: 'BAT-JOB' # must be the same as 'get-job-id.name'
-
   bat:
     name: Build and Test
     runs-on: ubuntu-latest
@@ -199,7 +187,7 @@ jobs:
       - name: Verify if Running MATLAB Build is displayed
         run: |
           set -e
-          gh run view ${{ steps.set-job-id.outputs.jobId }} --log | grep "Running MATLAB Build"
+          gh run view ${{ github.job }} --log | grep "Running MATLAB Build"
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
