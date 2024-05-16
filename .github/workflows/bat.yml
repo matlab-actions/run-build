@@ -170,6 +170,18 @@ jobs:
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
+
+      - name: Run build with startup options
+        uses: ./
+        with:
+          tasks: deploy
+          startup-options: -logfile console.log
+
+      - name: Verify workflow command is added
+        run: |
+          grep "[group]build - deploy" console.log
+          rm console.log
+            
           
 
 
