@@ -170,23 +170,6 @@ jobs:
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
-
-      - name: Verify grep
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          OWNER=${{ github.repository_owner }}
-          REPO=${{ github.repository }}
-          RUN_ID=${{ github.run_id }}
-          PATTERN="Error Message"
-          TOKEN=$GITHUB_TOKEN
-          curl -H "Authorization: token $TOKEN" \
-               -H "Accept: application/vnd.github.v3+json" \
-               "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$RUN_ID/logs" \
-               -L -o logs.zip
-          gzip logs.zip
-          tar -xvf logs.zip.gz
-          ls
           
 
 
