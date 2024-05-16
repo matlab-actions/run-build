@@ -174,12 +174,14 @@ jobs:
       - name: Run build with startup options
         uses: ./
         with:
-          tasks: deploy
+          tasks: error deploy
+          build-options: -continueOnFailure
           startup-options: -logfile console.log
 
       - name: Verify workflow command is added
         run: |
           grep "deploy - task" console.log
+          grep "::error::" console.log
           rm console.log
             
           
