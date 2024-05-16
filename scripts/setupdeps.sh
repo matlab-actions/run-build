@@ -9,6 +9,7 @@ mkdir -p $DISTDIR
 
 # Create plugin DIR and copy plugin code
 PLUGINDIR="$(pwd)/dist/plugins"
+mkdir -p $PLUGINDIR
 cp -R plugins/+ciplugins/+github/*.m $PLUGINDIR/
 
 # Download and extract in a temporary directory
