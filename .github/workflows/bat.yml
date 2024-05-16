@@ -175,7 +175,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs"
+          JOB_NAME="example"
+          URL="https://api.github.com/repos/run-build/actions/runs/${{ github.run_id }}/jobs"
           AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
           ACCEPT_HEADER="Accept: application/vnd.github.v3+json"
           # Fetch job details and parse the JOB_ID
