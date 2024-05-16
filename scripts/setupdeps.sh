@@ -7,7 +7,7 @@ SUPPORTED_OS=('win64' 'maci64' 'maca64' 'glnxa64')
 DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
-# Create plugin DIR and copy plugin code
+# Create plugin directory and copy plugin code
 PLUGINDIR="$(pwd)/dist/plugins/+ciplugins/+github"
 mkdir -p $PLUGINDIR
 cp -R plugins/+ciplugins/+github/*.m $PLUGINDIR/
