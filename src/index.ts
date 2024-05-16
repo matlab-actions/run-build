@@ -32,7 +32,7 @@ async function run() {
     const startupOptions = core.getInput("startup-options").split(" ");
 
     const helperScript = await matlab.generateScript(workspaceDir, command);
-    await matlab.runCommand(helperScript, platform, architecture, exec.exec(opt), startupOptions);
+    await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
 }
 
 run().catch((e) => {
