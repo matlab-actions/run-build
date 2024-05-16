@@ -15,7 +15,7 @@ async function run() {
 
     // Export env variable to inject the buildtool plugin
     exec.ExecOptions = {
-    env: {[key: "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE"]: "ciplugins.github.getDefaultPlugins"}
+    env: [key: "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE"]: "ciplugins.github.getDefaultPlugins"
     };
     //core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'ciplugins.github.getDefaultPlugins');
 
