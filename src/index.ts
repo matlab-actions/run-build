@@ -19,7 +19,7 @@ async function run() {
         MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE: 'ciplugins.github.getDefaultPlugins'
     };
 
-    let options: exec.ExecOptions = {
+   exec.ExecOptions = {
         env: runBuildEnvVars
     };
 
