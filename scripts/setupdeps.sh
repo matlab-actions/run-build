@@ -8,7 +8,7 @@ DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
 # Create plugin DIR and copy plugin code
-PLUGINDIR="$(pwd)/dist/plugins"
+PLUGINDIR="$(pwd)/dist/plugins/+ciplugins/+github"
 mkdir -p $PLUGINDIR
 cp -R plugins/+ciplugins/+github/*.m $PLUGINDIR/
 
