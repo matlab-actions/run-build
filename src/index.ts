@@ -19,7 +19,7 @@ async function run() {
         MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE: 'ciplugins.github.getDefaultPlugins'
     };
 
-   exec.ExecOptions = {
+    let opt: exec.ExecOptions = {
         env: runBuildEnvVars
     };
 
@@ -32,7 +32,7 @@ async function run() {
     const startupOptions = core.getInput("startup-options").split(" ");
 
     const helperScript = await matlab.generateScript(workspaceDir, command);
-    await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
+    await matlab.runCommand(helperScript, platform, architecture, exec.exec(opt), startupOptions);
 }
 
 run().catch((e) => {
