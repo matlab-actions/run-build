@@ -175,14 +175,14 @@ jobs:
         continue-on-error: true
         uses: ./
         with:
-          tasks: error deploy
+          tasks: deploy error
           build-options: -continueOnFailure
           startup-options: -logfile console.log
 
       - name: Verify workflow command is added
         run: |
           grep "deploy - task" console.log
-          grep "[error]error - task" console.log
+          grep "::error::" console.log
           rm console.log
             
           
