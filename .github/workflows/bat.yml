@@ -184,8 +184,7 @@ jobs:
                -H "Accept: application/vnd.github.v3+json" \
                "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$RUN_ID/logs" \
                -L -o logs.zip
-          ls 
-          grep -R "group" 
+          unzip logs.zip
           
 
 
