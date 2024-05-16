@@ -1,4 +1,4 @@
-classdef BuildTaskGroupPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
+classdef WorkflowCommandsPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
 
 %   Copyright 2024 The MathWorks, Inc.
 
