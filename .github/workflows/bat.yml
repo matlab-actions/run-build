@@ -171,3 +171,12 @@ jobs:
           ! grep "checking" buildlog.txt
           rm buildlog.txt
 
+      - name: Verify grep
+        run: |
+          set -e
+          gh run view --job ${{ github.run_id }} --log | grep "##[group]build - deploy"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+
+
