@@ -179,7 +179,7 @@ jobs:
 
       - name: Verify workflow command is added
         run: |
-          grep "[group]build - deploy" console.log
+          grep "[group]deploy - task" console.log
           rm console.log
             
           
