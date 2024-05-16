@@ -14,13 +14,13 @@ async function run() {
     const workspaceDir = process.cwd();
 
     // Export env variable to inject the buildtool plugin
-    let pluginEnvVar = {
+    const pluginEnvVar = {
        ...process.env,
-       MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE: 'ciplugins.github.getDefaultPlugins'
+       'MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE': 'ciplugins.github.getDefaultPlugins',
     };
 
-    let buildEnv: exec.ExecOptions = {
-       env: pluginEnvVar
+    const buildEnv: exec.ExecOptions = {
+       env: pluginEnvVar,
     };
     //core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'ciplugins.github.getDefaultPlugins');
 
