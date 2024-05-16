@@ -172,6 +172,7 @@ jobs:
           rm buildlog.txt
 
       - name: Run build with startup options
+        continue-on-error: true
         uses: ./
         with:
           tasks: error deploy
@@ -181,7 +182,7 @@ jobs:
       - name: Verify workflow command is added
         run: |
           grep "deploy - task" console.log
-          grep "Error: error - task" console.log
+          grep "[error]error - task" console.log
           rm console.log
             
           
