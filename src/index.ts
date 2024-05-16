@@ -14,14 +14,20 @@ async function run() {
     const workspaceDir = process.cwd();
 
     // Export env variable to inject the buildtool plugin
-    core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'matlab.ciplugins.github.getDefaultPlugins');
+    let runBuildEnvVars = {
+        ...process.env,
+        MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE: 'ciplugins.github.getDefaultPlugins'
+    };
+
+    let options: exec.ExecOptions = {
+        env: runBuildEnvVars
+    };
 
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
         BuildOptions: core.getInput("build-options"),
     };
 
-    core.info("Running MATLAB Build");
     const command = buildtool.generateCommand(options);
     const startupOptions = core.getInput("startup-options").split(" ");
 
