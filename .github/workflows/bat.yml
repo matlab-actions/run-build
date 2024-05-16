@@ -175,15 +175,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          JOB_NAME="example"
-          URL="https://api.github.com/repos/run-build/actions/runs/${{ github.run_id }}/jobs"
-          AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
-          ACCEPT_HEADER="Accept: application/vnd.github.v3+json"
-          # Fetch job details and parse the JOB_ID
-          JOB_ID=$(curl -s -H "${AUTH_HEADER}" -H "${ACCEPT_HEADER}" "${URL}" | jq --arg JOB_NAME "$JOB_NAME" '.jobs[] | select(.name==$JOB_NAME) | .id')
-          echo "JOB_ID: $JOB_ID"
+          OWNER=${{ github.repository_owner }}
+          REPO=${{ github.repository }}
+          RUN_ID=${{ github.run_id }}
+          PATTERN="Error Message"
+          TOKEN=$GITHUB_TOKEN
+          curl -H "Authorization: token $TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$RUN_ID/logs" \
+               -L -o logs.zip
+          unzip logs.zip -d ./logs
+          grep -R "group" ./logs
           
-        
 
 
 
