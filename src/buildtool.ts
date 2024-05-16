@@ -7,7 +7,7 @@ export interface RunBuildOptions {
 }
 
 export function generateCommand(options: RunBuildOptions): string {
-    let command: string = "disp('nnn"+__dirname+"')addpath('"+ path.join(__dirname, "plugins") +"');buildtool"
+    let command: string = "disp('nnn"+__dirname+"'),addpath('"+ path.join(__dirname, "plugins") +"');buildtool"
     if (options.Tasks) {
         command = command + " " + options.Tasks;
     }
