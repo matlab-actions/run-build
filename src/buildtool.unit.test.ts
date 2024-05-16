@@ -1,5 +1,6 @@
 // Copyright 2022-2024 The MathWorks, Inc.
 
+import * as path from "path";
 import * as buildtool from "./buildtool";
 
 describe("command generation", () => {
