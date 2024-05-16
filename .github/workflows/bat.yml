@@ -172,11 +172,17 @@ jobs:
           rm buildlog.txt
 
       - name: Verify grep
-        run: |
-          set -e
-          gh run view ${{ github.run_id }} --log | grep "##[group]build - deploy"
         env:
           GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs"
+          AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
+          ACCEPT_HEADER="Accept: application/vnd.github.v3+json"
+          # Fetch job details and parse the JOB_ID
+          JOB_ID=$(curl -s -H "${AUTH_HEADER}" -H "${ACCEPT_HEADER}" "${URL}" | jq --arg JOB_NAME "$JOB_NAME" '.jobs[] | select(.name==$JOB_NAME) | .id')
+          echo "JOB_ID: $JOB_ID"
+          
+        
 
 
 
