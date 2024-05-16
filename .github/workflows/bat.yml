@@ -182,10 +182,5 @@ jobs:
       - name: Verify workflow command is added
         run: |
           grep "::group::deploy - task" console.log
-          grep "::error::" console.log
+          grep "::error::error - task" console.log
           rm console.log
-            
-          
-
-
-
