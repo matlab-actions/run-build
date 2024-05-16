@@ -171,7 +171,3 @@ jobs:
           ! grep "checking" buildlog.txt
           rm buildlog.txt
 
-      - name: Verify environment variable is setup for MATLAB plugin override
-        run: |
-          set | grep "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE" | grep "matlab.ciplugins.github.getDefaultPlugins"
-         

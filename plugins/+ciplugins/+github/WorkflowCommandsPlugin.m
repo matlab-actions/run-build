@@ -5,7 +5,7 @@ classdef BuildTaskGroupPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
     methods (Access=protected)
 
         function runTask(plugin, pluginData)
-           % Add Github worflow command for grouping the tasks
+           % Add Github workflow command for grouping the tasks
            disp("::group::" + pluginData.TaskResults.Name + " - task");
 
            runTask@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
