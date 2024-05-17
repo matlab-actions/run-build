@@ -6,7 +6,7 @@ classdef GitHubLogPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
 
         function runTask(plugin, pluginData)
            % Add Github workflow command for grouping the tasks
-           disp("::group::" + pluginData.TaskResults.Name + " - task");
+           disp("::group::" + pluginData.TaskResults.Name);
 
            runTask@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
 
