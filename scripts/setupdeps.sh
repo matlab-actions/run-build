@@ -8,10 +8,7 @@ DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
 # Create plugin directory and copy plugin code
-PLUGINDIR="$(pwd)/dist/plugins/+ciplugins/+github"
-mkdir -p $PLUGINDIR
-cp -R plugins/+ciplugins/+github/*.m $PLUGINDIR/
-
+cp -R plugins $(pwd)/dist/
 
 # Download and extract in a temporary directory
 WORKINGDIR=$(mktemp -d -t rmc_build.XXXXXX)
