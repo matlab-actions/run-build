@@ -30,7 +30,7 @@ async function run() {
     const execOptions: exec.ExecOptions = {
         env: customEnv,
     };
-    const execOptions = {process.env,env:{}};
+
     await matlab.runCommand(helperScript, platform, architecture, (cmd,args)=>exec.exec(cmd,args,execOptions), startupOptions);
 }
 
