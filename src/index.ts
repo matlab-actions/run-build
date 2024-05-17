@@ -22,7 +22,7 @@ async function run() {
     const startupOptions = core.getInput("startup-options").split(" ");
 
     const helperScript = await matlab.generateScript(workspaceDir, command);
-    const execOptions = {env:{"MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE":"ciplugins.github.getDefaultPlugins"}};
+    const execOptions = {process.env,env:{"MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE":"ciplugins.github.getDefaultPlugins"}};
     await matlab.runCommand(helperScript, platform, architecture, (cmd,args)=>exec.exec(cmd,args,execOptions), startupOptions);
 }
 
