@@ -13,9 +13,6 @@ async function run() {
     const architecture = process.arch;
     const workspaceDir = process.cwd();
 
-    // Export env variable to inject the buildtool plugin
-    core.exportVariable('MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE', 'ciplugins.github.getDefaultPlugins');
-
     const options: buildtool.RunBuildOptions = {
         Tasks: core.getInput("tasks"),
         BuildOptions: core.getInput("build-options"),
@@ -25,7 +22,8 @@ async function run() {
     const startupOptions = core.getInput("startup-options").split(" ");
 
     const helperScript = await matlab.generateScript(workspaceDir, command);
-    await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
+    const execOptions = {env:{"MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE":"ciplugins.github.getDefaultPlugins"}};
+    await matlab.runCommand(helperScript, platform, architecture, (cmd,args)=>exec.exec(cmd,args,execOptions), startupOptions);
 }
 
 run().catch((e) => {
