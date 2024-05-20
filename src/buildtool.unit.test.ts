@@ -4,6 +4,7 @@ import * as path from "path";
 import * as buildtool from "./buildtool";
 
 describe("command generation", () => {
+const command = "addpath('"+ path.join(__dirname, "plugins").replace("'","''") +"');buildtool"
     it("buildtool invocation with unspecified tasks and build options", () => {
         const options: buildtool.RunBuildOptions = {
             Tasks: "",
@@ -11,7 +12,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath('"+ path.join(__dirname, "plugins").replace("'","''") +"');buildtool")
+        expect(actual).toBe(command)
     });
 
     it("buildtool invocation with tasks specified", () => {
@@ -20,7 +21,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath('"+ path.join(__dirname, "plugins").replace("'","''") +"');buildtool compile test")
+        expect(actual).toBe(command + " compile test")
     });
 
     it("buildtool invocation with only build options", () => {
@@ -30,7 +31,7 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath('"+ path.join(__dirname, "plugins").replace("'","''") +"');buildtool -continueOnFailure -skip check")
+        expect(actual).toBe(command + " -continueOnFailure -skip check")
     });
 
     it("buildtool invocation with specified tasks and build options", () => {
@@ -40,6 +41,6 @@ describe("command generation", () => {
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe("addpath('"+ path.join(__dirname, "plugins").replace("'","''") +"');buildtool compile test -continueOnFailure -skip check")
+        expect(actual).toBe(command + " compile test -continueOnFailure -skip check")
     });
 });

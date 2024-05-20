@@ -26,8 +26,14 @@ async function run() {
         ...process.env,
         "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE":"ciplugins.github.getDefaultPlugins",
     }};
-    
-    await matlab.runCommand(helperScript, platform, architecture, (cmd,args)=>exec.exec(cmd,args,execOptions), startupOptions);
+
+    await matlab.runCommand(
+        helperScript,
+        platform,
+        architecture,
+        (cmd,args)=>exec.exec(cmd,args,execOptions),
+        startupOptions
+    );
 }
 
 run().catch((e) => {
