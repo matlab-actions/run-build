@@ -21,15 +21,19 @@ async function run() {
     const command = buildtool.generateCommand(options);
     const startupOptions = core.getInput("startup-options").split(" ");
 
-    const helperScript = await core.group("Generate script", async () => {
-        const helperScript = await matlab.generateScript(workspaceDir, command);
-        core.info("Successfully generated script");
-        return helperScript;
-    });
+    const helperScript = await matlab.generateScript(workspaceDir, command);
+    const execOptions  = { env: {
+        ...process.env,
+        "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE":"ciplugins.github.getDefaultPlugins",
+    }};
 
-    await core.group("Run command", async () => {
-        await matlab.runCommand(helperScript, platform, architecture, exec.exec, startupOptions);
-    });
+    await matlab.runCommand(
+        helperScript,
+        platform,
+        architecture,
+        (cmd,args)=>exec.exec(cmd,args,execOptions),
+        startupOptions
+    );
 }
 
 run().catch((e) => {

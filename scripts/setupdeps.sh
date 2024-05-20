@@ -7,6 +7,9 @@ SUPPORTED_OS=('win64' 'maci64' 'maca64' 'glnxa64')
 DISTDIR="$(pwd)/dist/bin"
 mkdir -p $DISTDIR
 
+# Create plugin directory and copy plugin code
+cp -R plugins $(pwd)/dist/
+
 # Download and extract in a temporary directory
 WORKINGDIR=$(mktemp -d -t rmc_build.XXXXXX)
 cd $WORKINGDIR

@@ -1,4 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
+import * as path from "path";
 
 export interface RunBuildOptions {
     Tasks?: string;
@@ -6,7 +7,8 @@ export interface RunBuildOptions {
 }
 
 export function generateCommand(options: RunBuildOptions): string {
-    let command: string = "buildtool";
+    const pluginsPath = path.join(__dirname,"plugins").replace("'","''");
+    let command: string = "addpath('"+ pluginsPath +"');buildtool"
     if (options.Tasks) {
         command = command + " " + options.Tasks;
     }
