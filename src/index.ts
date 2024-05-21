@@ -35,7 +35,7 @@ async function run() {
         startupOptions
     );
     const runId = process.env.GITHUB_RUN_ID;
-    let myArray: string[] = ["/tmp/buildSummary_" + runId];
+    let myArray: string[] = ["/tmp/buildSummary_" + runId + ".json"];
     await exec.exec("cat",myArray,execOptions)
 }
 
