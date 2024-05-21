@@ -28,14 +28,16 @@ export function addBuildSummaryTable(task: TaskDetails[]): void {
 if (task.length > 0) {
         task.forEach((row) => {
           Object.values(row).forEach((value) => {
-            console.log(value);
+            console.log("MY CONSOLE output" + ${value});
           });
         });
 }
+  let fruits: string[] = ["Apple", "Banana", "Orange", "banana"];
   core.summary
   .addHeading('MATLAB Build Results')
   .addTable([
     [{data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true}, {data: 'Duration (HH:MM:SS)', header: true}],
+    fruits
   ])
   .write()
 }
