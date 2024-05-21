@@ -19,8 +19,13 @@ interface TaskList {
 }
 
 export async function readJsonFile(filePath: string): Promise<TaskList> {
+  try {
     const data = await readFileAsync(filePath, { encoding: 'utf8' });
     return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading the JSON file:', error);
+    throw error;
+  }
 }
 
 export function addBuildSummaryTable(tasks: TaskList): void {
