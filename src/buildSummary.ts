@@ -18,7 +18,7 @@ interface TaskList {
   taskDetails: Task[];
 }
 
-export async function readJsonFile(filePath: string): Promise<TaskList[]> {
+export async function readJsonFile(filePath: string): Promise<TaskList> {
   try {
     const data = await readFileAsync(filePath, { encoding: 'utf8' });
     return JSON.parse(data);
@@ -28,7 +28,7 @@ export async function readJsonFile(filePath: string): Promise<TaskList[]> {
   }
 }
 
-export function addBuildSummaryTable(tasks: TaskList[]): void {
+export function addBuildSummaryTable(tasks: TaskList): void {
 console.log("Task Details:");
 tasks.taskDetails.forEach((task, index) => {
   console.log(`Task ${index + 1}:`);
