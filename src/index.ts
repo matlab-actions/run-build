@@ -36,8 +36,8 @@ async function run() {
         startupOptions
     );
     const runId = process.env.GITHUB_RUN_ID;
-    const data = await buildSummary.readJsonFile("/tmp/buildSummary_" + runId + ".json")
-    buildSummary.addBuildSummaryTable(data)
+    const data = await buildSummary.readJsonFile("/tmp/buildSummary_" + runId + ".json");
+    buildSummary.addBuildSummaryTable(data);
 
 }
 
