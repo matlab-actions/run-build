@@ -28,7 +28,7 @@ export function addBuildSummaryTable(task: TaskDetails[]): void {
 if (task.length > 0) {
         task.forEach((row) => {
           Object.values(row).forEach((value) => {
-            console.log("MY CONSOLE output" + ${value});
+            console.log("MY CONSOLE output");
           });
         });
 }
