@@ -24,19 +24,20 @@ async function readJsonFile(filePath: string): Promise<TaskDetails[]> {
   }
 }
 
-function addBuildSummaryTable(data: TaskDetails[]): void {
+function addBuildSummaryTable(task: TaskDetails[]): void {
   core.summary
   .addHeading('MATLAB Build Results')
   .addTable([
     [{data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true}, {data: 'Duration (HH:MM:SS)', header: true}],
-      if (data.length > 0) {
+      if (task.length > 0) {
       let values: string[] = [];
-        data.forEach((row) => {
+        task.forEach((row) => {
           Object.values(row).forEach((value) => {
-            values.push(${value})
+            values.push(${value});
           });
         });
         values + ","
       }
   ])
+  .write()
 }
