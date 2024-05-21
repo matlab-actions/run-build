@@ -25,7 +25,7 @@ export async function readJsonFile(filePath: string): Promise<TaskDetails[]> {
 }
 
 export function addBuildSummaryTable(task: TaskDetails[]): void {
-console.log(task);
+console.log("Task Length is" + task.length)
 if (task.length > 0) {
         task.forEach((row) => {
           Object.values(row).forEach((value) => {
