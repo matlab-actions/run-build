@@ -28,9 +28,9 @@ export async function readJsonFile(filePath: string): Promise<TaskList[]> {
   }
 }
 
-export function addBuildSummaryTable(task: TaskList[]): void {
+export function addBuildSummaryTable(tasks: TaskList[]): void {
 console.log("Task Details:");
-tasksData.taskDetails.forEach((task, index) => {
+tasks.taskDetails.forEach((task, index) => {
   console.log(`Task ${index + 1}:`);
   console.log(`Name: ${task.name}`);
   console.log(`Description: ${task.description}`);
