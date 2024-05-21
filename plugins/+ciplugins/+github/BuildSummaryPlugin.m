@@ -6,7 +6,7 @@ classdef BuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
 
         function runTaskGraph(plugin, pluginData)
             runTaskGraph@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
-            [fID, msg] = fopen(fullfile(tempdir ,"buildSummary" + getenv("GITHUB_RUN_ID") + ".json"), "w");
+            [fID, msg] = fopen(fullfile(tempdir ,"buildSummary_" + getenv("GITHUB_RUN_ID") + ".json"), "w");
 
             if fID == -1
                 warning("ciplugins:github:BuildSummaryPlugin:UnableToOpenFile","Could not open a file for GitHub build summary table due to: %s", msg);

@@ -34,9 +34,9 @@ async function run() {
         (cmd,args)=>exec.exec(cmd,args,execOptions),
         startupOptions
     );
-
-    let myArray: string[] = ["/tmp"];
-    await exec.exec("ls",myArray,execOptions)
+    const runId = process.env.GITHUB_RUN_ID;
+    let myArray: string[] = ["/tmp/buildSummary_" + runId];
+    await exec.exec("cat",myArray,execOptions)
 }
 
 run().catch((e) => {
