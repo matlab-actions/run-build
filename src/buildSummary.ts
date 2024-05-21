@@ -47,12 +47,15 @@ tasks.taskDetails.forEach((task, index) => {
   console.log('---');
   arrayOfStringArrays.push(taskDetails);
 });
-  let fruits: string[] = ["Apple", "Banana", "Orange", "banana"];
+let resultString = arrayOfStringArrays.map(subArray =>
+  JSON.stringify(subArray)
+).join(",");
+
   core.summary
   .addHeading('MATLAB Build Results')
   .addTable([
     [{data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true}, {data: 'Duration (HH:MM:SS)', header: true}],
-    arrayOfStringArrays
+    resultString
   ])
   .write()
 }
