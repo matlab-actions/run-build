@@ -4,6 +4,7 @@ import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import { matlab } from "run-matlab-command-action";
 import * as buildtool from "./buildtool";
+import * as buildSummary from "./buildSummary";
 
 /**
  * Gather action inputs and then run action.
@@ -35,8 +36,9 @@ async function run() {
         startupOptions
     );
     const runId = process.env.GITHUB_RUN_ID;
-    let myArray: string[] = ["/tmp/buildSummary_" + runId + ".json"];
-    await exec.exec("cat",myArray,execOptions)
+    const data = await buildSummary.readJsonFile("/tmp/buildSummary_" + runId + ".json")
+    buildSummary.addBuildSummaryTable(data)
+
 }
 
 run().catch((e) => {
