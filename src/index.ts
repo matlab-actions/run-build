@@ -35,7 +35,8 @@ async function run() {
         startupOptions
     );
 
-    await exec.exec("ls","/temp",execOptions)
+    let myArray: string[] = ["/temp"];
+    await exec.exec("ls",myArray,execOptions)
 }
 
 run().catch((e) => {
