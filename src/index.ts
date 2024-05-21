@@ -34,6 +34,8 @@ async function run() {
         (cmd,args)=>exec.exec(cmd,args,execOptions),
         startupOptions
     );
+
+    await exec.exec("ls","/temp",execOptions)
 }
 
 run().catch((e) => {
