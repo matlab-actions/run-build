@@ -24,7 +24,7 @@ export async function readJsonFile(filePath: string): Promise<TaskList> {
     return JSON.parse(data);
   } catch (error) {
     console.error('Error reading the JSON file:', error);
-    return [];
+    return null;
   }
 }
 
