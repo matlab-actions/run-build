@@ -60,6 +60,6 @@ arrayOfStringArrays.forEach(subArray => {
 });
   core.summary
   .addHeading('MATLAB Build Results')
-  .addTable([tableDatat],[t])
+  .addTable([tableData],[t])
   .write()
 }
