@@ -39,5 +39,6 @@ async function run() {
 }
 
 run().catch((e) => {
+    buildSummary.processAndDisplayBuildSummary();
     core.setFailed(e);
 });
