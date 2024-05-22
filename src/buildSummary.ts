@@ -53,3 +53,23 @@ export function addBuildSummaryTable(tasks: TaskList): void {
     .addTable(taskSummaryTableRows)
     .write();
 }
+
+async function processAndDisplayBuildSummary() {
+  const runId = process.env.GITHUB_RUN_ID;
+
+  if (!runId) {
+    console.error('GITHUB_RUN_ID environment variable is not set. Unable to locate the build summary file.');
+    return;
+  }
+
+  try {
+    const runnerTemp = process.env.RUNNER_TEMP;
+    console.log("________ "+ runnerTemp);
+    const filePath = `/tmp/buildSummary_${runId}.json`;
+    const data = await readJsonFile(filePath);
+    addBuildSummaryTable(data);
+  } catch (error) {
+    console.error('An error occurred while reading the build summary file or adding the build summary table:', error);
+  }
+}
+

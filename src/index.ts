@@ -35,10 +35,7 @@ async function run() {
         (cmd,args)=>exec.exec(cmd,args,execOptions),
         startupOptions
     );
-    const runId = process.env.GITHUB_RUN_ID;
-    const data = await buildSummary.readJsonFile("/tmp/buildSummary_" + runId + ".json");
-    buildSummary.addBuildSummaryTable(data);
-
+    buildSummary.processAndDisplayBuildSummary();
 }
 
 run().catch((e) => {
