@@ -29,29 +29,27 @@ export async function readJsonFile(filePath: string): Promise<TaskList> {
 }
 
 export function addBuildSummaryTable(tasks: TaskList): void {
-const header: string[] = ['Task Name', 'Status', 'Description', 'Duration (HH:MM:SS)'];
-console.log("Task Details:");
-let arrayOfStringArrays: string[][] = [];
-arrayOfStringArrays.push(header);
-tasks.taskDetails.forEach((task, index) => {
-  let taskDetails: string[] = [];
-  console.log(`Task ${index + 1}:`);
-  taskDetails.push(`${task.name}`);
-  if (`${task.failed}` === 'true') {
-    taskDetails.push('FAILED');
-  } else if (`${task.skipped}` === 'true') {
-    taskDetails.push('SKIPPED');
-  } else {
-    taskDetails.push('PASSED');
-  }
-  taskDetails.push(`${task.description}`)
-  taskDetails.push(`${task.duration}`);
+  const header: string[] = ['Task Name', 'Status', 'Description', 'Duration (HH:MM:SS)'];
+  let taskSummaryTableRows: string[][] = [header];
 
-  arrayOfStringArrays.push(taskDetails);
-});
+  tasks.taskDetails.forEach((task, index) => {
+    let taskDetails: string[] = [];
+    taskDetails.push(task.name);
+    if (task.failed) {
+      taskDetails.push('FAILED');
+    } else if (task.skipped) {
+      taskDetails.push('SKIPPED');
+    } else {
+      taskDetails.push('PASSED');
+    }
+    taskDetails.push(task.description);
+    taskDetails.push(task.duration);
+
+    taskSummaryTableRows.push(taskDetails);
+  });
 
   core.summary
-  .addHeading('MATLAB Build Results')
-  .addTable(arrayOfStringArrays)
-  .write()
+    .addHeading('MATLAB Build Results')
+    .addTable(taskSummaryTableRows)
+    .write();
 }
