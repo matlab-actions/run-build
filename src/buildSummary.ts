@@ -1,5 +1,6 @@
 // Copyright 2024 The MathWorks, Inc.
 import * as core from "@actions/core";
+import { join } from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 
@@ -28,7 +29,7 @@ export async function readJsonFile(filePath: string): Promise<TaskList> {
   }
 }
 
-export function addBuildSummaryTable(tasks: TaskList): void {
+export function getBuildSummaryTable(tasks: TaskList): string[][] {
   const header: string[] = ['Task Name', 'Status', 'Description', 'Duration (HH:MM:SS)'];
   let taskSummaryTableRows: string[][] = [header];
 
@@ -48,10 +49,14 @@ export function addBuildSummaryTable(tasks: TaskList): void {
     taskSummaryTableRows.push(taskDetails);
   });
 
-  core.summary
-    .addHeading('MATLAB Build Results')
-    .addTable(taskSummaryTableRows)
-    .write();
+  return taskSummaryTableRows;
+}
+
+export function writeSummary(taskSummaryTableRows: string[][]) {
+    core.summary
+      .addHeading('MATLAB Build Results')
+      .addTable(taskSummaryTableRows)
+      .write();
 }
 
 export async function processAndDisplayBuildSummary() {
@@ -64,9 +69,10 @@ export async function processAndDisplayBuildSummary() {
 
   try {
     const runnerTemp = process.env.RUNNER_TEMP;
-    const filePath = runnerTemp + `/buildSummary_${runId}.json`;
+    const filePath = join(runnerTemp, `buildSummary_${runId}.json`);
     const data = await readJsonFile(filePath);
-    addBuildSummaryTable(data);
+    const taskSummaryTableRows = getBuildSummaryTable(data);
+    writeSummary(taskSummaryTableRows);
   } catch (error) {
     console.error('An error occurred while reading the build summary file or adding the build summary table:', error);
   }
