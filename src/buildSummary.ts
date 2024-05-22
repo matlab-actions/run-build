@@ -29,7 +29,7 @@ export async function readJsonFile(filePath: string): Promise<TaskList> {
 }
 
 export function addBuildSummaryTable(tasks: TaskList): void {
-const header: string[] = ['Task Name', 'Description', 'status', 'skipped', 'duration'];
+const header: string[] = [{data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true}, {data: 'Duration (HH:MM:SS)', header: true}];
 console.log("Task Details:");
 let arrayOfStringArrays: string[][] = [];
 arrayOfStringArrays.push(header);
