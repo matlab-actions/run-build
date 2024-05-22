@@ -54,7 +54,7 @@ export function addBuildSummaryTable(tasks: TaskList): void {
     .write();
 }
 
-async function processAndDisplayBuildSummary() {
+export async function processAndDisplayBuildSummary() {
   const runId = process.env.GITHUB_RUN_ID;
 
   if (!runId) {
