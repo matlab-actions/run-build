@@ -32,7 +32,7 @@ export function addBuildSummaryTable(tasks: TaskList): void {
 const header: string[] = ['Task Name', 'Description', 'status', 'skipped', 'duration'];
 console.log("Task Details:");
 let arrayOfStringArrays: string[][] = [];
-//arrayOfStringArrays.push(header);
+arrayOfStringArrays.push(header);
 tasks.taskDetails.forEach((task, index) => {
   let taskDetails: string[] = [];
   console.log(`Task ${index + 1}:`);
@@ -49,12 +49,8 @@ tasks.taskDetails.forEach((task, index) => {
   arrayOfStringArrays.push(taskDetails);
 });
 
-  let firstSubArray: string[] = arrayOfStringArrays[0];
-
-
   core.summary
   .addHeading('MATLAB Build Results')
-  .addTable([[{data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true}, {data: 'Duration (HH:MM:SS)', header: true}]])
   .addTable(arrayOfStringArrays)
   .write()
 }
