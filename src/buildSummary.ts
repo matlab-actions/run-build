@@ -47,19 +47,19 @@ tasks.taskDetails.forEach((task, index) => {
   console.log('---');
   arrayOfStringArrays.push(taskDetails);
 });
-const tableData = [
-  {data: 'Task Name', header: true},
-  {data: 'Status', header: true},
-  {data: 'Description', header: true},
-  {data: 'Duration (HH:MM:SS)', header: true},
-  arrayOfStringArrays.forEach(subArray => {
-    t.push(subArray);
-  });
-];
 
+let resultArrayOfStrings: string[] = arrayOfStringArrays.map(subArray =>
+  subArray
+);
 
   core.summary
   .addHeading('MATLAB Build Results')
-  .addTable([])
+  .addTable([ {data: 'Task Name', header: true},
+               {data: 'Status', header: true},
+               {data: 'Description', header: true},
+               {data: 'Duration (HH:MM:SS)', header: true}],
+               resultArrayOfStrings
+
+  ])
   .write()
 }
