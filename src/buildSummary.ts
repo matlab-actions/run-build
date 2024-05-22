@@ -51,15 +51,15 @@ const tableData = [
   {data: 'Task Name', header: true},
   {data: 'Status', header: true},
   {data: 'Description', header: true},
-  {data: 'Duration (HH:MM:SS)', header: true}
+  {data: 'Duration (HH:MM:SS)', header: true},
+  arrayOfStringArrays.forEach(subArray => {
+    t.push(subArray);
+  });
 ];
 
-let t = [];
-arrayOfStringArrays.forEach(subArray => {
-  t.push(subArray);
-});
+
   core.summary
   .addHeading('MATLAB Build Results')
-  .addTable([tableData.concat(t)])
+  .addTable([])
   .write()
 }
