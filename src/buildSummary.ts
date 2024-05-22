@@ -37,9 +37,9 @@ tasks.taskDetails.forEach((task, index) => {
   let taskDetails: string[] = [];
   console.log(`Task ${index + 1}:`);
   taskDetails.push(`${task.name}`);
-  if (`${task.failed}`) {
+  if (`${task.failed}` === 'true') {
     taskDetails.push('FAILED');
-  } else if (`${task.skipped}`) {
+  } else if (`${task.skipped}` === 'true') {
     taskDetails.push('SKIPPED');
   } else {
     taskDetails.push('PASSED');
