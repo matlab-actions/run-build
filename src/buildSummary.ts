@@ -53,12 +53,12 @@ const tableData = [
   {data: 'Description', header: true},
   {data: 'Duration (HH:MM:SS)', header: true}
 ]
+let t = [];
 arrayOfStringArrays.forEach(subArray => {
-  tableData.push(subArray);
+  t.push(subArray);
 });
-console.log(resultString);
   core.summary
   .addHeading('MATLAB Build Results')
-  .addTable([tableData])
+  .addTable([tableData,t])
   .write()
 }
