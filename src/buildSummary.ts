@@ -64,8 +64,7 @@ export async function processAndDisplayBuildSummary() {
 
   try {
     const runnerTemp = process.env.RUNNER_TEMP;
-    console.log("________ "+ runnerTemp);
-    const filePath = `/tmp/buildSummary_${runId}.json`;
+    const filePath = runnerTemp + `/buildSummary_${runId}.json`;
     const data = await readJsonFile(filePath);
     addBuildSummaryTable(data);
   } catch (error) {
