@@ -49,19 +49,10 @@ tasks.taskDetails.forEach((task, index) => {
 });
 
   let firstSubArray: string[] = arrayOfStringArrays[0];
-  arrayOfStringArrays.forEach(subArray => {
 
-
-  });
 
   core.summary
   .addHeading('MATLAB Build Results')
-  .addTable([
-    [{data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true},{data: 'Duration (HH:MM:SS)', header: true}],
-     arrayOfStringArrays.forEach(subArray => {
-        // subArray is a string[] here
-        subArray
-      });
-   ])
+  .addTable(arrayOfStringArrays)
   .write()
 }
