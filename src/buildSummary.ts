@@ -54,7 +54,9 @@ let resultArrayOfStrings: string[] = arrayOfStringArrays.map(subArray =>
 
   core.summary
   .addHeading('MATLAB Build Results')
-  .addTable([ {data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true},{data: 'Duration (HH:MM:SS)', header: true}]
+  .addTable([
+    [{data: 'Task Name', header: true}, {data: 'Status', header: true}, {data: 'Description', header: true},{data: 'Duration (HH:MM:SS)', header: true}],
+
    ])
   .write()
 }
