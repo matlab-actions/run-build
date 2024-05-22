@@ -36,11 +36,11 @@ export function addBuildSummaryTable(tasks: TaskList): void {
     let taskDetails: string[] = [];
     taskDetails.push(task.name);
     if (task.failed) {
-      taskDetails.push('FAILED');
+      taskDetails.push('🔴 FAILED');
     } else if (task.skipped) {
-      taskDetails.push('SKIPPED');
+      taskDetails.push('🔵 SKIPPED');
     } else {
-      taskDetails.push('PASSED');
+      taskDetails.push('🟢 PASSED');
     }
     taskDetails.push(task.description);
     taskDetails.push(task.duration);
