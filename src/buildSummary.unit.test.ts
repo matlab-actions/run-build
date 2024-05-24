@@ -6,7 +6,8 @@ import { readFile } from 'fs';
 
 jest.mock('fs', () => ({
  readFile: jest.fn((path: string, options: { encoding: string; flag?: string }, callback: (err: NodeJS.ErrnoException | null, data: string) => void) => {
-})));
+  }),
+}));
 
 jest.mock('@actions/core', () => ({
   summary: {
