@@ -5,18 +5,6 @@ import * as core from '@actions/core';
 import { readFile } from 'fs';
 import * as fs from 'fs';
 
-jest.mock('fs', () => ({
-  readFile: jest.fn(
-    (
-      path: fs.PathOrFileDescriptor,
-      options: { encoding: fs.BufferEncoding; flag?: string; } | fs.BufferEncoding,
-      callback: (err: NodeJS.ErrnoException | null, data: string) => void
-    ) => {
-
-    }
-  ),
-}));
-
 jest.mock('@actions/core', () => ({
   summary: {
     addHeading: jest.fn().mockReturnThis(),
