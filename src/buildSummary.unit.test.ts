@@ -1,6 +1,7 @@
 // Copyright 2024 The MathWorks, Inc.
 
 import * as buildSummary from './buildSummary';
+import { TaskList } from './buildSummary/TaskList';
 import * as fs from 'fs/promises';
 import * as core from '@actions/core';
 
