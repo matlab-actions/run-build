@@ -26,7 +26,7 @@ describe('readJsonFile', () => {
         { name: 'Test Task', description: 'A test task', failed: false, skipped: false, duration: '00:00:10' },
       ],
     });
-    mockReadFile.mockImplementation((path, options, callback) => {
+    mockReadFile.mockImplementation((path: string, options: { encoding: string; flag?: string } | string, callback: (err: NodeJS.ErrnoException | null, data: string) => void) => {
       callback(null, mockData);
     });
 
@@ -38,7 +38,7 @@ describe('readJsonFile', () => {
   });
 
   it('throws an error if the file cannot be read', async () => {
-    mockReadFile.mockImplementation((path, options, callback) => {
+    mockReadFile.mockImplementation((path: string, options: { encoding: string; flag?: string } | string, callback: (err: NodeJS.ErrnoException | null, data: string) => void) => {
       callback(new Error('File not found'), null);
     });
 
