@@ -3,10 +3,18 @@
 import * as buildSummary from './buildSummary';
 import * as core from '@actions/core';
 import { readFile } from 'fs';
+import * as fs from 'fs';
 
 jest.mock('fs', () => ({
- readFile: jest.fn((path: string, options: { encoding: string; flag?: string }, callback: (err: NodeJS.ErrnoException | null, data: string) => void) => {
-  }),
+  readFile: jest.fn(
+    (
+      path: fs.PathOrFileDescriptor,
+      options: { encoding: fs.BufferEncoding; flag?: string; } | fs.BufferEncoding,
+      callback: (err: NodeJS.ErrnoException | null, data: string) => void
+    ) => {
+
+    }
+  ),
 }));
 
 jest.mock('@actions/core', () => ({
@@ -26,7 +34,7 @@ describe('readJsonFile', () => {
         { name: 'Test Task', description: 'A test task', failed: false, skipped: false, duration: '00:00:10' },
       ],
     });
-    mockReadFile.mockImplementation((path: string, options: { encoding: string; flag?: string } | string, callback: (err: NodeJS.ErrnoException | null, data: string) => void) => {
+    mockReadFile.mockImplementation((path, options, callback) => void) => {
       callback(null, mockData);
     });
 
@@ -38,7 +46,7 @@ describe('readJsonFile', () => {
   });
 
   it('throws an error if the file cannot be read', async () => {
-    mockReadFile.mockImplementation((path: string, options: { encoding: string; flag?: string } | string, callback: (err: NodeJS.ErrnoException | null, data: string) => void) => {
+    mockReadFile.mockImplementation((path, options, callback) => void) => {
       callback(new Error('File not found'), null);
     });
 
