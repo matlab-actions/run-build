@@ -7,7 +7,7 @@ import { promisify } from 'util';
 // Promisify the readFile function to use it with async/await
 const readFileAsync = promisify(readFile);
 
-interface Task {
+export interface Task {
   name: string;
   description: string;
   failed: boolean;
@@ -15,7 +15,7 @@ interface Task {
   duration: string;
 }
 
-interface TaskList {
+export interface TaskList {
   taskDetails: Task[];
 }
 
