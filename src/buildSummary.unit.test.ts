@@ -5,7 +5,7 @@ import * as core from '@actions/core';
 import { readFile } from 'fs';
 
 jest.mock('fs', () => ({
-  readFile: jest.fn(),
+ readFile: jest.fn((path: string, options: { encoding: string; flag?: string }, callback: (err: NodeJS.ErrnoException | null, data: string) => void) => {
 }));
 
 jest.mock('@actions/core', () => ({
@@ -30,7 +30,7 @@ describe('readJsonFile', () => {
     });
 
     const filePath = 'path/to/mockFile.json';
-    const data = await buildSummary.readJsonFile(filePath);
+    const data = await buildSummary.readJsonFile(filePath as string);
 
     expect(data).toEqual(JSON.parse(mockData));
     expect(mockReadFile).toHaveBeenCalledWith(filePath, { encoding: 'utf8' }, expect.any(Function));
@@ -42,7 +42,7 @@ describe('readJsonFile', () => {
     });
 
     const filePath = 'path/to/nonExistentFile.json';
-    await expect(buildSummary.readJsonFile(filePath)).rejects.toThrow('File not found');
+    await expect(buildSummary.readJsonFile(filePath as string)).rejects.toThrow('File not found');
   });
 
   it('generates a summary table correctly', () => {
