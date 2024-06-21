@@ -30,7 +30,7 @@ export async function readJsonFile(filePath: string): Promise<TaskList> {
 }
 
 export function getBuildSummaryTable(tasks: TaskList): string[][] {
-  const header: string[] = ['Task Name', 'Status', 'Description', 'Duration (HH:MM:SS)'];
+  const header: string[] = ['MATLAB Build Task', 'Status', 'Description', 'Duration (HH:MM:SS)'];
   let taskSummaryTableRows: string[][] = [header];
 
   tasks.taskDetails.forEach((task, index) => {
@@ -41,7 +41,7 @@ export function getBuildSummaryTable(tasks: TaskList): string[][] {
     } else if (task.skipped) {
       taskDetails.push('🔵 SKIPPED');
     } else {
-      taskDetails.push('🟢 PASSED');
+      taskDetails.push('🟢 SUCCESS');
     }
     taskDetails.push(task.description);
     taskDetails.push(task.duration);
@@ -54,7 +54,6 @@ export function getBuildSummaryTable(tasks: TaskList): string[][] {
 
 export function writeSummary(taskSummaryTableRows: string[][]) {
     core.summary
-      .addHeading('MATLAB Build Results')
       .addTable(taskSummaryTableRows)
       .write();
 }

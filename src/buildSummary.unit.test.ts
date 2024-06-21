@@ -21,7 +21,7 @@ describe('summaryGeneration', () => {
       };
 
       const expectedTable = [
-        ['Task Name', 'Status', 'Description', 'Duration (HH:MM:SS)'],
+        ['MATLAB Build Task', 'Status', 'Description', 'Duration (HH:MM:SS)'],
         ['Test Task', '🔴 FAILED', 'A test task', '00:00:10'],
       ];
 
@@ -32,14 +32,11 @@ describe('summaryGeneration', () => {
 
   it('writes the summary correctly', () => {
       const mockTableRows = [
-        ['Task Name', 'Status', 'Description', 'Duration (HH:MM:SS)'],
+        ['MATLAB Build Task', 'Status', 'Description', 'Duration (HH:MM:SS)'],
         ['Test Task', '🔴 FAILED', 'A test task', '00:00:10'],
       ];
 
       buildSummary.writeSummary(mockTableRows);
-
-      expect(core.summary.addHeading).toHaveBeenCalledTimes(1);
-      expect(core.summary.addHeading).toHaveBeenCalledWith('MATLAB Build Results');
 
       expect(core.summary.addTable).toHaveBeenCalledTimes(1);
       expect(core.summary.addTable).toHaveBeenCalledWith(mockTableRows);
