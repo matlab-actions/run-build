@@ -60,6 +60,7 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
 
 export async function processAndDisplayBuildSummary() {
   const runId = process.env.GITHUB_RUN_ID;
+  const runnerTemp = process.env.RUNNER_TEMP;
   let filePath: string;
 
   if (!runId) {
@@ -69,7 +70,6 @@ export async function processAndDisplayBuildSummary() {
   }
 
   try {
-    const runnerTemp = process.env.RUNNER_TEMP;
     const data = await readJsonFile(filePath);
     const taskSummaryTableRows = getBuildSummaryTable(data);
     writeSummary(taskSummaryTableRows);
