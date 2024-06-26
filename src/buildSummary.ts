@@ -63,13 +63,14 @@ export async function processAndDisplayBuildSummary() {
   const runnerTemp = process.env.RUNNER_TEMP;
   let filePath: string;
 
-  if (!runId) {
-      filePath = join(runnerTemp as string, `buildSummary_.json`);
-  } else {
-      filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
-  }
-
   try {
+
+    if (!runId) {
+      filePath = join(runnerTemp as string, `buildSummary_.json`);
+    } else {
+      filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
+    }
+
     const data = await readJsonFile(filePath);
     const taskSummaryTableRows = getBuildSummaryTable(data);
     writeSummary(taskSummaryTableRows);
