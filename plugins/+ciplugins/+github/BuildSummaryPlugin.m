@@ -20,8 +20,7 @@ classdef BuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
                     taskDetails(idx).skipped = pluginData.TaskResults(idx).Skipped;
                     taskDetails(idx).duration = string(pluginData.TaskResults(idx).Duration);
                 end
-                a = struct("taskDetails",taskDetails);
-                s = jsonencode(a);
+                s = jsonencode(taskDetails);
                 fprintf(fID, "%s",s);
             end
         end

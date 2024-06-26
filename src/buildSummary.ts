@@ -1,11 +1,7 @@
 // Copyright 2024 The MathWorks, Inc.
 import * as core from "@actions/core";
 import { join } from 'path';
-import { readFile } from 'fs';
-import { promisify } from 'util';
-
-// Promisify the readFile function to use it with async/await
-const readFileAsync = promisify(readFile);
+import { readFileSync } from 'fs';
 
 export interface Task {
   name: string;
@@ -15,25 +11,12 @@ export interface Task {
   duration: string;
 }
 
-export interface TaskList {
-  taskDetails: Task[];
-}
 
-export async function readJsonFile(filePath: string): Promise<TaskList> {
-  try {
-    const data = await readFileAsync(filePath, { encoding: 'utf8' });
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading the buildSummary file:', error);
-    throw error;
-  }
-}
-
-export function getBuildSummaryTable(tasks: TaskList): string[][] {
+export function getBuildSummaryTable(tasks: Task[]): string[][] {
   const header: string[] = ['MATLAB Build Task', 'Status', 'Description', 'Duration (HH:MM:SS)'];
   let taskSummaryTableRows: string[][] = [header];
 
-  tasks.taskDetails.forEach((task, index) => {
+  tasks.forEach((task, index) => {
     let taskDetails: string[] = [];
     taskDetails.push(task.name);
     if (task.failed) {
@@ -58,7 +41,7 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
       .write();
 }
 
-export async function processAndDisplayBuildSummary() {
+export function processAndDisplayBuildSummary() {
   const runId = process.env.GITHUB_RUN_ID;
   const runnerTemp = process.env.RUNNER_TEMP;
   let filePath: string;
@@ -71,7 +54,7 @@ export async function processAndDisplayBuildSummary() {
       filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
     }
 
-    const data = await readJsonFile(filePath);
+    const data =JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
     const taskSummaryTableRows = getBuildSummaryTable(data);
     writeSummary(taskSummaryTableRows);
   } catch (error) {

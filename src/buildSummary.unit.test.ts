@@ -13,11 +13,9 @@ jest.mock('@actions/core', () => ({
 
 describe('summaryGeneration', () => {
   it('generates a summary table correctly', () => {
-      const mockTasks = {
-        taskDetails: [
-          { name: 'Test Task', description: 'A test task', failed: true, skipped: false, duration: '00:00:10' },
-        ],
-      };
+      const mockTasks: buildSummary.Task[] = [
+          { name: 'Test Task', description: 'A test task', failed: true, skipped: false, duration: '00:00:10' }
+        ];
 
       const expectedTable = [
         ['MATLAB Build Task', 'Status', 'Description', 'Duration (HH:MM:SS)'],
