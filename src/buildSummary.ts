@@ -24,7 +24,7 @@ export async function readJsonFile(filePath: string): Promise<TaskList> {
     const data = await readFileAsync(filePath, { encoding: 'utf8' });
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading the JSON file:', error);
+    console.error('Error reading the buildSummary file:', error);
     throw error;
   }
 }
@@ -60,15 +60,16 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
 
 export async function processAndDisplayBuildSummary() {
   const runId = process.env.GITHUB_RUN_ID;
+  let filePath: string;
 
   if (!runId) {
-    console.error('GITHUB_RUN_ID environment variable is not set. Unable to locate the build summary file.');
-    return;
+      filePath = join(runnerTemp as string, `buildSummary_.json`);
+  } else {
+      filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
   }
 
   try {
     const runnerTemp = process.env.RUNNER_TEMP;
-    const filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
     const data = await readJsonFile(filePath);
     const taskSummaryTableRows = getBuildSummaryTable(data);
     writeSummary(taskSummaryTableRows);

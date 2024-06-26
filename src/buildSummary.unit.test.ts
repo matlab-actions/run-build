@@ -6,7 +6,6 @@ import * as core from '@actions/core';
 
 jest.mock('@actions/core', () => ({
   summary: {
-    addHeading: jest.fn().mockReturnThis(),
     addTable: jest.fn().mockReturnThis(),
     write: jest.fn().mockReturnThis(),
   },
