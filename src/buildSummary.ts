@@ -36,9 +36,9 @@ export function getBuildSummaryTable(tasks: Task[]): string[][] {
 }
 
 export function writeSummary(taskSummaryTableRows: string[][]) {
-    core.summary
-      .addTable(taskSummaryTableRows)
-      .write();
+  core.summary
+    .addTable(taskSummaryTableRows)
+    .write();
 }
 
 export function processAndDisplayBuildSummary() {
@@ -46,19 +46,14 @@ export function processAndDisplayBuildSummary() {
   const runnerTemp = process.env.RUNNER_TEMP;
   let filePath: string;
 
-  try {
-
-    if (!runId) {
-      filePath = join(runnerTemp as string, `buildSummary_.json`);
-    } else {
-      filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
-    }
-
-    const data =JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
-    const taskSummaryTableRows = getBuildSummaryTable(data);
-    writeSummary(taskSummaryTableRows);
-  } catch (error) {
-    console.error('An error occurred while reading the build summary file or adding the build summary table:', error);
+  if (!runId) {
+    filePath = join(runnerTemp as string, `buildSummary_.json`);
+  } else {
+    filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
   }
+
+  const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
+  const taskSummaryTableRows = getBuildSummaryTable(data);
+  writeSummary(taskSummaryTableRows);
 }
 

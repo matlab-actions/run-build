@@ -10,35 +10,52 @@ import * as buildSummary from "./buildSummary";
  * Gather action inputs and then run action.
  */
 async function run() {
-    const platform = process.platform;
-    const architecture = process.arch;
-    const workspaceDir = process.cwd();
+    try {
 
-    const options: buildtool.RunBuildOptions = {
-        Tasks: core.getInput("tasks"),
-        BuildOptions: core.getInput("build-options"),
-    };
+        const platform = process.platform;
+        const architecture = process.arch;
+        const workspaceDir = process.cwd();
 
-    const command = buildtool.generateCommand(options);
-    const startupOptions = core.getInput("startup-options").split(" ");
+        const options: buildtool.RunBuildOptions = {
+            Tasks: core.getInput("tasks"),
+            BuildOptions: core.getInput("build-options"),
+        };
 
-    const helperScript = await matlab.generateScript(workspaceDir, command);
-    const execOptions  = { env: {
-        ...process.env,
-        "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE":"ciplugins.github.getDefaultPlugins",
-    }};
+        const command = buildtool.generateCommand(options);
+        const startupOptions = core.getInput("startup-options").split(" ");
 
-    await matlab.runCommand(
-        helperScript,
-        platform,
-        architecture,
-        (cmd,args)=>exec.exec(cmd,args,execOptions),
-        startupOptions
-    );
-    buildSummary.processAndDisplayBuildSummary();
+        const helperScript = await matlab.generateScript(workspaceDir, command);
+        const execOptions = {
+            env: {
+                ...process.env,
+                "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE": "ciplugins.github.getDefaultPlugins",
+            }
+        };
+
+        await matlab.runCommand(
+            helperScript,
+            platform,
+            architecture,
+            (cmd, args) => exec.exec(cmd, args, execOptions),
+            startupOptions
+        );
+
+        buildSummary.processAndDisplayBuildSummary();
+
+    } catch (e) {
+        try {
+            buildSummary.processAndDisplayBuildSummary();
+        } catch (summaryError) {
+            console.error('An error occurred while reading the build summary file or adding the build summary table:', summaryError);
+        }
+        if (e instanceof Error || typeof e === "string") {
+            core.setFailed(e);
+        } else {
+            core.setFailed("An unknown error occurred while runing MATLAB build.");
+        }
+        
+    }
+
 }
 
-run().catch((e) => {
-    buildSummary.processAndDisplayBuildSummary();
-    core.setFailed(e);
-});
+run();
