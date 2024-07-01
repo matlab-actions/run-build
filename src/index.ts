@@ -37,16 +37,16 @@ async function run() {
         architecture,
         (cmd, args) => exec.exec(cmd, args, execOptions),
         startupOptions
-    );
+    ).finally(() => {
+        try {
+            buildSummary.processAndDisplayBuildSummary();
+        } catch (ex) {
+            console.error('An error occurred while reading the build summary file or adding the build summary table:', ex);
+        }
+    });
 
 }
 
 run().catch(e => {
     core.setFailed(e);
-}).finally(() => {
-    try {
-        buildSummary.processAndDisplayBuildSummary();
-    } catch (ex) {
-        console.error('An error occurred while reading the build summary file or adding the build summary table:', ex);
-    }
 });
