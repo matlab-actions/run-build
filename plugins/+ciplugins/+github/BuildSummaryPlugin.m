@@ -9,7 +9,7 @@ classdef BuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
             [fID, msg] = fopen(fullfile(getenv("RUNNER_TEMP") ,"buildSummary_" + getenv("GITHUB_RUN_ID") + ".json"), "w");
 
             if fID == -1
-                warning("ciplugins:github:BuildSummaryPlugin:UnableToOpenFile","Could not open a file for GitHub build summary table due to: %s", msg);
+                warning("ciplugins:github:BuildSummaryPlugin:UnableToOpenFile","Unable to open a file required to create the MATLAB build summary table: %s", msg);
             else
                 closeFile = onCleanup(@()fclose(fID));
                 taskDetails = struct();
