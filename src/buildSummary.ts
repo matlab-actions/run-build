@@ -47,7 +47,7 @@ export function processAndDisplayBuildSummary() {
   let filePath: string;
 
   if (!runId) {
-    filePath = join(runnerTemp as string, `buildSummary_.json`);
+    filePath = join(runnerTemp as string, `buildSummary.json`);
   } else {
     filePath = join(runnerTemp as string, `buildSummary_${runId as string}.json`);
   }
