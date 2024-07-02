@@ -31,7 +31,7 @@ async function run() {
         }
     };
 
-    matlab.runCommand(
+    await matlab.runCommand(
         helperScript,
         platform,
         architecture,
