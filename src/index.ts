@@ -31,18 +31,14 @@ async function run() {
         }
     };
 
-    await matlab.runCommand(
+    matlab.runCommand(
         helperScript,
         platform,
         architecture,
         (cmd, args) => exec.exec(cmd, args, execOptions),
         startupOptions
     ).finally(() => {
-        try {
-            buildSummary.processAndDisplayBuildSummary();
-        } catch (ex) {
-            console.error('An error occurred while reading the build summary file or adding the build summary table:', ex);
-        }
+        buildSummary.processAndDisplayBuildSummary();
     });
 
 }
