@@ -38,7 +38,11 @@ async function run() {
         (cmd, args) => exec.exec(cmd, args, execOptions),
         startupOptions
     ).finally(() => {
-        buildSummary.processAndDisplayBuildSummary();
+        try {
+            buildSummary.processAndDisplayBuildSummary();
+        } catch (e) {
+            console.error('An error occurred while reading the build summary file:', e);
+        }       
     });
 
 }
