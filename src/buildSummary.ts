@@ -36,23 +36,28 @@ export function getBuildSummaryTable(tasks: Task[]): string[][] {
 }
 
 export function writeSummary(taskSummaryTableRows: string[][]) {
-    try{
+    try {
         core.summary
-        .addTable(taskSummaryTableRows)
-        .write();
+            .addTable(taskSummaryTableRows)
+            .write();
     } catch (e) {
         console.error('An error occurred while adding the build results table to the summary:', e);
-    }         
+    }
 }
 
 export function processAndDisplayBuildSummary() {
     const runId = process.env.GITHUB_RUN_ID || '';
     const runnerTemp = process.env.RUNNER_TEMP || '';
 
-    const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
-    const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
-    const taskSummaryTableRows = getBuildSummaryTable(data);
-
+    let taskSummaryTableRows;
+    try {
+        const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
+        const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
+        taskSummaryTableRows = getBuildSummaryTable(data);
+    } catch (e) {
+        console.error('An error occurred while reading the build summary file:', e);
+        return;
+    }
     writeSummary(taskSummaryTableRows);
 }
 
