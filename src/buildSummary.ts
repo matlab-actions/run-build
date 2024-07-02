@@ -36,14 +36,10 @@ export function getBuildSummaryTable(tasks: Task[]): string[][] {
 }
 
 export function writeSummary(taskSummaryTableRows: string[][]) {
-    try {
-        core.summary
-            .addTable(taskSummaryTableRows)
-            .write();
-    } catch (e) {
-        console.error('An error occurred while adding the build results table to the summary:', e);
-    }
 
+    core.summary
+        .addTable(taskSummaryTableRows)
+        .write();
 }
 
 export function processAndDisplayBuildSummary() {
