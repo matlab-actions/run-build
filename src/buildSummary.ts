@@ -16,21 +16,13 @@ export function getBuildSummaryTable(tasks: Task[]): string[][] {
     const header: string[] = ['MATLAB Build Task', 'Status', 'Description', 'Duration (HH:MM:SS)'];
     let taskSummaryTableRows: string[][] = [header];
 
-    tasks.forEach((task, index) => {
-        let taskDetails: string[] = [];
-        taskDetails.push(task.name);
-        if (task.failed) {
-            taskDetails.push('🔴 FAILED');
-        } else if (task.skipped) {
-            taskDetails.push('🔵 SKIPPED');
-        } else {
-            taskDetails.push('🟢 SUCCESS');
-        }
-        taskDetails.push(task.description);
-        taskDetails.push(task.duration);
-
-        taskSummaryTableRows.push(taskDetails);
-    });
+    if(!Array.isArray(tasks)){  
+        taskSummaryTableRows = getTaskSummaryRows(tasks, taskSummaryTableRows);     
+    } else {
+        tasks.forEach((task, index) => {
+            taskSummaryTableRows = getTaskSummaryRows(task, taskSummaryTableRows);      
+        });
+    }
 
     return taskSummaryTableRows;
 }
@@ -61,3 +53,24 @@ export function processAndDisplayBuildSummary() {
     writeSummary(taskSummaryTableRows);
 }
 
+export function addTasks(tasks: Task): string[] {
+    let taskDetails: string[] = [];
+    taskDetails.push(tasks.name);
+    if (tasks.failed) {
+        taskDetails.push('🔴 FAILED');
+    } else if (tasks.skipped) {
+        taskDetails.push('🔵 SKIPPED');
+    } else {
+        taskDetails.push('🟢 SUCCESS');
+    }
+    taskDetails.push(tasks.description);
+    taskDetails.push(tasks.duration);
+    return taskDetails;
+}
+
+export function getTaskSummaryRows(task: Task, taskSummaryTableRows: string[][]): string[][] {
+    let taskDetails: string[] = [];
+    taskDetails = addTasks(task);
+    taskSummaryTableRows.push(taskDetails);
+    return taskSummaryTableRows;
+}
