@@ -53,13 +53,13 @@ export function processAndDisplayBuildSummary() {
         try {
             unlinkSync(filePath);
         } catch (e) {
-            console.error(`An error occurred while trying to delete the file ${filePath}:`, e);
+            console.error(`An error occurred while trying to delete the build summary file ${filePath}:`, e);
         }
     }
     writeSummary(taskSummaryTableRows);
 }
 
-export function addTasks(tasks: Task): string[] {
+export function getTaskDetails(tasks: Task): string[] {
     let taskDetails: string[] = [];
     taskDetails.push(tasks.name);
     if (tasks.failed) {
@@ -76,7 +76,7 @@ export function addTasks(tasks: Task): string[] {
 
 export function getTaskSummaryRows(task: Task, taskSummaryTableRows: string[][]): string[][] {
     let taskDetails: string[] = [];
-    taskDetails = addTasks(task);
+    taskDetails = getTaskDetails(task);
     taskSummaryTableRows.push(taskDetails);
     return taskSummaryTableRows;
 }
