@@ -1,7 +1,7 @@
 // Copyright 2024 The MathWorks, Inc.
 import * as core from "@actions/core";
 import { join } from 'path';
-import { readFileSync, unlinkSync} from 'fs';
+import { readFileSync, unlinkSync, accessSync} from 'fs';
 
 export interface Task {
     name: string;
@@ -43,20 +43,26 @@ export function processAndDisplayBuildSummary() {
 
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
     let taskSummaryTableRows;
-    try {
-        const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
-        taskSummaryTableRows = getBuildSummaryTable(data);
-    } catch (e) {
-        console.error('An error occurred while reading the build summary file:', e);
-        return;
-    } finally {
+    if (checkFileExists(filePath)) {
+
         try {
-            unlinkSync(filePath);
+            const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
+            taskSummaryTableRows = getBuildSummaryTable(data);
         } catch (e) {
-            console.error(`An error occurred while trying to delete the build summary file ${filePath}:`, e);
+            console.error('An error occurred while reading the build summary file:', e);
+            return;
+        } finally {
+            try {
+                unlinkSync(filePath);
+            } catch (e) {
+                console.error(`An error occurred while trying to delete the build summary file ${filePath}:`, e);
+            }
         }
+        writeSummary(taskSummaryTableRows);
+    } else {
+        core.info(`Build summary file ${filePath} does not exist.`);
     }
-    writeSummary(taskSummaryTableRows);
+    
 }
 
 export function getTaskDetails(tasks: Task): string[] {
@@ -79,4 +85,13 @@ export function getTaskSummaryRows(task: Task, taskSummaryTableRows: string[][])
     taskDetails = getTaskDetails(task);
     taskSummaryTableRows.push(taskDetails);
     return taskSummaryTableRows;
+}
+
+function checkFileExists(filePath: string): boolean {
+    try {
+        accessSync(filePath);
+        return true;
+    } catch (err) {
+        return false;
+    }
 }

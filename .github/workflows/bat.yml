@@ -184,3 +184,19 @@ jobs:
           grep "::group::deploy" console.log
           grep "::error::error task failed" console.log
           rm console.log
+
+      - name: Run build with invalid task
+        continue-on-error: true
+        uses: ./
+        with:
+          tasks: badTask
+          build-options: -continueOnFailure
+          startup-options: -logfile console.log
+
+      - name: Verify summary exception for invalid task
+        run: |
+          set -e
+          grep "Build summary not created" console.log
+          ! grep "while reading the build summary file:" console.log
+          ! grep "trying to delete the build summary" console.log
+          rm console.log
