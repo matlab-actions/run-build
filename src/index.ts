@@ -37,10 +37,9 @@ async function run() {
         architecture,
         (cmd, args) => exec.exec(cmd, args, execOptions),
         startupOptions
-    ).finally(() => {
-        buildSummary.processAndDisplayBuildSummary();
-    });
-
+    );
+    buildSummary.processAndDisplayBuildSummary();
+   
 }
 
 run().catch(e => {
