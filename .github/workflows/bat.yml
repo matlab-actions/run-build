@@ -186,6 +186,6 @@ jobs:
           rm console.log
 
        - name: Verify Exception for Invalid task 
-        uses: ./
-        with:
-          tasks: badTask
+         uses: ./
+         with:
+           tasks: badTask
