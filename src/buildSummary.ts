@@ -60,7 +60,7 @@ export function processAndDisplayBuildSummary() {
         }
         writeSummary(taskSummaryTableRows);
     } else {
-        core.info(`Build summary file ${filePath} does not exist.`);
+        core.info(`Build summary data not created.`);
     }
     
 }
