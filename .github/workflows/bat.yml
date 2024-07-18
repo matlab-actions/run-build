@@ -185,7 +185,7 @@ jobs:
           grep "::error::error task failed" console.log
           rm console.log
 
-       - name: Verify Exception for Invalid task 
-         uses: ./
-         with:
-           tasks: badTask
+      - name: Verify Exception for Invalid task 
+        uses: ./
+        with:
+          tasks: badTask
