@@ -11,9 +11,9 @@ classdef GitHubLogPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
            runTask@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
 
            % Add Github workflow command ::error:: if the task is failed
-           if pluginData.TaskResults.Failed
-              disp("::error::" + pluginData.TaskResults.Name + " task failed");
-           end
+           %if pluginData.TaskResults.Failed
+           %   disp("::error::" + pluginData.TaskResults.Name + " task failed");
+           %end
 
            % Complete the group command
            disp("::endgroup::");
