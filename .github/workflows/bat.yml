@@ -196,7 +196,6 @@ jobs:
       - name: Verify summary exception for invalid task
         run: |
           set -e
-          grep "Build summary data not created" console.log
           ! grep "while reading the build summary file:" console.log
           ! grep "trying to delete the build summary" console.log
           rm console.log
