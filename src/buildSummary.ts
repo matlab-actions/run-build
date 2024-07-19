@@ -1,7 +1,7 @@
 // Copyright 2024 The MathWorks, Inc.
 import * as core from "@actions/core";
 import { join } from 'path';
-import { readFileSync, unlinkSync, accessSync} from 'fs';
+import { readFileSync, unlinkSync, existsSync} from 'fs';
 
 export interface Task {
     name: string;
@@ -43,7 +43,7 @@ export function processAndDisplayBuildSummary() {
 
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
     let taskSummaryTableRows;
-    if (checkFileExists(filePath)) {
+    if (existsSync(filePath)) {
 
         try {
             const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
@@ -85,13 +85,4 @@ export function getTaskSummaryRows(task: Task, taskSummaryTableRows: string[][])
     taskDetails = getTaskDetails(task);
     taskSummaryTableRows.push(taskDetails);
     return taskSummaryTableRows;
-}
-
-function checkFileExists(filePath: string): boolean {
-    try {
-        accessSync(filePath);
-        return true;
-    } catch (err) {
-        return false;
-    }
 }
