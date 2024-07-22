@@ -44,7 +44,6 @@ export function processAndDisplayBuildSummary() {
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
     let taskSummaryTableRows;
     if (existsSync(filePath)) {
-
         try {
             const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
             taskSummaryTableRows = getBuildSummaryTable(data);
