@@ -1,7 +1,7 @@
 // Copyright 2024 The MathWorks, Inc.
 import * as core from "@actions/core";
 import { join } from 'path';
-import { readFileSync, unlinkSync} from 'fs';
+import { readFileSync, unlinkSync, existsSync} from 'fs';
 
 export interface Task {
     name: string;
@@ -13,7 +13,7 @@ export interface Task {
 
 
 export function getBuildSummaryTable(tasks: Task[]): string[][] {
-    const header: string[] = ['MATLAB Build Task', 'Status', 'Description', 'Duration (HH:MM:SS)'];
+    const header: string[] = ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'];
     let taskSummaryTableRows: string[][] = [header];
 
     if(!Array.isArray(tasks)){  
@@ -43,31 +43,36 @@ export function processAndDisplayBuildSummary() {
 
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
     let taskSummaryTableRows;
-    try {
-        const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
-        taskSummaryTableRows = getBuildSummaryTable(data);
-    } catch (e) {
-        console.error('An error occurred while reading the build summary file:', e);
-        return;
-    } finally {
+    if (existsSync(filePath)) {
         try {
-            unlinkSync(filePath);
+            const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
+            taskSummaryTableRows = getBuildSummaryTable(data);
         } catch (e) {
-            console.error(`An error occurred while trying to delete the build summary file ${filePath}:`, e);
+            console.error('An error occurred while reading the build summary file:', e);
+            return;
+        } finally {
+            try {
+                unlinkSync(filePath);
+            } catch (e) {
+                console.error(`An error occurred while trying to delete the build summary file ${filePath}:`, e);
+            }
         }
+        writeSummary(taskSummaryTableRows);
+    } else {
+        core.info(`Build summary data not created.`);
     }
-    writeSummary(taskSummaryTableRows);
+    
 }
 
 export function getTaskDetails(tasks: Task): string[] {
     let taskDetails: string[] = [];
     taskDetails.push(tasks.name);
     if (tasks.failed) {
-        taskDetails.push('🔴 FAILED');
+        taskDetails.push('🔴 Failed');
     } else if (tasks.skipped) {
-        taskDetails.push('🔵 SKIPPED');
+        taskDetails.push('🔵 Skipped');
     } else {
-        taskDetails.push('🟢 SUCCESS');
+        taskDetails.push('🟢 Success');
     }
     taskDetails.push(tasks.description);
     taskDetails.push(tasks.duration);
