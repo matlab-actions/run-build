@@ -1,7 +1,7 @@
 {
     "name": "run-matlab-build-action",
     "author": "The MathWorks, Inc.",
-    "version": "2.4.1",
+    "version": "2.3.0",
     "description": "",
     "main": "lib/index.js",
     "scripts": {
@@ -19,7 +19,7 @@
         "lib/"
     ],
     "dependencies": {
-        "@actions/core": "^1.4.0",
+        "@actions/core": "^1.10.1",
         "@actions/exec": "^1.1.0",
         "run-matlab-command-action": "github:matlab-actions/run-command#v2.1.0"
     },
