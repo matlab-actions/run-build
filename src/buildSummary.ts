@@ -30,6 +30,15 @@ export function getBuildSummaryTable(tasks: Task[]): string[][] {
 export function writeSummary(taskSummaryTableRows: string[][]) {
     try {
         core.summary
+            .addRaw(`
+<table>
+    <tr>
+        <th>MATLAB Build Task</th>
+        <th>Status</th>
+        <th>Description</th>
+        <th>Duration (hh:mm:ss)</th>
+    </tr>
+</table>`)
             .addTable(taskSummaryTableRows)
             .write();
     } catch (e) {
