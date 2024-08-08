@@ -33,7 +33,7 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
             .addRaw(`
 <table>
     <tr>
-        <th>MATLAB Build Tasks</th>
+        <th>MATLAB Build Task</th>
         <th>Status</th>
         <th>Description</th>
         <th>Duration (hh:mm:ss)</th>
