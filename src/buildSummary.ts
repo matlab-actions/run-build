@@ -48,7 +48,15 @@ export function processAndDisplayBuildSummary() {
     if (existsSync(filePath)) {
         try {
             const bs = readFileSync(filePath, { encoding: 'utf8' });
-            const data = JSON.parse(bs).map((t: { name: any; failed: { toString: () => any; }; description: any; duration: { toString: () => any; }; }) => [t.name, t.failed.toString(), t.description, t.duration.toString()]);
+            const data = JSON.parse(bs).map((t: { name: any; failed: { toString: () => any; }; skipped: { toString: () => any; }; description: any; duration: { toString: () => any; }; }) => {
+                if (t.failed.toString() === 'true') {
+                    return [t.name, '🔴 Failed', t.description, t.duration.toString()];
+                } else if (t.skipped.toString() === 'true') {
+                    return [t.name, '🔵 Skipped', t.description, t.duration.toString()];
+                } else {
+                    return [t.name, '🟢 Success', t.description, t.duration.toString()];
+                }
+            });
             taskSummaryTableRows = [header, ...data];//getBuildSummaryTable(data);
         } catch (e) {
             console.error('An error occurred while reading the build summary file:', e);
