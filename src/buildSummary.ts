@@ -40,12 +40,12 @@ export function processAndDisplayBuildSummary() {
     const header = [{ data: 'MATLAB Build Task', header: true }, { data: 'Status', header: true }, { data: 'Description', header: true }, { data: 'Duration (hh:mm:ss)', header: true }];
 
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
-    let taskSummaryTableRows;
+    let taskSummaryTable;
     if (existsSync(filePath)) {
         try {
             const buildSummary = readFileSync(filePath, { encoding: 'utf8' });
             const rows = getSummaryRows(buildSummary);
-            taskSummaryTableRows = [header, ...rows];
+            taskSummaryTable = [header, ...rows];
         } catch (e) {
             console.error('An error occurred while reading the build summary file:', e);
             return;
@@ -56,7 +56,7 @@ export function processAndDisplayBuildSummary() {
                 console.error(`An error occurred while trying to delete the build summary file ${filePath}:`, e);
             }
         }
-        writeSummary(taskSummaryTableRows);
+        writeSummary(taskSummaryTable);
     } else {
         core.info(`Build summary data not created.`);
     }
