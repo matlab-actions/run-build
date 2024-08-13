@@ -21,6 +21,19 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
     }
 }
 
+export function getSummaryRows(buildSummary: string): any[] {
+    const rows = JSON.parse(buildSummary).map((t: { name: any; failed: { toString: () => any; }; skipped: { toString: () => any; }; description: any; duration: { toString: () => any; }; }) => {
+        if (t.failed.toString() === 'true') {
+            return [t.name, '🔴 Failed', t.description, t.duration.toString()];
+        } else if (t.skipped.toString() === 'true') {
+            return [t.name, '🔵 Skipped', t.description, t.duration.toString()];
+        } else {
+            return [t.name, '🟢 Success', t.description, t.duration.toString()];
+        }
+    });
+    return rows;
+}
+
 export function processAndDisplayBuildSummary() {
     const runId = process.env.GITHUB_RUN_ID || '';
     const runnerTemp = process.env.RUNNER_TEMP || '';
@@ -31,16 +44,8 @@ export function processAndDisplayBuildSummary() {
     if (existsSync(filePath)) {
         try {
             const buildSummary = readFileSync(filePath, { encoding: 'utf8' });
-            const data = JSON.parse(buildSummary).map((t: { name: any; failed: { toString: () => any; }; skipped: { toString: () => any; }; description: any; duration: { toString: () => any; }; }) => {
-                if (t.failed.toString() === 'true') {
-                    return [t.name, '🔴 Failed', t.description, t.duration.toString()];
-                } else if (t.skipped.toString() === 'true') {
-                    return [t.name, '🔵 Skipped', t.description, t.duration.toString()];
-                } else {
-                    return [t.name, '🟢 Success', t.description, t.duration.toString()];
-                }
-            });
-            taskSummaryTableRows = [header, ...data];
+            const rows = getSummaryRows(buildSummary);
+            taskSummaryTableRows = [header, ...rows];
         } catch (e) {
             console.error('An error occurred while reading the build summary file:', e);
             return;
