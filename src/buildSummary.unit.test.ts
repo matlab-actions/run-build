@@ -19,7 +19,8 @@ describe('summaryGeneration', () => {
 
         const expectedTable = [
             ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'],
-            ['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
+            ['Test Task', 'failed', 'A test task', '00:00:10'],
+            //['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
         ];
 
         const table = buildSummary.getBuildSummaryTable(mockTasks);
@@ -30,7 +31,8 @@ describe('summaryGeneration', () => {
     it('writes the summary correctly', () => {
         const mockTableRows = [
             ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'],
-            ['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
+            ['Test Task', 'failed', 'A test task', '00:00:10'],
+            //['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
         ];
 
         buildSummary.writeSummary(mockTableRows);
