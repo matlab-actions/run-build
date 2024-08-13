@@ -13,8 +13,9 @@ export interface Task {
 
 
 export function getBuildSummaryTable(tasks: Task[]): string[][] {
-    const header: string[] = ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'];
-    let taskSummaryTableRows: string[][] = [header];
+    const header = [{data:'MATLAB Build Task', header: true}, {data: 'Status', header: true}, {data:'Description', header:true}, {data: 'Duration (hh:mm:ss)', header: true }];
+    let taskSummaryTableRows: string[][] = [];
+
 
     if(!Array.isArray(tasks)){  
         taskSummaryTableRows = getTaskSummaryRows(tasks, taskSummaryTableRows);     
@@ -40,13 +41,15 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
 export function processAndDisplayBuildSummary() {
     const runId = process.env.GITHUB_RUN_ID || '';
     const runnerTemp = process.env.RUNNER_TEMP || '';
+    const header = [{data:'MATLAB Build Task', header: true}, {data: 'Status', header: true}, {data:'Description', header:true}, {data: 'Duration (hh:mm:ss)', header: true }];
 
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
     let taskSummaryTableRows;
     if (existsSync(filePath)) {
         try {
-            const data = JSON.parse(readFileSync(filePath, { encoding: 'utf8' }));
-            taskSummaryTableRows = getBuildSummaryTable(data);
+            const bs = readFileSync(filePath, { encoding: 'utf8' });
+            const data = JSON.parse(bs).map((t: { name: any; failed: { toString: () => any; }; description: any; duration: { toString: () => any; }; }) => [t.name, t.failed.toString(), t.description, t.duration.toString()]);
+            taskSummaryTableRows = [header, ...data];//getBuildSummaryTable(data);
         } catch (e) {
             console.error('An error occurred while reading the build summary file:', e);
             return;
