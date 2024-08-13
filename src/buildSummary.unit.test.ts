@@ -12,33 +12,15 @@ jest.mock('@actions/core', () => ({
 }));
 
 describe('summaryGeneration', () => {
-    it('generates a summary table correctly', () => {
-        const mockTasks: buildSummary.Task[] = [
-            { name: 'Test Task', description: 'A test task', failed: true, skipped: false, duration: '00:00:10' }
-        ];
-
-        const expectedTable = [
-            ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'],
-            ['Test Task', 'true', 'A test task', '00:00:10'],
-            //['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
-        ];
-
-        const table = buildSummary.getBuildSummaryTable(mockTasks);
-
-        expect(expectedTable).toEqual(expectedTable);
-    });
-
     it('writes the summary correctly', () => {
         const mockTableRows = [
             ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'],
-            ['Test Task', 'true', 'A test task', '00:00:10'],
-            //['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
+            ['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
         ];
 
         buildSummary.writeSummary(mockTableRows);
-        expect(mockTableRows).toEqual(mockTableRows);
 
-        //expect(core.summary.addTable).toHaveBeenCalledTimes(1);
-        //expect(core.summary.addTable).toHaveBeenCalledWith(mockTableRows);
+        expect(core.summary.addTable).toHaveBeenCalledTimes(1);
+        expect(core.summary.addTable).toHaveBeenCalledWith(mockTableRows);
     });
 });
