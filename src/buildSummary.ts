@@ -22,7 +22,7 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
 }
 
 export function getSummaryRows(buildSummary: string): any[] {
-    const rows = JSON.parse(buildSummary).map(t => {
+    const rows = JSON.parse(buildSummary).map((t: any) => {
         if (t.failed) {
             return [t.name, '🔴 Failed', t.description, t.duration.toString()];
         } else if (t.skipped) {
