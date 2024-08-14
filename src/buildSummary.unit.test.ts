@@ -12,19 +12,20 @@ jest.mock('@actions/core', () => ({
 }));
 
 describe('summaryGeneration', () => {
-    it('generates a summary table correctly', () => {
-        const mockTasks: buildSummary.Task[] = [
-            { name: 'Test Task', description: 'A test task', failed: true, skipped: false, duration: '00:00:10' }
-        ];
+    it('should process and return summary rows for valid JSON with different task statuses', () => {
+        const mockBuildSummary = JSON.stringify([
+            { name: 'Task 1', failed: true, skipped: false, description: 'Task 1 description', duration: '00:00:10' },
+            { name: 'Task 2', failed: false, skipped: true, description: 'Task 2 description', duration: '00:00:20' },
+            { name: 'Task 3', failed: false, skipped: false, description: 'Task 3 description', duration: '00:00:30' }
+        ]);
 
-        const expectedTable = [
-            ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'],
-            ['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
-        ];
+        const result = buildSummary.getSummaryRows(mockBuildSummary);
 
-        const table = buildSummary.getBuildSummaryTable(mockTasks);
-
-        expect(table).toEqual(expectedTable);
+        expect(result).toEqual([
+            ['Task 1', '🔴 Failed', 'Task 1 description', '00:00:10'],
+            ['Task 2', '🔵 Skipped', 'Task 2 description', '00:00:20'],
+            ['Task 3', '🟢 Success', 'Task 3 description', '00:00:30']
+        ]);
     });
 
     it('writes the summary correctly', () => {
