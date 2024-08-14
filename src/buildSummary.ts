@@ -22,10 +22,10 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
 }
 
 export function getSummaryRows(buildSummary: string): any[] {
-    const rows = JSON.parse(buildSummary).map((t: { name: any; failed: { toString: () => any; }; skipped: { toString: () => any; }; description: any; duration: { toString: () => any; }; }) => {
-        if (t.failed.toString() === 'true') {
+    const rows = JSON.parse(buildSummary).map(t => {
+        if (t.failed) {
             return [t.name, '🔴 Failed', t.description, t.duration.toString()];
-        } else if (t.skipped.toString() === 'true') {
+        } else if (t.skipped) {
             return [t.name, '🔵 Skipped', t.description, t.duration.toString()];
         } else {
             return [t.name, '🟢 Success', t.description, t.duration.toString()];
