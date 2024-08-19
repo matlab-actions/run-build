@@ -3,13 +3,14 @@ import * as core from "@actions/core";
 import { join } from 'path';
 import { readFileSync, unlinkSync, existsSync } from 'fs';
 
-export interface Task {
-    name: string;
-    description: string;
-    failed: boolean;
-    skipped: boolean;
-    duration: string;
-}
+// export interface Task {
+//     name: string;
+//     description: string;
+//     failed: boolean;
+//     skipped: boolean;
+//     skipReason: string;
+//     duration: string;
+// }
 
 export function writeSummary(taskSummaryTableRows: string[][]) {
     try {
@@ -26,12 +27,25 @@ export function getSummaryRows(buildSummary: string): any[] {
         if (t.failed) {
             return [t.name, '🔴 Failed', t.description, t.duration.toString()];
         } else if (t.skipped) {
-            return [t.name, '🔵 Skipped', t.description, t.duration.toString()];
+            return [t.name, '🔵 Skipped' + ' (' + interpretSkipReason(t.skipReason) + ')', t.description, t.duration.toString()];
         } else {
             return [t.name, '🟢 Success', t.description, t.duration.toString()];
         }
     });
     return rows;
+}
+
+export function interpretSkipReason(skipReason: string){
+    switch(skipReason) {
+        case "UpToDate":
+            return "Up-To-Date";
+        case "UserSpecified":
+            return "User Specified";
+        case "DependencyFailed":
+            return "Dependency Failed";
+        default:
+            return skipReason;
+    }
 }
 
 export function processAndDisplayBuildSummary() {
