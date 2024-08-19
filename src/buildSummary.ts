@@ -3,15 +3,6 @@ import * as core from "@actions/core";
 import { join } from 'path';
 import { readFileSync, unlinkSync, existsSync } from 'fs';
 
-// export interface Task {
-//     name: string;
-//     description: string;
-//     failed: boolean;
-//     skipped: boolean;
-//     skipReason: string;
-//     duration: string;
-// }
-
 export function writeSummary(taskSummaryTableRows: string[][]) {
     try {
         core.summary
