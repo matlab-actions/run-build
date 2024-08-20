@@ -32,6 +32,8 @@ export function interpretSkipReason(skipReason: string){
             return "Up-To-Date";
         case "UserSpecified":
             return "User Specified";
+        case "UserRequested":
+            return "User Requested";
         case "DependencyFailed":
             return "Dependency Failed";
         default:
