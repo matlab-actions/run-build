@@ -3,7 +3,7 @@ classdef BuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
 %   Copyright 2024 The MathWorks, Inc.
 
     properties
-        taskDetails = {};
+        TaskDetails = {};
     end
 
     methods (Access=protected)
@@ -15,7 +15,7 @@ classdef BuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
                 warning("ciplugins:github:BuildSummaryPlugin:UnableToOpenFile","Unable to open a file required to create the MATLAB build summary table: %s", msg);
             else
                 closeFile = onCleanup(@()fclose(fID));
-                s = jsonencode(plugin.taskDetails);
+                s = jsonencode(plugin.TaskDetails);
                 fprintf(fID, "%s",s);
             end
         end
@@ -23,27 +23,25 @@ classdef BuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
         function runTask(plugin, pluginData)
             runTask@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
 
-            taskDetail = plugin.getCommonTaskData(pluginData);
-            plugin.taskDetails = [plugin.taskDetails, taskDetail];
+            taskDetail = getCommonTaskData(pluginData);
+            plugin.TaskDetails = [plugin.TaskDetails, taskDetail];
         end
 
         function skipTask(plugin, pluginData)
             skipTask@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
 
-            taskDetail = plugin.getCommonTaskData(pluginData);
+            taskDetail = getCommonTaskData(pluginData);
             taskDetail.skipReason = pluginData.SkipReason;
-            plugin.taskDetails = [plugin.taskDetails, taskDetail];
+            plugin.TaskDetails = [plugin.TaskDetails, taskDetail];
         end
     end
+end
 
-    methods(Static, Access=private)
-        function taskDetail = getCommonTaskData(pluginData)
-            taskDetail = struct();
-            taskDetail.name = pluginData.TaskResults.Name;
-            taskDetail.description = pluginData.TaskGraph.Tasks.Description;
-            taskDetail.failed = pluginData.TaskResults.Failed;
-            taskDetail.skipped = pluginData.TaskResults.Skipped;
-            taskDetail.duration = string(pluginData.TaskResults.Duration);
-        end
-    end
+function taskDetail = getCommonTaskData(pluginData)
+    taskDetail = struct();
+    taskDetail.name = pluginData.TaskResults.Name;
+    taskDetail.description = pluginData.TaskGraph.Tasks.Description;
+    taskDetail.failed = pluginData.TaskResults.Failed;
+    taskDetail.skipped = pluginData.TaskResults.Skipped;
+    taskDetail.duration = string(pluginData.TaskResults.Duration);
 end

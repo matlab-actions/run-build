@@ -16,11 +16,11 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
 export function getSummaryRows(buildSummary: string): any[] {
     const rows = JSON.parse(buildSummary).map((t: any) => {
         if (t.failed) {
-            return [t.name, '🔴 Failed', t.description, t.duration.toString()];
+            return [t.name, '🔴 Failed', t.description, t.duration];
         } else if (t.skipped) {
-            return [t.name, '🔵 Skipped' + ' (' + interpretSkipReason(t.skipReason) + ')', t.description, t.duration.toString()];
+            return [t.name, '🔵 Skipped' + ' (' + interpretSkipReason(t.skipReason) + ')', t.description, t.duration];
         } else {
-            return [t.name, '🟢 Success', t.description, t.duration.toString()];
+            return [t.name, '🟢 Success', t.description, t.duration];
         }
     });
     return rows;
@@ -29,13 +29,13 @@ export function getSummaryRows(buildSummary: string): any[] {
 export function interpretSkipReason(skipReason: string){
     switch(skipReason) {
         case "UpToDate":
-            return "Up-To-Date";
+            return "up-to-date";
         case "UserSpecified":
-            return "User Specified";
+            return "user specified";
         case "UserRequested":
-            return "User Requested";
+            return "user requested";
         case "DependencyFailed":
-            return "Dependency Failed";
+            return "dependency failed";
         default:
             return skipReason;
     }
