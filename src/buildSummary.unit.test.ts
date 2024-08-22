@@ -16,7 +16,9 @@ describe('summaryGeneration', () => {
         const mockBuildSummary = JSON.stringify([
             { name: 'Task 1', failed: true, skipped: false, description: 'Task 1 description', duration: '00:00:10' },
             { name: 'Task 2', failed: false, skipped: true, skipReason: 'UserSpecified', description: 'Task 2 description', duration: '00:00:20' },
-            { name: 'Task 3', failed: false, skipped: false, description: 'Task 3 description', duration: '00:00:30' }
+            { name: 'Task 3', failed: false, skipped: true, skipReason: 'DependencyFailed', description: 'Task 3 description', duration: '00:00:20' },
+            { name: 'Task 4', failed: false, skipped: true, skipReason: 'UpToDate', description: 'Task 4 description', duration: '00:00:20' },
+            { name: 'Task 5', failed: false, skipped: false, description: 'Task 5 description', duration: '00:00:30' }
         ]);
 
         const result = buildSummary.getSummaryRows(mockBuildSummary);
@@ -24,7 +26,9 @@ describe('summaryGeneration', () => {
         expect(result).toEqual([
             ['Task 1', '🔴 Failed', 'Task 1 description', '00:00:10'],
             ['Task 2', '🔵 Skipped (user requested)', 'Task 2 description', '00:00:20'],
-            ['Task 3', '🟢 Success', 'Task 3 description', '00:00:30']
+            ['Task 3', '🔵 Skipped (dependency failed)', 'Task 3 description', '00:00:20'],
+            ['Task 4', '🔵 Skipped (up-to-date)', 'Task 4 description', '00:00:20'],
+            ['Task 5', '🟢 Success', 'Task 5 description', '00:00:30']
         ]);
     });
 
