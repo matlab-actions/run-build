@@ -23,7 +23,7 @@ describe('summaryGeneration', () => {
 
         expect(result).toEqual([
             ['Task 1', '🔴 Failed', 'Task 1 description', '00:00:10'],
-            ['Task 2', '🔵 Skipped (user specified)', 'Task 2 description', '00:00:20'],
+            ['Task 2', '🔵 Skipped (user requested)', 'Task 2 description', '00:00:20'],
             ['Task 3', '🟢 Success', 'Task 3 description', '00:00:30']
         ]);
     });
