@@ -2,7 +2,7 @@ classdef BuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
 
 %   Copyright 2024 The MathWorks, Inc.
 
-    properties
+    properties (Access=private)
         TaskDetails = {};
     end
 
