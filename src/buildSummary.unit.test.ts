@@ -28,13 +28,13 @@ describe('summaryGeneration', () => {
             ['Task 2', '🔵 Skipped (user requested)', 'Task 2 description', '00:00:20'],
             ['Task 3', '🔵 Skipped (dependency failed)', 'Task 3 description', '00:00:20'],
             ['Task 4', '🔵 Skipped (up-to-date)', 'Task 4 description', '00:00:20'],
-            ['Task 5', '🟢 Success', 'Task 5 description', '00:00:30']
+            ['Task 5', '🟢 Successful', 'Task 5 description', '00:00:30']
         ]);
     });
 
     it('writes the summary correctly', () => {
         const mockTableRows = [
-            ['MATLAB Build Task', 'Status', 'Description', 'Duration (hh:mm:ss)'],
+            ['MATLAB Task', 'Status', 'Description', 'Duration (HH:mm:ss)'],
             ['Test Task', '🔴 Failed', 'A test task', '00:00:10'],
         ];
 

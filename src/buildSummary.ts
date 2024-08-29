@@ -20,7 +20,7 @@ export function getSummaryRows(buildSummary: string): any[] {
         } else if (t.skipped) {
             return [t.name, '🔵 Skipped' + ' (' + interpretSkipReason(t.skipReason) + ')', t.description, t.duration];
         } else {
-            return [t.name, '🟢 Success', t.description, t.duration];
+            return [t.name, '🟢 Successful', t.description, t.duration];
         }
     });
     return rows;
@@ -43,7 +43,7 @@ export function interpretSkipReason(skipReason: string){
 export function processAndDisplayBuildSummary() {
     const runId = process.env.GITHUB_RUN_ID || '';
     const runnerTemp = process.env.RUNNER_TEMP || '';
-    const header = [{ data: 'MATLAB Build Task', header: true }, { data: 'Status', header: true }, { data: 'Description', header: true }, { data: 'Duration (hh:mm:ss)', header: true }];
+    const header = [{ data: 'MATLAB Task', header: true }, { data: 'Status', header: true }, { data: 'Description', header: true }, { data: 'Duration (HH:mm:ss)', header: true }];
 
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
     let taskSummaryTable;
