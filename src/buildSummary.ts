@@ -3,14 +3,6 @@ import * as core from "@actions/core";
 import { join } from 'path';
 import { readFileSync, unlinkSync, existsSync } from 'fs';
 
-export interface Task {
-    name: string;
-    description: string;
-    failed: boolean;
-    skipped: boolean;
-    duration: string;
-}
-
 export function writeSummary(taskSummaryTableRows: string[][]) {
     try {
         core.summary
@@ -24,20 +16,34 @@ export function writeSummary(taskSummaryTableRows: string[][]) {
 export function getSummaryRows(buildSummary: string): any[] {
     const rows = JSON.parse(buildSummary).map((t: any) => {
         if (t.failed) {
-            return [t.name, '🔴 Failed', t.description, t.duration.toString()];
+            return [t.name, '🔴 Failed', t.description, t.duration];
         } else if (t.skipped) {
-            return [t.name, '🔵 Skipped', t.description, t.duration.toString()];
+            return [t.name, '🔵 Skipped' + ' (' + interpretSkipReason(t.skipReason) + ')', t.description, t.duration];
         } else {
-            return [t.name, '🟢 Success', t.description, t.duration.toString()];
+            return [t.name, '🟢 Succeeded', t.description, t.duration];
         }
     });
     return rows;
 }
 
+export function interpretSkipReason(skipReason: string){
+    switch(skipReason) {
+        case "UpToDate":
+            return "up-to-date";
+        case "UserSpecified":
+        case "UserRequested":
+            return "user requested";
+        case "DependencyFailed":
+            return "dependency failed";
+        default:
+            return skipReason;
+    }
+}
+
 export function processAndDisplayBuildSummary() {
     const runId = process.env.GITHUB_RUN_ID || '';
     const runnerTemp = process.env.RUNNER_TEMP || '';
-    const header = [{ data: 'MATLAB Build Task', header: true }, { data: 'Status', header: true }, { data: 'Description', header: true }, { data: 'Duration (hh:mm:ss)', header: true }];
+    const header = [{ data: 'MATLAB Task', header: true }, { data: 'Status', header: true }, { data: 'Description', header: true }, { data: 'Duration (HH:mm:ss)', header: true }];
 
     const filePath: string = join(runnerTemp, `buildSummary${runId}.json`);
     let taskSummaryTable;
