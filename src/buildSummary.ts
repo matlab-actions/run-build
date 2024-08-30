@@ -20,7 +20,7 @@ export function getSummaryRows(buildSummary: string): any[] {
         } else if (t.skipped) {
             return [t.name, '🔵 Skipped' + ' (' + interpretSkipReason(t.skipReason) + ')', t.description, t.duration];
         } else {
-            return [t.name, '🟢 Successful', t.description, t.duration];
+            return [t.name, '🟢 Succeeded', t.description, t.duration];
         }
     });
     return rows;

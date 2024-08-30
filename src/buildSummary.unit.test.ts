@@ -28,7 +28,7 @@ describe('summaryGeneration', () => {
             ['Task 2', '🔵 Skipped (user requested)', 'Task 2 description', '00:00:20'],
             ['Task 3', '🔵 Skipped (dependency failed)', 'Task 3 description', '00:00:20'],
             ['Task 4', '🔵 Skipped (up-to-date)', 'Task 4 description', '00:00:20'],
-            ['Task 5', '🟢 Successful', 'Task 5 description', '00:00:30']
+            ['Task 5', '🟢 Succeeded', 'Task 5 description', '00:00:30']
         ]);
     });
 
