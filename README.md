@@ -2,15 +2,15 @@
 
 Starting in R2022b, the MATLAB&reg; build tool provides a standard programming interface to create and run tasks in a uniform and efficient way. For example, you can create tasks that identify code issues, run tests, and package a toolbox in a single build file in your project root folder, and then invoke the build tool to run these tasks. For more information, see [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html).
 
-The [Run MATLAB Build](#run-matlab-build) action enables you to invoke the MATLAB build tool on a [self-hosted](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners) or [GitHub&reg;-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners) runner:
-- To use a self-hosted runner, you must set up a computer with MATLAB as your self-hosted runner and register the runner with GitHub Actions. The runner uses the topmost MATLAB release on the system path to execute your workflow.
-- To use a GitHub-hosted runner, you must include the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow to set up your preferred MATLAB release (R2021a or later) on the runner.
+The [Run MATLAB Build](#run-matlab-build) action enables you to invoke the MATLAB build tool on a [GitHub&reg;-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners) or [self-hosted](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners) runner:
+- To use a GitHub-hosted runner, include the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow to set up your preferred MATLAB release (R2021a or later) on the runner.
+- To use a self-hosted runner, set up a computer with MATLAB as your runner and register the runner with GitHub Actions. (On self-hosted UNIX&reg; runners, you can also use the **Setup MATLAB** action instead of having MATLAB installed.) The runner uses the topmost MATLAB release on the system path to execute your workflow.
 
 ## Examples
 Use the **Run MATLAB Build** action to run a build using the MATLAB build tool. You can use this action to run the tasks in your build file. (By default, the action looks for a build file named `buildfile.m` in the root of your repository.) To use the **Run MATLAB Build** action, you need MATLAB R2022b or a later release.
 
 ### Run Default Tasks in Build File
-On a self-hosted runner, run the default tasks in a build file named `buildfile.m` in the root of your repository as well as all the tasks on which they depend. To run the tasks, specify the **Run MATLAB Build** action in your workflow.
+On a self-hosted runner that has MATLAB installed, run the default tasks in a build file named `buildfile.m` in the root of your repository as well as all the tasks on which they depend. To run the tasks, specify the **Run MATLAB Build** action in your workflow.
 
 ```yaml
 name: Run Default Tasks in Build File
@@ -48,14 +48,14 @@ jobs:
 ```
 
 ### Use MATLAB Batch Licensing Token
-On a GitHub-hosted runner, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your workflow includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
+When you set up your workflow using the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your workflow includes transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. 
 
 To use a MATLAB batch licensing token:
 
 1. Set the token as a secret. For more information about secrets, see [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions).
 2. Map the secret to an environment variable named `MLM_LICENSE_TOKEN` in your workflow. 
 
-For example, use the latest release of MATLAB on a GitHub-hosted runner to run a MATLAB build in your private project. To set up the latest release of MATLAB on the runner, specify the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow. To run the MATLAB build, specify the **Run MATLAB Build** action. In this example, `MyToken` is the name of the secret that holds the batch licensing token.
+For example, use the latest release of MATLAB on a GitHub-hosted runner to run a MATLAB build in your private project. To set up the latest release of MATLAB on the runner, specify the **Setup MATLAB** action in your workflow. To run the MATLAB build, specify the **Run MATLAB Build** action. In this example, `MyToken` is the name of the secret that holds the batch licensing token.
 
 ```YAML
 name: Use MATLAB Batch Licensing Token
