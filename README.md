@@ -4,7 +4,7 @@ Starting in R2022b, the MATLAB&reg; build tool provides a standard programming i
 
 The [Run MATLAB Build](#run-matlab-build) action enables you to invoke the MATLAB build tool on a [GitHub&reg;-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners) or [self-hosted](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners) runner:
 - To use a GitHub-hosted runner, include the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow to set up your preferred MATLAB release (R2021a or later) on the runner.
-- To use a self-hosted runner, set up a computer with MATLAB on its path to host your runner and register the runner with GitHub Actions. (On self-hosted UNIX&reg; runners, you can also use the **Setup MATLAB** action instead of having MATLAB installed.) The runner uses the topmost MATLAB release on the system path to execute your workflow.
+- To use a self-hosted runner, set up a computer with MATLAB on its path and register the runner with GitHub Actions. (On self-hosted UNIX&reg; runners, you can also use the **Setup MATLAB** action instead of having MATLAB already installed.) The runner uses the topmost MATLAB release on the system path to execute your workflow.
 
 ## Examples
 Use the **Run MATLAB Build** action to run a build using the MATLAB build tool. You can use this action to run the tasks in your build file. (By default, the action looks for a build file named `buildfile.m` in the root of your repository.) To use the **Run MATLAB Build** action, you need MATLAB R2022b or a later release.
