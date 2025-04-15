@@ -1,4 +1,4 @@
-classdef ParallelizableBuildReportPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
+classdef ParallelizableBuildSummaryPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
 
     %   Copyright 2025 The MathWorks, Inc.
 
@@ -7,7 +7,7 @@ classdef ParallelizableBuildReportPlugin < matlab.buildtool.plugins.BuildRunnerP
     end
 
     methods
-        function plugin = ParallelizableBuildReportPlugin()
+        function plugin = ParallelizableBuildSummaryPlugin()
             tempRoot = getenv("RUNNER_TEMP");
             plugin.TempFolder = fullfile(tempRoot, "taskDetails");
         end
