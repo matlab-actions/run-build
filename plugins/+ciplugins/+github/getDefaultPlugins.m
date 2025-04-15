@@ -6,6 +6,8 @@ arguments
     pluginProviderData (1,1) struct = struct();
 end
 
+path()
+
 if isMATLABReleaseOlderThan("R2025b")
     reportPlugin = ciplugins.github.BuildSummaryPlugin();
 else
