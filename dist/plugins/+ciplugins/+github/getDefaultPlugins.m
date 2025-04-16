@@ -6,7 +6,7 @@ arguments
     pluginProviderData (1,1) struct = struct();
 end
 
-disp(string({matlab.metadata.Namespace.fromName("matlab.mixin").ClassList.Name})');
+disp(string({matlab.metadata.Namespace.fromName("ciplugins.github").ClassList.Name})');
 
 if isMATLABReleaseOlderThan("R2025b")
     reportPlugin = ciplugins.github.BuildSummaryPlugin();
