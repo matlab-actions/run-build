@@ -4,7 +4,7 @@ import * as path from "path";
 import * as buildtool from "./buildtool";
 
 describe("command generation", () => {
-const command = "addpath('"+ path.join(__dirname, "plugins").replace("'","''") +"'); buildtool"
+const command = "addpath('"+ path.join(__dirname, "plugins").replace(/'/g,"''") +"'); buildtool"
     it("buildtool invocation with unspecified tasks and build options", () => {
         const options: buildtool.RunBuildOptions = {
             Tasks: "",
