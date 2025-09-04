@@ -1,22 +1,42 @@
 name: Build and Test
 on: [push]
+permissions:
+  contents: read
 
 jobs:
   bat:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: "20"
       - name: Perform npm tasks
         run: npm run ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: built-action
+          path: |
+            **/*
+            !node_modules/
+  integ:
+    needs: bat
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest, macos-14]
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: built-action
 
       - name: Perform 'setup-matlab'
         uses: matlab-actions/setup-matlab@v2
 
       - name: Create buildfile.m in project root for tests
+        shell: bash
         run: |
           cat <<'_EOF' >> "buildfile.m"
             function plan = buildfile
@@ -56,6 +76,7 @@ jobs:
         uses: ./
 
       - name: Verify correct tasks appear in buildlog.txt
+        shell: bash
         run: |
           set -e
           grep "building" buildlog.txt
@@ -72,6 +93,7 @@ jobs:
           tasks: deploy
 
       - name: Verify correct tasks appear in buildlog.txt
+        shell: bash
         run: |
           set -e
           grep "building" buildlog.txt
@@ -88,6 +110,7 @@ jobs:
           tasks: deploy check
 
       - name: Verify correct tasks appear in buildlog.txt
+        shell: bash
         run: |
           set -e
           grep "building" buildlog.txt
@@ -102,8 +125,9 @@ jobs:
         uses: ./
         with:
           tasks: test("myTests", OutputDetail="concise")
-  
+
       - name: Verify correct tasks appear in buildlog.txt
+        shell: bash
         run: |
           set -e
           grep "building" buildlog.txt
@@ -120,6 +144,7 @@ jobs:
           startup-options: -logfile console.log
 
       - name: Verify tasks appear in buildlog.txt and console.log
+        shell: bash
         run: |
           set -e
           grep "building" buildlog.txt
@@ -140,8 +165,9 @@ jobs:
         with:
           tasks: deploy
           build-options: -skip test
-  
+
       - name: Verify correct tasks appear in buildlog.txt
+        shell: bash
         run: |
           set -e
           grep "building" buildlog.txt
@@ -151,15 +177,16 @@ jobs:
           grep "deploying" buildlog.txt
           ! grep "checking" buildlog.txt
           rm buildlog.txt
-    
+
       - name: Run build with continue on failure
         continue-on-error: true
         uses: ./
         with:
           tasks: error deploy
           build-options: -continueOnFailure
-    
+
       - name: Verify correct tasks appear in buildlog.txt
+        shell: bash
         run: |
           set -e
           grep "erroring" buildlog.txt
@@ -180,6 +207,7 @@ jobs:
           startup-options: -logfile console.log
 
       - name: Verify workflow command is added
+        shell: bash
         run: |
           grep "::group::deploy" console.log
           grep "::error::error task failed" console.log
@@ -194,6 +222,7 @@ jobs:
           startup-options: -logfile console.log
 
       - name: Verify summary exception for invalid task
+        shell: bash
         run: |
           set -e
           ! grep "while reading the build summary file:" console.log
