@@ -1,7 +1,7 @@
 {
     "name": "run-matlab-build-action",
     "author": "The MathWorks, Inc.",
-    "version": "2.5.1",
+    "version": "2.5.2",
     "description": "",
     "main": "lib/index.js",
     "scripts": {
