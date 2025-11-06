@@ -2,9 +2,9 @@
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-import { matlab } from "run-matlab-command-action";
 import * as buildtool from "./buildtool";
-import * as buildSummary from "./buildSummary";
+// TODO: update common-utils version when new version is released
+import { matlab, testResultsSummary, buildSummary } from "common-utils";
 
 /**
  * Gather action inputs and then run action.
@@ -27,7 +27,7 @@ async function run() {
     const execOptions = {
         env: {
             ...process.env,
-            "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE": "ciplugins.github.getDefaultPlugins",
+            "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE": "buildframework.getDefaultPlugins",
         }
     };
 
@@ -38,7 +38,16 @@ async function run() {
         (cmd, args) => exec.exec(cmd, args, execOptions),
         startupOptions
     ).finally(() => {
-        buildSummary.processAndDisplayBuildSummary();
+        const runnerTemp = process.env.RUNNER_TEMP || '';
+        const runId = process.env.GITHUB_RUN_ID || '';
+        const actionName = process.env.GITHUB_ACTION || '';
+
+        buildSummary.processAndDisplayBuildSummary(runnerTemp, runId, actionName);
+
+        const testResultsData = testResultsSummary.getTestResults(runnerTemp, runId, workspaceDir);
+        if(testResultsData) {
+            testResultsSummary.writeSummary(testResultsData, actionName);
+        }
     });
 
 }

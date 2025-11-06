@@ -13,15 +13,15 @@
         "package": "ncc build --minify",
         "test": "jest",
         "all": "npm test && npm run build && npm run package",
-        "ci": "npm run clean && npm run deps && npm ci && npm run all"
+        "ci": "npm run clean && npm ci && npm run deps && npm run all"
     },
     "files": [
         "lib/"
     ],
     "dependencies": {
-        "@actions/core": "^1.4.0",
-        "@actions/exec": "^1.1.0",
-        "run-matlab-command-action": "github:matlab-actions/run-command#v2.1.0"
+        "@actions/core": "^1.11.1",
+        "@actions/exec": "^1.1.1",
+        "common-utils": "https://github.com/matlab-actions/common-utils#kapilg/refactor"
     },
     "devDependencies": {
         "@types/jest": "^29.1.1",
