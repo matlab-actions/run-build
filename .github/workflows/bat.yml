@@ -15,12 +15,18 @@ jobs:
 
       - name: Perform 'setup-matlab'
         uses: matlab-actions/setup-matlab@v2
+        with:
+          products: MATLAB_Test
 
       - name: Create buildfile.m in project root for tests
         run: |
           cat <<'_EOF' >> "buildfile.m"
             function plan = buildfile
+            import matlab.buildtool.tasks.TestTask
+
             plan = buildplan(localfunctions);
+            plan("preMadeTest") = TestTask;
+            plan("preMadeTest").Dependencies = "build";
             plan("test").Dependencies = "build";
             plan("deploy").Dependencies = "test";
 
@@ -184,6 +190,12 @@ jobs:
           grep "::group::deploy" console.log
           grep "::error::error task failed" console.log
           rm console.log
+
+      - name: Run build with premade TestTask for test summary
+        # continue-on-error: true
+        uses: ./
+        with:
+          tasks: preMadeTest
 
       - name: Run build with invalid task
         continue-on-error: true
