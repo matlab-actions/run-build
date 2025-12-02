@@ -31,9 +31,11 @@ jobs:
             plan("deploy").Dependencies = "test";
 
             plan.DefaultTasks = "test";
+            end
 
             function buildTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'building\n'); fclose(f);
+            end
 
             function testTask(~,tests,options)
             arguments
@@ -46,16 +48,20 @@ jobs:
             fprintf(f, '%s\n', tests);
             fprintf(f, '%s\n', options.OutputDetail);
             fclose(f);
+            end
 
             function deployTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'deploying\n'); fclose(f);
+            end
 
             function checkTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+            end
             
             function errorTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'erroring\n'); fclose(f);
             error('Error occured in errorTask');
+            end
           _EOF
 
       - name: Run build with default tasks
@@ -192,7 +198,6 @@ jobs:
           rm console.log
 
       - name: Run build with premade TestTask for test summary
-        # continue-on-error: true
         uses: ./
         with:
           tasks: preMadeTest
