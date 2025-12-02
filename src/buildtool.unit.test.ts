@@ -1,10 +1,8 @@
 // Copyright 2022-2024 The MathWorks, Inc.
 
-import * as path from "path";
 import * as buildtool from "./buildtool";
 
 describe("command generation", () => {
-const command = "addpath('"+ path.join(__dirname, "plugins").replaceAll("'","''") +"'); buildtool"
     it("buildtool invocation with unspecified tasks and build options", () => {
         const options: buildtool.RunBuildOptions = {
             Tasks: "",
@@ -12,7 +10,7 @@ const command = "addpath('"+ path.join(__dirname, "plugins").replaceAll("'","''"
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe(command)
+        expect(actual).toBe("buildtool")
     });
 
     it("buildtool invocation with tasks specified", () => {
@@ -21,7 +19,7 @@ const command = "addpath('"+ path.join(__dirname, "plugins").replaceAll("'","''"
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe(command + " compile test")
+        expect(actual).toBe("buildtool compile test")
     });
 
     it("buildtool invocation with only build options", () => {
@@ -31,7 +29,7 @@ const command = "addpath('"+ path.join(__dirname, "plugins").replaceAll("'","''"
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe(command + " -continueOnFailure -skip check")
+        expect(actual).toBe("buildtool -continueOnFailure -skip check")
     });
 
     it("buildtool invocation with specified tasks and build options", () => {
@@ -41,6 +39,6 @@ const command = "addpath('"+ path.join(__dirname, "plugins").replaceAll("'","''"
         };
 
         const actual = buildtool.generateCommand(options);
-        expect(actual).toBe(command + " compile test -continueOnFailure -skip check")
+        expect(actual).toBe("buildtool compile test -continueOnFailure -skip check")
     });
 });

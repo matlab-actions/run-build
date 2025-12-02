@@ -27,6 +27,7 @@ async function run() {
     const execOptions = {
         env: {
             ...process.env,
+            MW_BATCH_LICENSING_ONLINE:'true', // Remove when online batch licensing is the default
             "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE": "buildframework.getDefaultPlugins",
         }
     };
