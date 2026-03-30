@@ -1,6 +1,6 @@
 // Copyright 2022-2025 The MathWorks, Inc.
 
-import * as buildtool from "./buildtool";
+import * as buildtool from "./buildtool.js";
 
 describe("command generation", () => {
     it("buildtool invocation with unspecified tasks and build options", () => {

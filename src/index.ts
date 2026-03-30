@@ -2,7 +2,7 @@
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-import * as buildtool from "./buildtool";
+import * as buildtool from "./buildtool.js";
 import { matlab, testResultsSummary, buildSummary } from "common-utils";
 
 /**
