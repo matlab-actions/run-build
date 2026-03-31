@@ -23,7 +23,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Run build
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
 ```
 
 ### Run Specified Task in Build File
@@ -40,9 +40,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Set up MATLAB
-        uses: matlab-actions/setup-matlab@v2
+        uses: matlab-actions/setup-matlab@v3
       - name: Run build
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
         with:
           tasks: mytask
 ```
@@ -70,13 +70,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Set up MATLAB
-        uses: matlab-actions/setup-matlab@v2
+        uses: matlab-actions/setup-matlab@v3
       - name: Run build
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
 ```
 
 ## Run MATLAB Build
-When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MATLAB Build** action as `matlab-actions/run-build@v2`. The action accepts optional inputs.
+When you define your workflow in the `.github/workflows` directory of your repository, specify the **Run MATLAB Build** action as `matlab-actions/run-build@v3`. The action accepts optional inputs.
 
 Input                     | Description
 ------------------------- | ---------------
