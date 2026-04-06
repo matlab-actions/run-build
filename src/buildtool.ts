@@ -6,13 +6,13 @@ export interface RunBuildOptions {
 }
 
 export function generateCommand(options: RunBuildOptions): string {
-    let command: string = "buildtool"
+    let command: string = "buildtool";
     if (options.Tasks) {
         command = command + " " + options.Tasks;
     }
     if (options.BuildOptions) {
         command = command + " " + options.BuildOptions;
     }
-    
+
     return command;
 }
