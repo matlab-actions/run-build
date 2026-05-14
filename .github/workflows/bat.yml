@@ -230,6 +230,11 @@ jobs:
         with:
           tasks: preMadeTest
 
+      - name: Run build with premade TestTask ran multiple times for test summary sanity
+        uses: ./
+        with:
+          tasks: preMadeTest preMadeTest preMadeTest
+
       - name: Run build with invalid task
         continue-on-error: true
         uses: ./
