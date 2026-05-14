@@ -19,6 +19,11 @@ inputs:
       Startup options for MATLAB
     required: false
     default: ""
+  generate-job-summary:
+    description: >-
+      Whether to generate a MATLAB-related job summary for the workflow run
+    required: false
+    default: true
 runs:
   using: node24
   main: dist/index.js
