@@ -4,6 +4,9 @@ on:
     types: published
 permissions:
   contents: write
+  id-token: write
+  attestations: write
+  artifact-metadata: write
 
 jobs:
   build:
@@ -36,6 +39,11 @@ jobs:
       # Now carry on, business as usual
       - name: Perform npm tasks
         run: npm run ci
+
+      - name: Generate signed attestations for workflow artifacts
+        uses: actions/attest@v4
+        with:
+          subject-path: dist/bin/**/run-matlab-command*
 
       # Finally, create a detached commit containing the built artifacts and tag
       # it with the release. Note: the fact that the branch is locally updated
