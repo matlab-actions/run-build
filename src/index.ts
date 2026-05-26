@@ -28,7 +28,7 @@ async function run() {
             ...process.env,
             MW_BATCH_LICENSING_ONLINE: "true", // Remove when online batch licensing is the default
             MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE: "buildframework.getDefaultPlugins",
-            MW_GENERATE_SUMMARY: String(generateSummary),
+            MW_INPUT_GENERATE_SUMMARY: String(generateSummary),
         },
     };
 
