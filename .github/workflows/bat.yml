@@ -47,6 +47,10 @@ jobs:
             plan = buildplan(localfunctions);
             plan("preMadeTest") = TestTask;
             plan("preMadeTest").Dependencies = "build";
+            plan("preMadeTest_1") = TestTask;
+            plan("preMadeTest_1").Dependencies = "build";
+            plan("preMadeTest_2") = TestTask;
+            plan("preMadeTest_2").Dependencies = "build";
             plan("test").Dependencies = "build";
             plan("deploy").Dependencies = "test";
 
@@ -229,6 +233,11 @@ jobs:
         uses: ./
         with:
           tasks: preMadeTest
+
+      - name: Run build with premade TestTask ran multiple times for test summary sanity
+        uses: ./
+        with:
+          tasks: preMadeTest preMadeTest_1 preMadeTest_2
 
       - name: Run build with invalid task
         continue-on-error: true
