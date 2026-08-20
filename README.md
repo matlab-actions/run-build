@@ -97,7 +97,7 @@ If you run a MATLAB build and the `generate-summary` input is `true`, you can vi
 
 <img width="1660" height="1673" alt="GitHub job summary, including summaries of MATLAB build and test results. The MATLAB Build Results table includes three tasks. Each table row includes a task name, status, description, and duration. The MATLAB Test Results section shows information about four passed tests from a single test file." src="https://github.com/user-attachments/assets/fa61147b-6da8-4d29-9ef5-b7fd831de58d" />
 
-If you have a MATLAB Test&trade; license and your MATLAB build runs tests using a [`matlab.buildtool.tasks.TestTask`](https://www.mathworks.com/help/matlab/ref/matlab.buildtool.tasks.testtask-class.html) instance, then the action also generates a summary of test results in the GitHub job summary. For more information about the test results summary, see [View Test and Coverage Results](https://github.com/matlab-actions/run-tests#view-test-and-coverage-results).
+If your MATLAB build runs tests using a [`matlab.buildtool.tasks.TestTask`](https://www.mathworks.com/help/matlab/ref/matlab.buildtool.tasks.testtask-class.html) instance, then the action also generates a summary of test results in the GitHub job summary. For more information about the test results summary, see [View Test and Coverage Results](https://github.com/matlab-actions/run-tests#view-test-and-coverage-results).
 
 ## Notes
 
