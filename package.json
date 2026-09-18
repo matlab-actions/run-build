@@ -11,7 +11,7 @@
         "format-check": "prettier --check .",
         "build": "tsc",
         "deps": "bash ./scripts/setupdeps.sh",
-        "package": "ncc build --minify",
+        "package": "ncc build --minify && ncc build lib/post.js -o dist/post --minify",
         "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
         "all": "npm run format-check && npm test && npm run build && npm run package",
         "ci": "npm run clean && npm ci && npm run deps && npm run all"
@@ -20,9 +20,11 @@
         "lib/"
     ],
     "dependencies": {
+        "@actions/cache": "^6.2.0",
         "@actions/core": "^3.0.0",
         "@actions/exec": "^3.0.0",
-        "common-utils": "github:matlab-actions/common-utils#v2.5.0"
+        "@actions/github": "^9.1.1",
+        "common-utils": "github:matlab-actions/common-utils#v2.5.1"
     },
     "devDependencies": {
         "@types/jest": "^30.0.0",
