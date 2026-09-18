@@ -276,3 +276,186 @@ jobs:
           grep "artifacting" buildlog.txt
           test -d .buildtool
           rm buildlog.txt artifactOutput.txt
+
+  cache-save:
+    name: Test cache save
+    needs: bat
+    runs-on: ubuntu-latest
+    env:
+      WRITE_JOB: cacheWrite-${{ github.run_id }}-${{ github.run_attempt }}
+      NO_WRITE_JOB: cacheNoWrite-${{ github.run_id }}-${{ github.run_attempt }}
+      DEFAULT_BRANCH_REF: refs/heads/${{ github.event.repository.default_branch }}
+      NON_DEFAULT_BRANCH_REF: refs/heads/not-the-default-branch
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: built-action
+
+      - name: Perform 'setup-matlab'
+        uses: matlab-actions/setup-matlab@a0180c939fb1a28de13f44f7b778b912384ced1f # v3.0.1
+        with:
+          release: latest-including-prerelease
+
+      - name: Create buildfile.m in project root for tests
+        shell: bash
+        run: |
+          cat <<'_EOF' >> "buildfile.m"
+            function plan = buildfile
+            plan = buildplan(localfunctions);
+            % task with Outputs so .buildtool/ is created
+            plan("artifact").Outputs = "artifactOutput.txt";
+            plan.DefaultTasks = "artifact";
+            end
+
+            function artifactTask(~)
+            f = fopen('artifactOutput.txt', 'w'); fprintf(f, 'artifact\n'); fclose(f);
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'artifacting\n'); fclose(f);
+            end
+          _EOF
+
+      - name: Run build with caching enabled on the default branch
+        uses: ./
+        with:
+          tasks: artifact
+          build-options: -outputCache
+          cache: true
+        env:
+          GITHUB_JOB: ${{ env.WRITE_JOB }}
+          GITHUB_REF: ${{ env.DEFAULT_BRANCH_REF }}
+
+      - name: Verify the build ran
+        shell: bash
+        run: |
+          set -e
+          grep "artifacting" buildlog.txt
+          test -d .buildtool
+          rm buildlog.txt
+
+      - name: Run build with caching enabled on a non-default branch
+        uses: ./
+        with:
+          tasks: artifact
+          build-options: -outputCache
+          cache: true
+        env:
+          GITHUB_JOB: ${{ env.NO_WRITE_JOB }}
+          GITHUB_REF: ${{ env.NON_DEFAULT_BRANCH_REF }}
+
+      - name: Add a marker file to .buildtool
+        shell: bash
+        run: echo "${{ github.run_id }}-${{ github.run_attempt }}" > .buildtool/cache-marker.txt
+
+  cache-restore:
+    name: Test cache restore
+    needs: cache-save
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write # read to list the caches, write to delete them afterwards
+    env:
+      GH_TOKEN: ${{ github.token }}
+      WRITE_JOB: cacheWrite-${{ github.run_id }}-${{ github.run_attempt }}
+      NO_WRITE_JOB: cacheNoWrite-${{ github.run_id }}-${{ github.run_attempt }}
+      NON_DEFAULT_BRANCH_REF: refs/heads/not-the-default-branch
+      MARKER: ${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: Verify 'cache-save' saved a cache for the default branch only
+        shell: bash
+        run: |
+          set -e
+          # '--key' matches on key prefix, and gh fails when nothing matches
+          list_keys() {
+            gh cache list --key "$1" --limit 100 --json key --jq ".[].key" || true
+          }
+          write_keys=$(list_keys "matlab-buildtool-Linux-$WRITE_JOB-")
+          no_write_keys=$(list_keys "matlab-buildtool-Linux-$NO_WRITE_JOB-")
+          echo "default branch keys: [$write_keys]"
+          echo "non-default branch keys: [$no_write_keys]"
+          test "$(printf "%s" "$write_keys" | grep -c .)" -eq 1
+          test -z "$no_write_keys"
+          # the key identifies the commit that was built
+          case "$write_keys" in
+            *-"$GITHUB_SHA") ;;
+            *) echo "unexpected cache key"; exit 1 ;;
+          esac
+          echo "CACHE_KEY=$write_keys" >> "$GITHUB_ENV"
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: built-action
+
+      - name: Perform 'setup-matlab'
+        uses: matlab-actions/setup-matlab@a0180c939fb1a28de13f44f7b778b912384ced1f # v3.0.1
+        with:
+          release: latest-including-prerelease
+
+      - name: Create buildfile.m in project root for tests
+        shell: bash
+        run: |
+          cat <<'_EOF' >> "buildfile.m"
+            function plan = buildfile
+            plan = buildplan(localfunctions);
+            % task with Outputs so .buildtool/ is created
+            plan("artifact").Outputs = "artifactOutput.txt";
+            plan.DefaultTasks = "artifact";
+            end
+
+            function artifactTask(~)
+            f = fopen('artifactOutput.txt', 'w'); fprintf(f, 'artifact\n'); fclose(f);
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'artifacting\n'); fclose(f);
+            end
+          _EOF
+
+      - name: Verify .buildtool does not exist yet
+        shell: bash
+        run: test ! -d .buildtool
+
+      - name: Run build with a cache hit on the primary key
+        uses: ./
+        with:
+          tasks: artifact
+          build-options: -outputCache
+          cache: true
+        env:
+          GITHUB_JOB: ${{ env.WRITE_JOB }}
+          GITHUB_REF: ${{ env.NON_DEFAULT_BRANCH_REF }}
+
+      - name: Verify the cache was restored and the task was not rerun
+        shell: bash
+        run: |
+          set -e
+          # the marker file can only have come from the restored cache
+          test "$(cat .buildtool/cache-marker.txt)" = "$MARKER"
+          # the output was fetched from the restored output cache, so the task
+          # itself never ran and never appended to buildlog.txt
+          test -f artifactOutput.txt
+          test ! -f buildlog.txt
+          rm -rf .buildtool artifactOutput.txt
+
+      - name: Run build with a cache hit on a restore key
+        uses: ./
+        with:
+          tasks: artifact
+          build-options: -outputCache
+          cache: true
+        env:
+          GITHUB_JOB: ${{ env.WRITE_JOB }}
+          GITHUB_REF: ${{ env.NON_DEFAULT_BRANCH_REF }}
+          # a commit that was never cached, so only a restore key can match
+          GITHUB_SHA: "0000000000000000000000000000000000000000"
+
+      - name: Verify the cache was restored from the restore key
+        shell: bash
+        run: |
+          set -e
+          test "$(cat .buildtool/cache-marker.txt)" = "$MARKER"
+          test -f artifactOutput.txt
+          test ! -f buildlog.txt
+
+      - name: Delete the cache created by this run
+        if: always()
+        shell: bash
+        run: |
+          if [ -n "${CACHE_KEY:-}" ]; then
+            gh cache delete "$CACHE_KEY" || true
+          fi

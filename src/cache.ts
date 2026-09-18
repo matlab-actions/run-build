@@ -55,9 +55,9 @@ export async function saveCache(): Promise<void> {
 
     try {
         await cache.saveCache([CACHE_PATH], primaryKey);
-        core.info(`Cache saved with the key: ${primaryKey}`);
+        core.info(`Cache saved with key: ${primaryKey}`);
     } catch (e) {
-        core.warning(`Failed to save to cache: ${e}`);
+        core.warning(`Failed to save the cache: ${e}`);
     }
 }
 

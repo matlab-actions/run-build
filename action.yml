@@ -21,7 +21,7 @@ inputs:
     default: ""
   cache:
     description: >-
-      Option to cache the .buildtool folder
+      Option to cache the .buildtool folder created by MATLAB build tool
     required: false
     default: false
   generate-summary:
