@@ -57,11 +57,16 @@ export async function saveCache(): Promise<void> {
         await cache.saveCache([CACHE_PATH], primaryKey);
         core.info(`Cache saved with the key: ${primaryKey}`);
     } catch (e) {
-        core.warning(`Failed to save to cache: ${(e as Error).message}`);
+        core.warning(`Failed to save to cache: ${e}`);
     }
 }
 
 export async function restoreCache(): Promise<void> {
+    if (!cache.isFeatureAvailable()) {
+        core.debug("Cache service is not available, not using the cache.");
+        return;
+    }
+
     const { primaryKey, restoreKeys } = getCacheKey();
     core.saveState(CacheState.PrimaryKey, primaryKey);
     core.saveState(CacheState.ShouldWrite, String(isDefaultBranch()));
@@ -70,7 +75,7 @@ export async function restoreCache(): Promise<void> {
     try {
         matchedKey = await cache.restoreCache([CACHE_PATH], primaryKey, restoreKeys);
     } catch (e) {
-        core.warning(`Failed to save to cache: ${e}`);
+        core.warning(`Failed to restore the cache: ${e}`);
         return;
     }
 

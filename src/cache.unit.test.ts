@@ -21,9 +21,11 @@ const restoreCacheMock =
         (paths: string[], primaryKey: string, restoreKeys?: string[]) => Promise<string | undefined>
     >();
 const saveCacheMock = jest.fn<(paths: string[], key: string) => Promise<number>>();
+const isFeatureAvailableMock = jest.fn<() => boolean>();
 jest.unstable_mockModule("@actions/cache", () => ({
     restoreCache: restoreCacheMock,
     saveCache: saveCacheMock,
+    isFeatureAvailable: isFeatureAvailableMock,
 }));
 
 // @actions/core mocks
@@ -65,6 +67,8 @@ beforeEach(() => {
     restoreCacheMock.mockReset();
     saveCacheMock.mockReset();
     saveCacheMock.mockResolvedValue(0);
+    isFeatureAvailableMock.mockReset();
+    isFeatureAvailableMock.mockReturnValue(true);
     saveStateMock.mockReset();
     infoMock.mockReset();
     warningMock.mockReset();
@@ -230,8 +234,20 @@ describe("cache restore", () => {
 
         await expect(cache.restoreCache()).resolves.toBeUndefined();
 
+        expect(warningMock).toHaveBeenCalledWith(expect.stringContaining("restore"));
         expect(warningMock).toHaveBeenCalledWith(expect.stringContaining("network down"));
         expect(saveStateMock).not.toHaveBeenCalledWith(CacheState.MatchedKey, expect.anything());
+    });
+
+    it("skips the cache entirely when the cache service is not available", async () => {
+        isFeatureAvailableMock.mockReturnValue(false);
+
+        await cache.restoreCache();
+
+        expect(restoreCacheMock).not.toHaveBeenCalled();
+        expect(saveStateMock).not.toHaveBeenCalled();
+        expect(warningMock).not.toHaveBeenCalled();
+        expect(debugMock).toHaveBeenCalledWith(expect.stringContaining("not available"));
     });
 });
 
@@ -290,7 +306,8 @@ describe("cache save", () => {
     });
 
     it("does not save on a non-default branch", async () => {
-        // On non-default branches CacheState.ShouldWrite is set to false in cache.restoreCache
+        // On non-default branches CacheState.ShouldWrite is set to false
+        // in cache.restoreCache
         setState({ primaryKey: "matlab-buildtool-Linux-abc", shouldWrite: "false" });
 
         await cache.saveCache();
