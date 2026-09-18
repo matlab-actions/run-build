@@ -1,4 +1,4 @@
-# Copyright 2022-2024 The MathWorks, Inc.
+# Copyright 2022-2026 The MathWorks, Inc.
 
 name: Run MATLAB Build
 description: >-
@@ -19,11 +19,24 @@ inputs:
       Startup options for MATLAB
     required: false
     default: ""
+  cache:
+    description: >-
+      Option to cache the .buildtool folder created by MATLAB build tool
+    required: false
+    default: false
   generate-summary:
     description: >-
       Option to generate a summary for the GitHub job summary
     required: false
     default: true
+  # The following input is internal and should not be modified.
+  job-matrix-json:
+    description: >-
+      Used to construct the cache key. Do not modify this input directly.
+    required: false
+    default: ${{ toJSON(matrix) }}
 runs:
   using: node24
   main: dist/index.js
+  post: dist/post/index.js
+  post-if: success()

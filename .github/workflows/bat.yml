@@ -33,7 +33,7 @@ jobs:
           name: built-action
 
       - name: Perform 'setup-matlab'
-        uses: matlab-actions/setup-matlab@a0180c939fb1a28de13f44f7b778b912384ced1f # v3.0.1
+        uses: matlab-actions/setup-matlab@f9e43010f1ae678f7cfa0542fe2a4f60f7d1ad8d # v3.1.0
         with:
           products: MATLAB_Test
 
@@ -53,6 +53,8 @@ jobs:
             plan("preMadeTest_2").Dependencies = "build";
             plan("test").Dependencies = "build";
             plan("deploy").Dependencies = "test";
+            % task with Outputs so .buildtool/ is created
+            plan("artifact").Outputs = "artifactOutput.txt";
 
             plan.DefaultTasks = "test";
             end
@@ -80,6 +82,11 @@ jobs:
 
             function checkTask(~)
             f = fopen('buildlog.txt', 'a+'); fprintf(f, 'checking\n'); fclose(f);
+            end
+
+            function artifactTask(~)
+            f = fopen('artifactOutput.txt', 'w'); fprintf(f, 'artifact\n'); fclose(f);
+            f = fopen('buildlog.txt', 'a+'); fprintf(f, 'artifacting\n'); fclose(f);
             end
             
             function errorTask(~)
@@ -254,3 +261,18 @@ jobs:
           ! grep "while reading the build summary file:" console.log
           ! grep "trying to delete the build summary" console.log
           rm console.log
+
+      # Smoke test for the cache input
+      - name: Run build with caching enabled
+        uses: ./
+        with:
+          tasks: artifact
+          cache: true
+
+      - name: Verify the build ran
+        shell: bash
+        run: |
+          set -e
+          grep "artifacting" buildlog.txt
+          test -d .buildtool
+          rm buildlog.txt artifactOutput.txt

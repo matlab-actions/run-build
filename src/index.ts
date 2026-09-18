@@ -1,8 +1,9 @@
-// Copyright 2022-2024 The MathWorks, Inc.
+// Copyright 2022-2026 The MathWorks, Inc.
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as buildtool from "./buildtool.js";
+import * as cache from "./cache.js";
 import { matlab, testResultsSummary, buildSummary } from "common-utils";
 
 /**
@@ -21,6 +22,10 @@ async function run() {
     const command = buildtool.generateCommand(options);
     const startupOptions = core.getInput("startup-options").split(" ");
     const generateSummary = core.getBooleanInput("generate-summary");
+
+    if (core.getBooleanInput("cache")) {
+        await cache.restoreCache();
+    }
 
     const helperScript = await matlab.generateScript(workspaceDir, command);
     const execOptions = {
