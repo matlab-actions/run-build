@@ -16,7 +16,10 @@ jest.unstable_mockModule("fs", () => ({
 }));
 
 // @actions/cache mocks
-const restoreCacheMock = jest.fn<(...args: unknown[]) => Promise<string | undefined>>();
+const restoreCacheMock =
+    jest.fn<
+        (paths: string[], primaryKey: string, restoreKeys?: string[]) => Promise<string | undefined>
+    >();
 const saveCacheMock = jest.fn<(paths: string[], key: string) => Promise<number>>();
 jest.unstable_mockModule("@actions/cache", () => ({
     restoreCache: restoreCacheMock,
@@ -153,7 +156,7 @@ describe("cache restore", () => {
 
         await cache.restoreCache();
 
-        expect(restoreCacheMock).toHaveBeenCalledWith([cache.CACHE_PATH], primaryKey, restoreKeys);
+        expect(restoreCacheMock).toHaveBeenCalledWith([".buildtool"], primaryKey, restoreKeys);
     });
 
     it("records the primary key and a read-only state on a feature branch", async () => {
@@ -234,10 +237,11 @@ describe("cache restore", () => {
 
 describe("cache save", () => {
     beforeEach(() => {
-        // The build directory exists unless a test says otherwise.
+        // Assume the .buildtool directory exists unless a test says otherwise
         existsSyncMock.mockReturnValue(true);
     });
 
+    // Helper to set the mock state
     function setState(state: { primaryKey?: string; matchedKey?: string; shouldWrite?: string }) {
         if (state.primaryKey !== undefined) {
             process.env[`STATE_${CacheState.PrimaryKey}`] = state.primaryKey;
@@ -250,16 +254,13 @@ describe("cache save", () => {
         }
     }
 
-    it("saves on the default branch when a build directory exists", async () => {
+    it("saves on the default branch", async () => {
         setState({ primaryKey: "matlab-buildtool-Linux-abc", shouldWrite: "true" });
 
         await cache.saveCache();
 
-        expect(existsSyncMock).toHaveBeenCalledWith(cache.CACHE_PATH);
-        expect(saveCacheMock).toHaveBeenCalledWith(
-            [cache.CACHE_PATH],
-            "matlab-buildtool-Linux-abc",
-        );
+        expect(existsSyncMock).toHaveBeenCalledWith(".buildtool");
+        expect(saveCacheMock).toHaveBeenCalledWith([".buildtool"], "matlab-buildtool-Linux-abc");
         expect(infoMock).toHaveBeenCalledWith(
             expect.stringContaining("matlab-buildtool-Linux-abc"),
         );
@@ -274,26 +275,28 @@ describe("cache save", () => {
 
         await cache.saveCache();
 
-        expect(saveCacheMock).toHaveBeenCalledWith(
-            [cache.CACHE_PATH],
-            "matlab-buildtool-Linux-abc",
-        );
+        expect(saveCacheMock).toHaveBeenCalledWith([".buildtool"], "matlab-buildtool-Linux-abc");
     });
 
-    it("does not save when caching was disabled (no primary key)", async () => {
-        setState({ shouldWrite: "true" });
+    it("does not save when caching is disabled", async () => {
+        // Caching disabled means restoreCache never ran, so no state was
+        // recorded and getState returns an empty string for every key.
+        setState({ primaryKey: "", matchedKey: "", shouldWrite: "" });
 
         await cache.saveCache();
 
         expect(saveCacheMock).not.toHaveBeenCalled();
+        expect(debugMock).toHaveBeenCalledWith(expect.stringContaining("Caching is disabled"));
     });
 
     it("does not save on a non-default branch", async () => {
+        // On non-default branches CacheState.ShouldWrite is set to false in cache.restoreCache
         setState({ primaryKey: "matlab-buildtool-Linux-abc", shouldWrite: "false" });
 
         await cache.saveCache();
 
         expect(saveCacheMock).not.toHaveBeenCalled();
+        expect(debugMock).toHaveBeenCalledWith(expect.stringContaining("read-only"));
     });
 
     it("does not save when the primary key was already an exact hit", async () => {
@@ -306,6 +309,7 @@ describe("cache save", () => {
         await cache.saveCache();
 
         expect(saveCacheMock).not.toHaveBeenCalled();
+        expect(debugMock).toHaveBeenCalledWith(expect.stringContaining("Cache hit occurred"));
     });
 
     it("warns and does not save when there is no build directory", async () => {
@@ -315,7 +319,7 @@ describe("cache save", () => {
         await cache.saveCache();
 
         expect(saveCacheMock).not.toHaveBeenCalled();
-        expect(warningMock).toHaveBeenCalledWith(expect.stringContaining(cache.CACHE_PATH));
+        expect(warningMock).toHaveBeenCalledWith(expect.stringContaining(".buildtool"));
     });
 
     it("warns and swallows a save failure without throwing", async () => {
