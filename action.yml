@@ -21,7 +21,7 @@ inputs:
     default: ""
   cache:
     description: >-
-      Option to cache the .buildtool folder to speed up subsequent builds
+      Option to cache the .buildtool folder
     required: false
     default: false
   generate-summary:
