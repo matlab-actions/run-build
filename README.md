@@ -51,6 +51,31 @@ jobs:
                   tasks: mytask
 ```
 
+### Use Task Output Caching
+
+Using the latest release of MATLAB on a GitHub-hosted runner, run a build that uses the task output cache to speed up builds. To set up the latest release of MATLAB on the runner, specify the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action in your workflow. To run the MATLAB build, specify the **Run MATLAB Build** action with the `build-options` input set to `-outputCache` and the `cache` input set to `true`.
+
+The `-outputCache` build option directs the build tool to cache task outputs in the `.buildtool` folder. The `cache` input persists this folder across workflow runs so that future builds can reuse the cached outputs. For more information about task output caching, see [Cache Task Outputs](https://www.mathworks.com/help/matlab/matlab_prog/cache-task-outputs.html).
+
+```yaml
+name: Use Task Output Caching
+on: [push]
+jobs:
+    my-job:
+        name: Run MATLAB Build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@v6
+            - name: Set up MATLAB
+              uses: matlab-actions/setup-matlab@v3
+            - name: Run build
+              uses: matlab-actions/run-build@v3
+              with:
+                  build-options: -outputCache
+                  cache: true
+```
+
 ### Use MATLAB Batch Licensing Token
 
 When you define a workflow using the [Setup MATLAB](https://github.com/matlab-actions/setup-matlab/) action, you need a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) if your project is private or if your workflow uses transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments. You can request a token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
@@ -62,7 +87,7 @@ To use a MATLAB batch licensing token:
 
 For example, use the latest release of MATLAB on a GitHub-hosted runner to run a MATLAB build in your private project. To set up the latest release of MATLAB on the runner, specify the **Setup MATLAB** action in your workflow. To run the MATLAB build, specify the **Run MATLAB Build** action. In this example, `MyToken` is the name of the secret that holds the batch licensing token.
 
-```YAML
+```yaml
 name: Use MATLAB Batch Licensing Token
 on: [push]
 env:
@@ -88,6 +113,7 @@ When you define your workflow in the `.github/workflows` directory of your repos
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `tasks`            | <p>(Optional) MATLAB build tasks to run, specified as a list of task names separated by spaces. If a task accepts arguments, enclose them in parentheses. If you do not specify `tasks`, the action runs the default tasks in your build file as well as all the tasks on which they depend. By default, the action looks for a build file named `buildfile.m` in the root of your repository.</p><p>MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the action to fail.</p><p>**Example:** `tasks: test`<br/>**Example:** `tasks: compile test`<br/>**Example:** `tasks: check test("myFolder",OutputDetail="concise") archive("source.zip")`</p> |
 | `build-options`    | <p>(Optional) MATLAB build options, specified as a list of options separated by spaces. The action supports the same [options](https://www.mathworks.com/help/matlab/ref/buildtool.html#mw_50c0f35e-93df-4579-963d-f59f2fba1dba) that you can pass to the `buildtool` command.</p><p>**Example:** `build-options: -continueOnFailure`<br/>**Example:** `build-options: -continueOnFailure -skip test`</p>                                                                                                                                                                                                                                                                                                                            |
+| `cache`            | <p>(Optional) Option to cache the `.buildtool` folder created by the MATLAB build tool, specified as `true` or `false`. By default, the value is `false`. If you specify a value of `true`, the action caches the `.buildtool` folder across workflow runs to speed up builds. Caching this folder enables the build tool to skip tasks whose inputs, outputs, actions, and arguments have not changed since the last successful build. If you also specify the `-outputCache` build option, the build tool can skip tasks by reusing cached outputs from prior builds. For more information, see [Improve Performance with Incremental Builds](https://www.mathworks.com/help/matlab/matlab_prog/improve-performance-with-incremental-builds.html) and [Cache Task Outputs](https://www.mathworks.com/help/matlab/matlab_prog/cache-task-outputs.html).</p><p>When you enable caching, the action generates a cache key from the `matlab-buildtool` prefix, the operating system of the runner, the job ID, a hash of the job matrix parameters, and the commit SHA that triggered the workflow. The action restores the cache on all branches but only saves the cache on the default branch, and only if the build succeeds. For more information about caching with GitHub Actions, see [Caching dependencies to speed up workflows](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows).</p><p>**Example:** `cache: true`</p> |
 | `generate-summary` | <p>(Optional) Option to generate summaries of build and test results in the GitHub job summary, specified as `true` or `false`. By default, the value is `true`. If you specify a value of `false`, the action does not generate build and test summaries in the GitHub job summary. For more information, see [View Build Results](#view-build-results).</p><p>**Example:** `generate-summary: false`</p>                                                                                                                                                                                                                                                                                                                           |
 | `startup-options`  | <p>(Optional) MATLAB startup options, specified as a list of options separated by spaces. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).</p><p>Using this input to specify the `-batch` or `-r` option is not supported.</p><p>**Example:** `startup-options: -nojvm`<br/>**Example:** `startup-options: -nojvm -logfile output.log`</p>                                                                                                                                                                                                                                                                      |
 
