@@ -1,6 +1,6 @@
 # Action for Running MATLAB Builds
 
-Starting in R2022b, the MATLAB&reg; build tool provides a standard programming interface to create and run tasks in a uniform and efficient way. For example, you can create tasks that identify code issues, run tests, and package a toolbox in a single build file in your project root folder, and then invoke the build tool to run these tasks. For more information, see [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html).
+Starting in R2022b, the MATLAB&reg; build tool provides a standard programming interface to create and run tasks in a uniform and efficient way. For example, you can create tasks that identify code issues, run tests, and build a MATLAB package in a single build file in your project root folder, and then invoke the build tool to run these tasks. For more information, see [Overview of MATLAB Build Tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html).
 
 The [Run MATLAB Build](#run-matlab-build) action enables you to invoke the MATLAB build tool on a [GitHub&reg;-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners) or [self-hosted](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners) runner:
 
