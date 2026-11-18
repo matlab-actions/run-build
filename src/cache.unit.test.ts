@@ -392,6 +392,15 @@ describe("cache save", () => {
         expect(warningMock).toHaveBeenCalledWith(expect.stringContaining(".buildtool"));
     });
 
+    it("does not report success when the save returns -1", async () => {
+        setState({ primaryKey: "matlab-buildtool-Linux-abc", shouldWrite: "true" });
+        saveCacheMock.mockResolvedValue(-1);
+
+        await expect(cache.saveCache()).resolves.toBeUndefined();
+
+        expect(infoMock).not.toHaveBeenCalledWith(expect.stringContaining("Cache saved"));
+    });
+
     it("warns and swallows a save failure without throwing", async () => {
         setState({ primaryKey: "matlab-buildtool-Linux-abc", shouldWrite: "true" });
         saveCacheMock.mockRejectedValue(new Error("cache service unavailable"));

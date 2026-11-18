@@ -69,8 +69,12 @@ export async function saveCache(): Promise<void> {
     }
 
     try {
-        await cache.saveCache([CACHE_PATH], primaryKey);
-        core.info(`Cache saved with key: ${primaryKey}`);
+        const cacheId = await cache.saveCache([CACHE_PATH], primaryKey);
+        // @actions/cache doesn't throw for most save failures. It logs
+        // the reason and returns -1 instead.
+        if (cacheId !== -1) {
+            core.info(`Cache saved with key: ${primaryKey}`);
+        }
     } catch (e) {
         core.warning(`Failed to save the cache: ${e}`);
     }
