@@ -55,8 +55,12 @@ const cache = await import("./cache.js");
 // Reusable value for the job-matrix-json input for test cases
 const JOB_MATRIX_JSON_INPUT = "INPUT_JOB-MATRIX-JSON";
 
-function matrixHash(value: string): string {
-    return crypto.createHash("sha256").update(value).digest("hex").slice(0, 16);
+function scopeHash(workflow: string, jobMatrixJson: string): string {
+    return crypto
+        .createHash("sha256")
+        .update(JSON.stringify([workflow, jobMatrixJson]))
+        .digest("hex")
+        .slice(0, 16);
 }
 
 // Restore environment and mocks for each test
@@ -82,14 +86,15 @@ afterEach(() => {
 });
 
 describe("cache key generation", () => {
-    it("builds a per-commit primary key scoped by OS, job, and matrix context", () => {
+    it("builds a per-commit primary key scoped by OS, job, workflow, and matrix context", () => {
         process.env.RUNNER_OS = "Linux";
         process.env.GITHUB_JOB = "build";
         process.env.GITHUB_SHA = "abc123";
+        process.env.GITHUB_WORKFLOW = "CI";
         process.env[JOB_MATRIX_JSON_INPUT] = '{"matlab":"R2024a"}';
 
         const { primaryKey, restoreKeys } = cache.getCacheKey();
-        const hash = matrixHash('{"matlab":"R2024a"}');
+        const hash = scopeHash("CI", '{"matlab":"R2024a"}');
 
         expect(primaryKey).toBe(`matlab-buildtool-Linux-build-${hash}-abc123`);
         expect(restoreKeys).toEqual([`matlab-buildtool-Linux-build-${hash}-`]);
@@ -106,6 +111,33 @@ describe("cache key generation", () => {
 
         expect(jobA.primaryKey).not.toBe(jobB.primaryKey);
         expect(jobA.restoreKeys).not.toEqual(jobB.restoreKeys);
+    });
+
+    it("scopes the key by workflow so same-named jobs in different workflows do not collide", () => {
+        process.env.RUNNER_OS = "Linux";
+        process.env.GITHUB_JOB = "build";
+        process.env.GITHUB_SHA = "abc123";
+        process.env[JOB_MATRIX_JSON_INPUT] = "{}";
+
+        process.env.GITHUB_WORKFLOW = "CI";
+        const workflowA = cache.getCacheKey();
+        process.env.GITHUB_WORKFLOW = "Nightly";
+        const workflowB = cache.getCacheKey();
+
+        expect(workflowA.primaryKey).not.toBe(workflowB.primaryKey);
+        expect(workflowA.restoreKeys).not.toEqual(workflowB.restoreKeys);
+    });
+
+    it("keeps the key free of commas when the workflow name contains them", () => {
+        process.env.RUNNER_OS = "Linux";
+        process.env.GITHUB_JOB = "build";
+        process.env.GITHUB_SHA = "abc123";
+        process.env.GITHUB_WORKFLOW = "Build, test, and deploy";
+
+        const { primaryKey, restoreKeys } = cache.getCacheKey();
+
+        expect(primaryKey).not.toContain(",");
+        expect(restoreKeys[0]).not.toContain(",");
     });
 
     it("scopes the key by matrix context", () => {
@@ -126,10 +158,11 @@ describe("cache key generation", () => {
         delete process.env.RUNNER_OS;
         delete process.env.GITHUB_JOB;
         delete process.env.GITHUB_SHA;
+        delete process.env.GITHUB_WORKFLOW;
         delete process.env[JOB_MATRIX_JSON_INPUT];
 
         const { primaryKey, restoreKeys } = cache.getCacheKey();
-        const hash = matrixHash("");
+        const hash = scopeHash("", "");
 
         expect(primaryKey).toBe(`matlab-buildtool-${process.platform}--${hash}-`);
         expect(restoreKeys).toEqual([`matlab-buildtool-${process.platform}--${hash}-`]);

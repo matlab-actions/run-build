@@ -14,11 +14,17 @@ export function getCacheKey(): { primaryKey: string; restoreKeys: string[] } {
     const os = process.env.RUNNER_OS || process.platform;
     const job = process.env.GITHUB_JOB || "";
     const sha = process.env.GITHUB_SHA || "";
-    // Distinguish jobs of a matrix build and hash them so the key is
-    // short and free of characters that shouldn't be in cache keys.
+    // Distinguish workflows and the jobs of a matrix build, and hash them so
+    // the key is short and free of characters that shouldn't be in cache keys
+    // (workflow names are free text and may contain commas, for example).
+    const workflow = process.env.GITHUB_WORKFLOW || "";
     const jobMatrixJson = core.getInput("job-matrix-json");
-    const matrixHash = crypto.createHash("sha256").update(jobMatrixJson).digest("hex").slice(0, 16);
-    const base = `${DEFAULT_KEY_PREFIX}-${os}-${job}-${matrixHash}`;
+    const scopeHash = crypto
+        .createHash("sha256")
+        .update(JSON.stringify([workflow, jobMatrixJson]))
+        .digest("hex")
+        .slice(0, 16);
+    const base = `${DEFAULT_KEY_PREFIX}-${os}-${job}-${scopeHash}`;
     return {
         primaryKey: `${base}-${sha}`,
         restoreKeys: [`${base}-`],
