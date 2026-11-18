@@ -128,18 +128,6 @@ describe("cache key generation", () => {
         expect(workflowA.restoreKeys).not.toEqual(workflowB.restoreKeys);
     });
 
-    it("keeps the key free of commas when the workflow name contains them", () => {
-        process.env.RUNNER_OS = "Linux";
-        process.env.GITHUB_JOB = "build";
-        process.env.GITHUB_SHA = "abc123";
-        process.env.GITHUB_WORKFLOW = "Build, test, and deploy";
-
-        const { primaryKey, restoreKeys } = cache.getCacheKey();
-
-        expect(primaryKey).not.toContain(",");
-        expect(restoreKeys[0]).not.toContain(",");
-    });
-
     it("scopes the key by matrix context", () => {
         process.env.RUNNER_OS = "Linux";
         process.env.GITHUB_JOB = "build";

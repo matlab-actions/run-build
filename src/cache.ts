@@ -15,8 +15,7 @@ export function getCacheKey(): { primaryKey: string; restoreKeys: string[] } {
     const job = process.env.GITHUB_JOB || "";
     const sha = process.env.GITHUB_SHA || "";
     // Distinguish workflows and the jobs of a matrix build, and hash them so
-    // the key is short and free of characters that shouldn't be in cache keys
-    // (workflow names are free text and may contain commas, for example).
+    // the key is short and free of characters that shouldn't be in cache keys.
     const workflow = process.env.GITHUB_WORKFLOW || "";
     const jobMatrixJson = core.getInput("job-matrix-json");
     const scopeHash = crypto
