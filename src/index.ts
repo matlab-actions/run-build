@@ -23,7 +23,8 @@ async function run() {
     const startupOptions = core.getInput("startup-options").split(" ");
     const generateSummary = core.getBooleanInput("generate-summary");
 
-    if (core.getBooleanInput("cache")) {
+    const useCache = core.getBooleanInput("cache");
+    if (useCache) {
         await cache.restoreCache();
     }
 
@@ -61,6 +62,10 @@ async function run() {
                 core.summary.write();
             }
         });
+
+    if (useCache) {
+        cache.markBuildSucceeded();
+    }
 }
 
 run().catch((e) => {

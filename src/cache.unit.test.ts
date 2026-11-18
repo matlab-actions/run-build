@@ -258,7 +258,15 @@ describe("cache save", () => {
     });
 
     // Helper to set the mock state
-    function setState(state: { primaryKey?: string; matchedKey?: string; shouldWrite?: string }) {
+    function setState(state: {
+        primaryKey?: string;
+        matchedKey?: string;
+        shouldWrite?: string;
+        buildSucceeded?: string;
+    }) {
+        // Assume the build succeeded unless a test says otherwise
+        const buildSucceeded = state.buildSucceeded ?? "true";
+        process.env[`STATE_${CacheState.BuildSucceeded}`] = buildSucceeded;
         if (state.primaryKey !== undefined) {
             process.env[`STATE_${CacheState.PrimaryKey}`] = state.primaryKey;
         }
@@ -305,6 +313,21 @@ describe("cache save", () => {
         expect(debugMock).toHaveBeenCalledWith(expect.stringContaining("Caching is disabled"));
     });
 
+    it("does not save when the build did not succeed", async () => {
+        // The post step runs even when the build fails, but the main step
+        // only records CacheState.BuildSucceeded when the build succeeds.
+        setState({
+            primaryKey: "matlab-buildtool-Linux-abc",
+            shouldWrite: "true",
+            buildSucceeded: "",
+        });
+
+        await cache.saveCache();
+
+        expect(saveCacheMock).not.toHaveBeenCalled();
+        expect(debugMock).toHaveBeenCalledWith(expect.stringContaining("Build did not succeed"));
+    });
+
     it("does not save on a non-default branch", async () => {
         // On non-default branches CacheState.ShouldWrite is set to false
         // in cache.restoreCache
@@ -348,5 +371,13 @@ describe("cache save", () => {
         expect(warningMock).toHaveBeenCalledWith(
             expect.stringContaining("cache service unavailable"),
         );
+    });
+});
+
+describe("build result tracking", () => {
+    it("records that the build succeeded", () => {
+        cache.markBuildSucceeded();
+
+        expect(saveStateMock).toHaveBeenCalledWith(CacheState.BuildSucceeded, "true");
     });
 });

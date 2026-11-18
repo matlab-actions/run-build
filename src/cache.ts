@@ -30,11 +30,25 @@ function isDefaultBranch(): boolean {
     return defaultBranch && context.ref === `refs/heads/${defaultBranch}`;
 }
 
+/**
+ * Record that the build succeeded so the post step knows to save the cache.
+ */
+export function markBuildSucceeded(): void {
+    core.saveState(CacheState.BuildSucceeded, "true");
+}
+
 export async function saveCache(): Promise<void> {
     const primaryKey = core.getState(CacheState.PrimaryKey);
     if (!primaryKey) {
         // primaryKey is absent because caching was disabled
         core.debug("Caching is disabled, not saving cache.");
+        return;
+    }
+
+    if (core.getState(CacheState.BuildSucceeded) !== "true") {
+        // The post step runs regardless of the job status, so check the
+        // result of this action's own build rather than the job status.
+        core.debug("Build did not succeed, not saving cache.");
         return;
     }
 
