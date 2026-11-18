@@ -264,7 +264,6 @@ describe("cache save", () => {
         shouldWrite?: string;
         buildSucceeded?: string;
     }) {
-        // Assume the build succeeded unless a test says otherwise
         const buildSucceeded = state.buildSucceeded ?? "true";
         process.env[`STATE_${CacheState.BuildSucceeded}`] = buildSucceeded;
         if (state.primaryKey !== undefined) {
@@ -314,8 +313,6 @@ describe("cache save", () => {
     });
 
     it("does not save when the build did not succeed", async () => {
-        // The post step runs even when the build fails, but the main step
-        // only records CacheState.BuildSucceeded when the build succeeds.
         setState({
             primaryKey: "matlab-buildtool-Linux-abc",
             shouldWrite: "true",
