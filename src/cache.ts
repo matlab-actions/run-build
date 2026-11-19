@@ -14,11 +14,16 @@ export function getCacheKey(): { primaryKey: string; restoreKeys: string[] } {
     const os = process.env.RUNNER_OS || process.platform;
     const job = process.env.GITHUB_JOB || "";
     const sha = process.env.GITHUB_SHA || "";
-    // Distinguish jobs of a matrix build and hash them so the key is
-    // short and free of characters that shouldn't be in cache keys.
+    // Distinguish workflows and the jobs of a matrix build, and hash them so
+    // the key is short and free of characters that shouldn't be in cache keys.
+    const workflow = process.env.GITHUB_WORKFLOW || "";
     const jobMatrixJson = core.getInput("job-matrix-json");
-    const matrixHash = crypto.createHash("sha256").update(jobMatrixJson).digest("hex").slice(0, 16);
-    const base = `${DEFAULT_KEY_PREFIX}-${os}-${job}-${matrixHash}`;
+    const scopeHash = crypto
+        .createHash("sha256")
+        .update(JSON.stringify([workflow, jobMatrixJson]))
+        .digest("hex")
+        .slice(0, 16);
+    const base = `${DEFAULT_KEY_PREFIX}-${os}-${job}-${scopeHash}`;
     return {
         primaryKey: `${base}-${sha}`,
         restoreKeys: [`${base}-`],
@@ -30,11 +35,20 @@ function isDefaultBranch(): boolean {
     return defaultBranch && context.ref === `refs/heads/${defaultBranch}`;
 }
 
+export function markBuildSucceeded(): void {
+    core.saveState(CacheState.BuildSucceeded, "true");
+}
+
 export async function saveCache(): Promise<void> {
     const primaryKey = core.getState(CacheState.PrimaryKey);
     if (!primaryKey) {
         // primaryKey is absent because caching was disabled
         core.debug("Caching is disabled, not saving cache.");
+        return;
+    }
+
+    if (core.getState(CacheState.BuildSucceeded) !== "true") {
+        core.debug("Build did not succeed, not saving cache.");
         return;
     }
 
@@ -54,8 +68,12 @@ export async function saveCache(): Promise<void> {
     }
 
     try {
-        await cache.saveCache([CACHE_PATH], primaryKey);
-        core.info(`Cache saved with key: ${primaryKey}`);
+        const cacheId = await cache.saveCache([CACHE_PATH], primaryKey);
+        // @actions/cache doesn't throw for most save failures. It logs
+        // the reason and returns -1 instead.
+        if (cacheId !== -1) {
+            core.info(`Cache saved with key: ${primaryKey}`);
+        }
     } catch (e) {
         core.warning(`Failed to save the cache: ${e}`);
     }

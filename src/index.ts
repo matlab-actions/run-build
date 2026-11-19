@@ -22,8 +22,9 @@ async function run() {
     const command = buildtool.generateCommand(options);
     const startupOptions = core.getInput("startup-options").split(" ");
     const generateSummary = core.getBooleanInput("generate-summary");
+    const useCache = core.getBooleanInput("cache");
 
-    if (core.getBooleanInput("cache")) {
+    if (useCache) {
         await cache.restoreCache();
     }
 
@@ -61,6 +62,10 @@ async function run() {
                 core.summary.write();
             }
         });
+
+    if (useCache) {
+        cache.markBuildSucceeded();
+    }
 }
 
 run().catch((e) => {
